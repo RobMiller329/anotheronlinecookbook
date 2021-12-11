@@ -1,0 +1,48 @@
+.tableArea
+{
+    width: 90%;
+}
+
+.pagination
+{
+    display: flex;
+    justify-content: space-around;
+    width: 60%;
+}
+
+table
+{
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+table td, table th
+{
+    border: 1px solid #DDD;
+    padding: 8px;
+}
+
+table tr:nth-child(even)
+{
+    background-color: #DFC8D8;
+}
+
+table tr:nth-child(odd)
+{
+    background-color: #F1F1F1;
+}
+
+table tr:hover
+{
+    background-color: #DDD;
+}
+
+table th
+{
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: center;
+    background-color: #CCA0BF;
+    color: black;
+}

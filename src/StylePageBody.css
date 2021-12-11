@@ -1,0 +1,21 @@
+.firstPageBodyContainer
+{
+    height: 100%;
+    display: flex;
+    background-image: linear-gradient(#809CB8, #EBE7E0);
+}
+
+.firstPageBodyLeft
+{
+    width: 6%;
+}
+
+.firstPageBodyCenter
+{
+    width: 76%;
+}
+
+.firstPageBodyRight
+{
+    width: 18%;
+}

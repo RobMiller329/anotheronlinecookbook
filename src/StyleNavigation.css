@@ -1,0 +1,22 @@
+.navigationButtonContainer
+{
+    width: 90%;
+    height: 60%;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.navigationButton
+{
+    width: 90%;
+    height: 20%;
+}
+
+button
+{
+    height: 100%;
+    background-color: #EBE7E0;
+    color: #AF7DA0;
+    font-weight: bold;
+}

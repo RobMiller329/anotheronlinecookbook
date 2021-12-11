@@ -1,0 +1,29 @@
+.pageHeaderContainer
+{
+    height: 100%;
+    display: flex;
+    background-color: #44749D;
+}
+
+.pageHeaderTitle
+{
+    height: 100%;
+    width: 93.4%;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: x-large;
+    font-weight: bold;
+    text-align: center;
+}
+
+.pageHeaderSettings
+{
+    height: 100%;
+    width: 6%;
+    background-color: white;
+}
+
+.footer
+{
+    height: 100%;
+    background-color: #C6D4E1;
+}
