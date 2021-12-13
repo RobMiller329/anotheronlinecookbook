@@ -1,15 +1,15 @@
-var connection = import('./dbCredentials');
+const connection = require('./dbCredentials');
 
 /*  Below are the queries that we are using for the api call to the database.  */
 
-let dinnerDB = {};
+let cookbookDB = {};
 
-dinnerDB.viewMyRecipes = (id) =>
+cookbookDB.viewMyRecipes = (id) =>
 {
     return new Promise((resolve, reject) =>
     {
         connection.query(
-            `SELECT recipeName, recipeProtein, recipeCuisine, recipeSource` +
+            `SELECT recipeName, recipeProtein, recipeCuisine, recipeSource ` +
             `FROM recipedata WHERE userDataID = ?;`, id, (err, results) =>
         {
             if(err)
@@ -23,7 +23,7 @@ dinnerDB.viewMyRecipes = (id) =>
     });
 };
 
-dinnerDB.browseAllRecipes = () =>
+cookbookDB.browseAllRecipes = () =>
 {
     return new Promise((resolve, reject) =>
     {
@@ -42,7 +42,7 @@ dinnerDB.browseAllRecipes = () =>
     });
 };
 
-dinnerDB.manageMyRecipes = (id) =>
+cookbookDB.manageMyRecipes = (id) =>
 {
     return new Promise((resolve, reject) =>
     {
@@ -63,4 +63,4 @@ dinnerDB.manageMyRecipes = (id) =>
     });
 };
 
-module.exports = dinnerDB;
+module.exports = cookbookDB;
