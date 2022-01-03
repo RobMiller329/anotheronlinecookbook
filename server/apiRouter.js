@@ -5,12 +5,12 @@ const cookbookDB = require('./queries');
 
 router.use(cors());
 
-//api call for View My Recipes results
-router.get('/vmr/:id', async (req, res, next) =>
+//api call for viewing user's recipes
+router.get('/:id', async (req, res, next) =>
 {
     try
     {
-        let results = await cookbookDB.viewMyRecipes(req.params.id);
+        let results = await cookbookDB.viewRecipes(req.params.id);
         res.json(results);
     }catch(err)
     {
@@ -19,26 +19,12 @@ router.get('/vmr/:id', async (req, res, next) =>
     }
 });
 
-//api call for Browse All Recipes results
-router.get('/bar', async (req, res, next) =>
+//api call for viewing all recipes
+router.get('/', async (req, res, next) =>
 {
     try
     {
-        let results = await cookbookDB.viewAllRecipes(req.params.id);
-        res.json(results);
-    }catch(err)
-    {
-        console.log(err);
-        res.sendStatus(500);
-    }
-});
-
-//api call for Manage My Recipes results
-router.get('/mmr/:id', async (req, res, next) =>
-{
-    try
-    {
-        let results = await cookbookDB.manageMyRecipes(req.params.id);
+        let results = await cookbookDB.viewRecipes();
         res.json(results);
     }catch(err)
     {

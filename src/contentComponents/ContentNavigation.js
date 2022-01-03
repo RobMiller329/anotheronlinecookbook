@@ -29,7 +29,7 @@ class Navigation extends React.Component
 
     handleManageMyRecipesClick()
     {
-        this.props.callbackFromParent("ManageMyRecipes");
+        this.props.callbackFromParent("CreateNewRecipe");
     }
 
     render()
@@ -43,7 +43,7 @@ class Navigation extends React.Component
                     <button onClick={this.handleBrowseAllRecipesClick} value="BrowseAllRecipes">Browse All Recipes</button>
                 </div>
                 <div className="navigationButton">
-                    <button onClick={this.handleManageMyRecipesClick} value="ManageMyRecipes">Manage My Recipes</button>
+                    <button onClick={this.handleManageMyRecipesClick} value="CreateNewRecipe">Create New Recipe</button>
                 </div>
             </div>
         );

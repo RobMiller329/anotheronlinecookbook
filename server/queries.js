@@ -4,12 +4,12 @@ const connection = require('./dbCredentials');
 
 let cookbookDB = {};
 
-cookbookDB.viewMyRecipes = (id) =>
+cookbookDB.viewRecipes = (id) =>
 {
     return new Promise((resolve, reject) =>
     {
         connection.query(
-            `SELECT recipeName, recipeProtein, recipeCuisine, recipeSource ` +
+            `SELECT recipeName, recipeProtein, recipeCuisine, recipeSource, userDataID ` +
             `FROM recipedata WHERE userDataID = ?;`, id, (err, results) =>
         {
             if(err)
@@ -23,34 +23,13 @@ cookbookDB.viewMyRecipes = (id) =>
     });
 };
 
-cookbookDB.browseAllRecipes = () =>
+cookbookDB.viewRecipes = () =>
 {
     return new Promise((resolve, reject) =>
     {
         connection.query(
-            `SELECT recipeName, recipeProtein, recipeCuisine, recipeSource` +
+            `SELECT recipeName, recipeProtein, recipeCuisine, recipeSource, userDataID ` +
             `FROM recipedata;`, (err, results) =>
-        {
-            if(err)
-            {
-                return reject(err);
-            }else
-            {
-                return resolve(results);
-            }
-        });
-    });
-};
-
-cookbookDB.manageMyRecipes = (id) =>
-{
-    return new Promise((resolve, reject) =>
-    {
-        connection.query(
-            `SELECT a.recipeName, a.recipeProtein, a.recipeCuisine, a.recipeSource, b.transactionDateTime` +
-            `FROM recipedata AS a` +
-            `LEFT JOIN transactions AS b ON b.recipeDataID = a.recipeDataID` +
-            `WHERE userDataID = ?;`, id, (err, results) =>
         {
             if(err)
             {

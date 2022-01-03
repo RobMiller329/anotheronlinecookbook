@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useTable, usePagination, useFilters } from "react-table";
 //import ReactMultiSelectCheckboxes from "react-multiselect-checkboxes";
 
-function ListRecipesTableBuild( {columns, data} )
+function ConstructedTable( {columns, data} )
 {
     const
     {
@@ -96,29 +96,19 @@ function ListRecipesTableBuild( {columns, data} )
             </table>
             <div className="pagination">
                 <div className="page-item" onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-                    {/* <a href="javascript:void(0)" className="page-link">First</a> */}
                     <button className="page-link">First</button>
                 </div>
                 <div className="page-item" onClick={() => previousPage()} disabled={!canPreviousPage}>
-                    {/* <a href="javascript:void(0)" className="page-link">{'<'}</a> */}
                     <button className="page-link">{'<'}</button>
                 </div>
                 <div className="page-item" onClick={() => nextPage()} disabled={!canNextPage}>
-                    {/* <a href="javascript:void(0)" className="page-link">{'>'}</a> */}
                     <button className="page-link">{'>'}</button>
                 </div>
                 <div className="page-item" onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
-                    {/* <a href="javascript:void(0)" className="page-link">Last</a> */}
                     <button className="page-link">Last</button>
                 </div>
                 <div>
-                    {/* <a className="page-link">
-                        Page{' '}
-                        <strong>
-                            {pageIndex + 1} of {pageOptions.length}
-                        </strong>{' '}
-                    </a> */}
-                     <p>
+                    <p>
                         Page{' '}
                         <strong>
                             {pageIndex + 1} of {pageOptions.length}
@@ -144,4 +134,4 @@ function ListRecipesTableBuild( {columns, data} )
     )
 }
 
-export default ListRecipesTableBuild;
+export default ConstructedTable;

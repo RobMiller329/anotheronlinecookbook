@@ -1,4 +1,4 @@
-export const viewMyRecipesColumns = 
+export const recipeTableColumns = 
 [
     {
         Header: "Recipe Name",
@@ -15,5 +15,9 @@ export const viewMyRecipesColumns =
     {
         Header: "Source",
         accessor: "recipeSource"
+    },
+    {
+        Header: "Submitted By",
+        accessor: "userDataID"
     }
 ]
