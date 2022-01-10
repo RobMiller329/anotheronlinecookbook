@@ -33,7 +33,7 @@ function FinalTable(props)
       });
 
     return (
-        <div>
+        <div className="finalTable">
             <ConstructedTable columns={recipeTableColumns} data={data} />
         </div>
     );

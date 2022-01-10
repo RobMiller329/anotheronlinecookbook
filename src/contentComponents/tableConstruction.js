@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { useTable, usePagination, useFilters } from "react-table";
-//import ReactMultiSelectCheckboxes from "react-multiselect-checkboxes";
+import "./StyleTables.css";
 
 function ConstructedTable( {columns, data} )
 {
@@ -30,6 +30,7 @@ function ConstructedTable( {columns, data} )
     const [proteinFilterInput, setProteinFilterInput] = useState("");
     const [cuisineFilterInput, setCuisineFilterInput] = useState("");
     const [sourceFilterInput, setSourceFilterInput] = useState("");
+    const [userFilterInput, setUserFilterInput] = useState("");
 
     const handleNameFilterChange = event =>
     {
@@ -41,31 +42,39 @@ function ConstructedTable( {columns, data} )
     const handleProteinFilterChange = event =>
     {
         const value = event.target.value || undefined;
-        setFilter("Protein", value);
+        setFilter("recipeProtein", value);
         setProteinFilterInput(value);
     }
 
     const handleCuisineFilterChange = event =>
     {
         const value = event.target.value || undefined;
-        setFilter("Cuisine", value);
+        setFilter("recipeCuisine", value);
         setCuisineFilterInput(value);
     }
 
     const handleSourceFilterChange = event =>
     {
         const value = event.target.value || undefined;
-        setFilter("Source", value);
+        setFilter("recipeSource", value);
         setSourceFilterInput(value);
+    }
+
+    const handleUserFilterChange = event =>
+    {
+        const value = event.target.value || undefined;
+        setFilter("userDataID", value);
+        setUserFilterInput(value);
     }
 
     return (
         <div>
-            <div>
-                <input value={nameFilterInput} onChange={handleNameFilterChange} placeholder={"Type Here To Search By Name"} />
-                <input value={proteinFilterInput} onChange={handleProteinFilterChange} placeholder={"Type Here To Search By Protein"} />
-                <input value={cuisineFilterInput} onChange={handleCuisineFilterChange} placeholder={"Type Here To Search By Cuisine"} />
-                <input value={sourceFilterInput} onChange={handleSourceFilterChange} placeholder={"Type Here To Search By Source"} />
+            <div className="tableFilters">
+                <input className="nameFilter" value={nameFilterInput} onChange={handleNameFilterChange} placeholder={"Type Here To Filter By Name"} />
+                <input className="proteinFilter" value={proteinFilterInput} onChange={handleProteinFilterChange} placeholder={"Filter By Protein"} />
+                <input className="cuisineFilter" value={cuisineFilterInput} onChange={handleCuisineFilterChange} placeholder={"Filter By Cuisine"} />
+                <input className="sourceFilter" value={sourceFilterInput} onChange={handleSourceFilterChange} placeholder={"Filter By Source"} />
+                <input className="userFilter" value={userFilterInput} onChange={handleUserFilterChange} placeholder={"Filter By User"} />
             </div>
             <table {...getTableProps()}>
                 <thead>

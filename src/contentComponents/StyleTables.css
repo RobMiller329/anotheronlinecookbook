@@ -10,6 +10,37 @@
     width: 60%;
 }
 
+.tableFilters
+{
+    display: flex;
+    justify-content: space-between;
+}
+
+.nameFilter
+{
+    width: 29.72%;
+}
+
+.proteinFilter
+{
+    width: 9.275%;
+}
+
+.cuisineFilter
+{
+    width: 10.835%;
+}
+
+.sourceFilter
+{
+    width: 20.81%;
+}
+
+.userFilter
+{
+    width: 29.38%;
+}
+
 table
 {
     font-family: Arial, Helvetica, sans-serif;

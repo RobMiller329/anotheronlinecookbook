@@ -1,21 +1,19 @@
-.firstPageBodyContainer
+.pageContent
 {
     height: 100%;
-    display: flex;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1.00fr 0.20fr;
+    grid-template-areas:  "page trending";
     background-image: linear-gradient(#809CB8, #EBE7E0);
 }
 
-.firstPageBodyLeft
+.pageToShow
 {
-    width: 6%;
+    grid-area: "page";
 }
 
-.firstPageBodyCenter
+.trending
 {
-    width: 76%;
-}
-
-.firstPageBodyRight
-{
-    width: 18%;
+    grid-area: "trending";
 }

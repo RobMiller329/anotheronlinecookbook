@@ -3,18 +3,22 @@
   height: 100vh;
   /* width: 100%; */
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr 1fr;
-  grid-template-areas:  "header header header header settings"
-                        "nav filter filter trending trending"
-                        "nav main main trending trending"
-                        "footer footer footer footer footer"
+  grid-template-columns: 0.10fr 1.00fr;
+  grid-template-rows: 0.20fr 1.00fr 0.15fr;
+  grid-template-areas:  "header header"
+                        "nav main"
+                        "footer footer"
 }
 
 .appHeader
 {
   /* height: 9.2%; */
   grid-area: header;
+}
+
+.appNavigation
+{
+  grid-area: nav;
 }
 
 .appBody
@@ -28,18 +32,3 @@
   /* height: 6.8%; */
   grid-area: footer;
 }
-
-.filterContainer
-{
-  /* width: 39%;
-  display: flex;
-  justify-content: space-around; */
-  grid-area: filter;
-}
-
-.trendingBoxContainer
-{
-  /* height: 100%;
-  width: 100%; */
-  grid-area: trending;
-} 

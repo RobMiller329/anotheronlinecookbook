@@ -1,16 +1,6 @@
 import React from "react";
 import "./StyleHeaderFooter.css";
 
-function WebsiteTitle(props)
-{
-    return(<p>Another Online Recipe Book</p>);
-}
-
-function UserSettings(props)
-{
-    return(<p>user</p>)
-}
-
 class PageHeader extends React.Component
 {
     constructor(props)
@@ -20,6 +10,13 @@ class PageHeader extends React.Component
         {
             userID: this.props.userID
         };
+
+        this.handleSettingsClick = this.handleSettingsClick.bind(this);
+    }
+
+    handleSettingsClick()
+    {
+        this.props.onPageChange("Settings");
     }
 
     render()
@@ -27,10 +24,10 @@ class PageHeader extends React.Component
         return(
             <div className="pageHeaderContainer">
                 <div className="pageHeaderTitle">
-                    <WebsiteTitle />
+                    <h1>Another Online Recipe Book</h1>
                 </div>
                 <div className="pageHeaderSettings">
-                    <UserSettings />
+                    <button onClick={this.handleSettingsClick} value="Settings" className="settingsNavButton">Settings</button>
                 </div>
             </div>
         );

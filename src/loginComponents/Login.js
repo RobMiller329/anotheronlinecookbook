@@ -1,7 +1,6 @@
 import React from "react";
-import { useState } from "react";
-import UserPool from "./UserPool";
-import { CognitoUser, AuthenticationDetails } from "amazon-cognito-identity-js";
+import { useState, useContext } from "react";
+import { AccountContext } from "./Account";
 import '../StyleLoginRegister.css';
 
 function UserLogin(props)
@@ -9,36 +8,22 @@ function UserLogin(props)
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
+    //refers to this as "destructuring" - what does that mean?
+    const { authenticate } = useContext(AccountContext);
+
     const onSubmit = (event) =>
     {
         event.preventDefault();
 
-        const user = new CognitoUser(
-        {
-            Username: email,
-            Pool: UserPool
-        });
-
-        const authDetails = new AuthenticationDetails(
-        {
-            Username: email,
-            Password: password
-        });
-
-        user.authenticateUser(authDetails, {
-            onSuccess: (data) =>
+        authenticate(email, password)
+            .then((data) =>
             {
-                console.log("onSuccess: ", data);
-            },
-            onFailure: (err) =>
+                console.log("Logged in!", data);
+            })
+            .catch((err) =>
             {
-                console.error("onFailure: ", err);
-            },
-            newPasswordRequired: (data) =>
-            {
-                console.log("newPasswordRequired: ", data);
-            }
-        });
+                console.error("Failed to login", err);
+            });
     };
 
     return(

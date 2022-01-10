@@ -9,7 +9,7 @@ class Navigation extends React.Component
 
         this.state = 
         {
-            page: "ViewMyRecipes"
+            page: ""
         };
 
         this.handleViewMyRecipesClick = this.handleViewMyRecipesClick.bind(this);
@@ -19,32 +19,26 @@ class Navigation extends React.Component
 
     handleViewMyRecipesClick()
     {
-        this.props.callbackFromParent("ViewMyRecipes");
+        this.props.onPageChange("ViewMyRecipes");
     }
 
     handleBrowseAllRecipesClick()
     {
-        this.props.callbackFromParent("BrowseAllRecipes");
+        this.props.onPageChange("BrowseAllRecipes");
     }
 
     handleManageMyRecipesClick()
     {
-        this.props.callbackFromParent("CreateNewRecipe");
+        this.props.onPageChange("CreateNewRecipe");
     }
 
     render()
     {
         return (
             <div className="navigationButtonsContainer">
-                <div className="navigationButton">
-                    <button onClick={this.handleViewMyRecipesClick} value="ViewMyRecipes">View My Recipes</button>
-                </div>
-                <div className="navigationButton">
-                    <button onClick={this.handleBrowseAllRecipesClick} value="BrowseAllRecipes">Browse All Recipes</button>
-                </div>
-                <div className="navigationButton">
-                    <button onClick={this.handleManageMyRecipesClick} value="CreateNewRecipe">Create New Recipe</button>
-                </div>
+                <button onClick={this.handleViewMyRecipesClick} value="ViewMyRecipes" className="navButton">View My Recipes</button>
+                <button onClick={this.handleBrowseAllRecipesClick} value="BrowseAllRecipes" className="navButton">Browse All Recipes</button>
+                <button onClick={this.handleManageMyRecipesClick} value="CreateNewRecipe" className="navButton">Create New Recipe</button>
             </div>
         );
     }

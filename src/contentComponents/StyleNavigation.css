@@ -1,21 +1,16 @@
-.navigationButtonContainer
+.navigationButtonsContainer
 {
-    width: 90%;
-    height: 60%;
+    height: 100%;
+    width: 100%;
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
 }
 
-.navigationButton
+.navButton
 {
-    width: 90%;
-    height: 20%;
-}
-
-button
-{
-    height: 100%;
+    height: 12%;
+    width: 100%;
     background-color: #EBE7E0;
     color: #AF7DA0;
     font-weight: bold;
