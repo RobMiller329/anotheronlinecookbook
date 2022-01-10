@@ -4,10 +4,6 @@ import PageHeader from "./PageHeader";
 import PageFooter from "./PageFooter";
 import PageContent from "./PageContent";
 import Navigation from "./contentComponents/ContentNavigation";
-import { Account } from "./loginComponents/Account";
-import RegisterUser from "./loginComponents/RegisterUser";
-import UserLogin from "./loginComponents/Login";
-import Status from "./loginComponents/Status";
 import './App.css';
 
 function App()
@@ -28,12 +24,7 @@ function App()
         <Navigation page={page} onPageChange={handlePageChange} />
       </div>
       <div className="appBody">
-        {/* <PageContent page={page} /> */}
-        <Account>
-          <Status/>
-          <RegisterUser />
-          <UserLogin />
-        </Account>
+        <PageContent page={page} />
       </div>
       <div className="appFooter">
         <PageFooter />

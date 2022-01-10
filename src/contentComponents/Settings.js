@@ -1,12 +1,15 @@
 import React from "react";
 import { useState, useEffect, useContext } from "react";
-import { AccountContext } from "../loginComponents/Account";
+import { Account, AccountContext } from "../loginComponents/Account";
 import ChangePassword from "../loginComponents/ChangePassword";
 import ChangeEmail from "../loginComponents/ChangeEmail";
+import RegisterUser from "../loginComponents/RegisterUser";
+import UserLogin from "../loginComponents/Login";
+import "../StyleSettings.css"
 
  function Settings(props)
  {
-    const { getSession } = useContext(AccountContext);
+    const { getSession, logout } = useContext(AccountContext);
     const [loggedIn, setLoggedIn] = useState(false);
 
     useEffect(() =>
@@ -17,16 +20,40 @@ import ChangeEmail from "../loginComponents/ChangeEmail";
         });
     }, []);
 
+    function UserIsLoggedIn()
+    {
+        return(
+            <div>
+                <h2>Settings</h2>
+                <ChangePassword />
+                <ChangeEmail />
+                <button onClick={logout}>Logout</button>
+            </div>
+        );
+    }
+
+    function UserNotLoggedIn()
+    {
+        return(
+            <div>
+                <Account>
+                    <div className="notLoggedInContainer">
+                        <div className="settingsUserLogin">
+                            <UserLogin />
+                        </div>
+                        <div className="settingsRegisterUser">
+                            <RegisterUser />
+                        </div>
+                    </div>
+                </Account>
+            </div>
+        );
+    }
+
     return(
         <div>
-            {loggedIn && 
-            (
-                <>
-                    <h2>Settings</h2>
-                    <ChangePassword />
-                    <ChangeEmail />
-                </>
-            )}
+            {loggedIn && <UserIsLoggedIn />}
+            {!loggedIn && <UserNotLoggedIn />}
         </div>
     );
  }

@@ -1,0 +1,26 @@
+.notLoggedInContainer
+{
+    height: 100%;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1.00fr 1.00fr;
+    grid-template-areas:  "loginBody registerBody"
+}
+
+.settingsUserLogin
+{
+    font-weight: bold;
+    grid-area: "loginBody";
+    width: 50%;
+    padding-left: 5%;
+    padding-right: 5%;
+}
+
+.settingsRegisterUser
+{
+    font-weight: bold;
+    grid-area: "registerBody";
+    width: 50%;
+    padding-left: 5%;
+    padding-right: 5%;
+}

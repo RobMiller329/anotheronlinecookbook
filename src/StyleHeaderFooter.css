@@ -18,8 +18,21 @@
 .pageHeaderSettings
 {
     height: 100%;
-    width: 6%;
-    background-color: white;
+    width: 6.6%;
+    background-color: rgb(240, 240, 240);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.settingsNavButton
+{
+    height: 60%;
+    width: 60%;
+    background-image: url("./assets/gear-1119298_960_720.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    border: none;
 }
 
 .footer

@@ -27,7 +27,7 @@ class PageHeader extends React.Component
                     <h1>Another Online Recipe Book</h1>
                 </div>
                 <div className="pageHeaderSettings">
-                    <button onClick={this.handleSettingsClick} value="Settings" className="settingsNavButton">Settings</button>
+                    <button onClick={this.handleSettingsClick} value="Settings" className="settingsNavButton" />
                 </div>
             </div>
         );
