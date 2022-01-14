@@ -1,3 +1,21 @@
+.finalTableContainer
+{
+    height: 100%;
+    width: 100%;
+    display: flex;
+}
+
+.tableComponent
+{
+    width: 85%;
+}
+
+.trendingComponent
+{
+    width: 15%;
+    padding-left: 0.25%;
+}
+
 .tableArea
 {
     width: 90%;

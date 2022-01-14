@@ -2,18 +2,5 @@
 {
     height: 100%;
     width: 100%;
-    display: grid;
-    grid-template-columns: 1.00fr 0.20fr;
-    grid-template-areas:  "page trending";
     background-image: linear-gradient(#809CB8, #EBE7E0);
-}
-
-.pageToShow
-{
-    grid-area: "page";
-}
-
-.trending
-{
-    grid-area: "trending";
 }

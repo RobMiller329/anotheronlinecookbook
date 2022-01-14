@@ -11,23 +11,35 @@ import "../StyleSettings.css"
  {
     const { getSession, logout } = useContext(AccountContext);
     const [loggedIn, setLoggedIn] = useState(false);
+    const [userEmail, setUserEmail] = useState("");
 
     useEffect(() =>
     {
-        getSession().then(() =>
+        getSession().then(( { email } ) =>
         {
             setLoggedIn(true);
+            setUserEmail(email);
         });
-    }, []);
+    });
 
     function UserIsLoggedIn()
     {
         return(
-            <div>
-                <h2>Settings</h2>
-                <ChangePassword />
-                <ChangeEmail />
-                <button onClick={logout}>Logout</button>
+            <div className="loggedInContainer">
+                <div className="settingsLogoutContainer">
+                    <div className="logoutWords1"><p>You are logged in as &nbsp;</p></div>
+                    <div className="userEmailAddress">{userEmail}</div>
+                    <div className="logoutWords2"><p>. Click this button to log out.</p></div>
+                    <button onClick={logout} className="settingsLogoutButton">Logout</button>
+                </div>
+                <div className="settingsChangesContainer">
+                    <div className="settingsChangeEmail">
+                        <ChangeEmail />
+                    </div>
+                    <div className="settingsChangePassword">
+                        <ChangePassword />
+                    </div>
+                </div>
             </div>
         );
     }
@@ -52,6 +64,9 @@ import "../StyleSettings.css"
 
     return(
         <div>
+            <div className="settingsPageHeader">
+                <h1>Settings</h1>
+            </div>
             {loggedIn && <UserIsLoggedIn />}
             {!loggedIn && <UserNotLoggedIn />}
         </div>

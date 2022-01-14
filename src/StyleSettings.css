@@ -1,17 +1,22 @@
+.settingsPageHeader
+{
+    text-align: center;
+}
+
 .notLoggedInContainer
 {
     height: 100%;
     width: 100%;
-    display: grid;
-    grid-template-columns: 1.00fr 1.00fr;
-    grid-template-areas:  "loginBody registerBody"
+    display: flex;
+    flex-direction: row;
+
 }
 
 .settingsUserLogin
 {
     font-weight: bold;
-    grid-area: "loginBody";
-    width: 50%;
+    grid-area: "login";
+    width: 100%;
     padding-left: 5%;
     padding-right: 5%;
 }
@@ -19,8 +24,64 @@
 .settingsRegisterUser
 {
     font-weight: bold;
-    grid-area: "registerBody";
-    width: 50%;
+    grid-area: "regis";
+    width: 100%;
     padding-left: 5%;
     padding-right: 5%;
+}
+
+.loggedInContainer
+{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.settingsLogoutContainer
+{
+    height: 15%;
+    width: 100%;
+    padding: 2%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.settingsLogoutButton
+{
+    width: 8%;
+    margin-left: 2%;
+}
+
+.settingsChangesContainer
+{
+    height: 85%;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1.00fr 1.00fr;
+    grid-template-areas: "email password";
+}
+
+.settingsChangeEmail
+{
+    grid-area: "email";
+    height: 100%;
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-bottom: 1%;
+}
+
+.settingsChangePassword
+{
+    grid-area: "password";
+    height: 100%;
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-bottom: 1%;
+}
+
+.userEmailAddress
+{
+    font-weight: bold;
 }

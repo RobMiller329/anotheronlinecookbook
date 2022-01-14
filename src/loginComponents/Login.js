@@ -12,7 +12,7 @@ function UserLogin(props)
     const { authenticate } = useContext(AccountContext);
 
     let emailFormat = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
-    let emailInputElement = document.getElementById("emailInput");
+    let emailInputElement = document.getElementById("loginEmailInputID");
 
     const onSubmit = (event) =>
     {
@@ -26,12 +26,11 @@ function UserLogin(props)
             authenticate(email, password)
                 .then((data) =>
                 {
-                    //console.log("Logged in!", data);
                     alert("Logged in!");
+                    window.location.reload(false);
                 })
                 .catch((err) =>
                 {
-                    //console.error("Failed to login", err);
                     alert("Failed to login. The email and/or password do not match our records.");
                 });
         }
@@ -46,7 +45,7 @@ function UserLogin(props)
                 <form onSubmit={onSubmit}>
                     <label htmlFor="email">Email</label>
                     <br/>
-                    <input type="email" id="loginEmailInput" value={email} onChange={ (event) => setEmail(event.target.value) } required />
+                    <input type="email" id="loginEmailInputID" value={email} onChange={ (event) => setEmail(event.target.value) } required />
                     <br/><br/>
                     <label htmlFor="password">Password</label>
                     <br/>

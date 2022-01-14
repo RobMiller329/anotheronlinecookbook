@@ -10,8 +10,9 @@ function RegisterUser(props)
     const [confirmPassword, setConfirmPassword] = useState("");
 
     let emailFormat = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
-    let emailInputElement = document.getElementById("emailInput");
-    let confirmPasswordElement = document.getElementById("confirmPassword");
+    let emailInputElement = document.getElementById("emailInputID");
+    let passwordInputElement = document.getElementById("passwordInputID");
+    let confirmPasswordElement = document.getElementById("confirmPasswordID");
 
     const onSubmit = (event) =>
     {
@@ -22,18 +23,21 @@ function RegisterUser(props)
             emailInputElement.setCustomValidity("Not a valid email format.");
         }else if(password !== confirmPassword)
         {
-            confirmPasswordElement.setCustomValidity("Passwords do not match.");
+            alert("Password and Confirm Password must match exactly.");
         }else
         {
             UserPool.signUp(email, password, [], null, (err, data) =>
             {
                 if(err)
                 {
-                    console.log(err);
-                }else
-                {
                     alert("Registration failed. Please make sure you're using a valid email address. " +
                             "Passwords must contain at least 8 characters, an uppercase letter, a lowercase letter, a special character, and a number.");
+                }else
+                {
+                    alert("Registration succeedded. Please check your email for a confirmation link. After confirming your email, you can log in.");
+                    emailInputElement.value = "";
+                    passwordInputElement.value = "";
+                    confirmPasswordElement.value = "";
                 }
             });
         }
@@ -48,15 +52,15 @@ function RegisterUser(props)
                 <form onSubmit={onSubmit}>
                 <label htmlFor="email">Email</label>
                     <br/>
-                    <input type="email" id="registerEmailInput" value={email} onChange={ (event) => setEmail(event.target.value) } required />
+                    <input type="email" id="emailInputID" value={email} onChange={ (event) => setEmail(event.target.value) } required />
                     <br/><br/>
                     <label htmlFor="password">Password</label>
                     <br/>
-                    <input type="password" value={password} onChange={ (event) => setPassword(event.target.value) } required />
+                    <input type="password" id="passwordInputID" value={password} onChange={ (event) => setPassword(event.target.value) } required />
                     <br/><br/>
                     <label htmlFor="confirmPassword">Confirm Password</label>
                     <br/>
-                    <input type="password" id="confirmPassword" value={confirmPassword} onChange={ (event) => setConfirmPassword(event.target.value) } required />
+                    <input type="password" id="confirmPasswordID" value={confirmPassword} onChange={ (event) => setConfirmPassword(event.target.value) } required />
                     <br/><br/>
                     <button type="submit" className="loginButton">Register</button>
                 </form>

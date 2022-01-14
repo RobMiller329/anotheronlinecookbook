@@ -1,0 +1,28 @@
+.createOrEditRadioContainer
+{
+    display: flex;
+    flex-direction: row;
+}
+
+.createRecipeRadio
+{
+    width: fit-content;
+    border: 1px black solid;
+    border-right: none;
+    padding-left: 0.5%;
+    padding-right: 0.5%;
+    padding-top: 0.25%;
+    padding-bottom: 0.25%;
+    align-items: center;
+}
+
+.editRecipeRadio
+{
+    width: fit-content;
+    border: 1px black solid;
+    padding-left: 0.5%;
+    padding-right: 0.5%;
+    padding-top: 0.25%;
+    padding-bottom: 0.25%;
+    align-items: center;
+}
