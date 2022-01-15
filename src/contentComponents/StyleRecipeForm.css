@@ -1,28 +1,45 @@
-.createOrEditRadioContainer
+.createRecipeIngredientTable
 {
-    display: flex;
-    flex-direction: row;
+    width: 50%;
+    font-size: small;
 }
 
-.createRecipeRadio
+.createRecipeIngredientTable button
 {
-    width: fit-content;
-    border: 1px black solid;
-    border-right: none;
-    padding-left: 0.5%;
-    padding-right: 0.5%;
-    padding-top: 0.25%;
-    padding-bottom: 0.25%;
+    justify-content: space-around;
     align-items: center;
 }
 
-.editRecipeRadio
+.ingredientInputContainer
 {
-    width: fit-content;
-    border: 1px black solid;
-    padding-left: 0.5%;
-    padding-right: 0.5%;
-    padding-top: 0.25%;
-    padding-bottom: 0.25%;
-    align-items: center;
+    width: 50%;
+    display: grid;
+    grid-template-columns: 0.54fr 1.00fr 0.75fr 0.75fr 0.50fr;
+    grid-template-areas: "label name qty msr butt";
+    column-gap: 0.5%;
+}
+
+.ingredientInputLabel
+{
+    grid-area: "label";
+}
+
+.ingredientNameInput
+{
+    grid-area: "name";
+}
+
+.ingredientQtyInput
+{
+    grid-area: "qty";
+}
+
+.ingredientMeasureInput
+{
+    grid-area: "msr";
+}
+
+.addIngredientButton
+{
+    grid-area: "butt";
 }
