@@ -1,10 +1,10 @@
-.createRecipeIngredientTable
+.createRecipeIngredientsTable, .createRecipeInstructionTable
 {
     width: 50%;
     font-size: small;
 }
 
-.createRecipeIngredientTable button
+.createRecipeIngredientsTable button
 {
     justify-content: space-around;
     align-items: center;
@@ -15,31 +15,65 @@
     width: 50%;
     display: grid;
     grid-template-columns: 0.54fr 1.00fr 0.75fr 0.75fr 0.50fr;
-    grid-template-areas: "label name qty msr butt";
+    grid-template-areas: "ingLabel ingName ingQty ingMsr ingButt";
+    column-gap: 0.5%;
+}
+
+.instructionInputContainer
+{
+    width: 50%;
+    display: grid;
+    grid-template-columns: 0.54fr 0.50fr 0.40fr 1.00fr 0.50fr;
+    grid-template-areas: "insLabel insPhase insStep insAction insButt";
     column-gap: 0.5%;
 }
 
 .ingredientInputLabel
 {
-    grid-area: "label";
+    grid-area: "ingLabel";
 }
 
 .ingredientNameInput
 {
-    grid-area: "name";
+    grid-area: "ingName";
 }
 
 .ingredientQtyInput
 {
-    grid-area: "qty";
+    grid-area: "ingQty";
 }
 
 .ingredientMeasureInput
 {
-    grid-area: "msr";
+    grid-area: "ingMsr";
 }
 
 .addIngredientButton
 {
-    grid-area: "butt";
+    grid-area: "ingButt";
+}
+
+.instructionInputLabel
+{
+    grid-area: "insLabel";
+}
+
+.instructionPhaseSelection
+{
+    grid-area: "insPhase";
+}
+
+.instructionStepInput
+{
+    grid-area: "insStep";
+}
+
+.instructionActionInput
+{
+    grid-area: "insAction";
+}
+
+.addinstructionButton
+{
+    grid-area: "insButt";
 }

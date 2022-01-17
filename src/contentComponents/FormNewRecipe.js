@@ -8,7 +8,10 @@ import "./StyleRecipeForm.css";
     const { getSession } = useContext(AccountContext);
     const [loggedIn, setLoggedIn] = useState(false);
     const [userEmail, setUserEmail] = useState("");
-    const [instructionData, setInstructionData] = useState( { phase: "", step: "", action: "" } );
+    const [ingredientsObject, setIngredientsObject] = useState( { phase: "", step: 0, action: "" } );
+    const [ingredientsArray, setIngredientsArray] = useState( [] );
+    const [instructionObject, setInstructionObject] = useState( { phase: "", step: 0, action: "" } );
+    const [instructionArray, setInstructionArray] = useState( [] );
 
     useEffect(() =>
     {
@@ -19,43 +22,51 @@ import "./StyleRecipeForm.css";
         });
     });
 
-    function addIngredientRow()
+    const IngredientsTableHeader = () =>
     {
-        var ingredName = document.getElementById("ingredientNameToAdd").value;
-        var ingredQty = document.getElementById("ingredientQuantityToAdd").value;
-        var ingredMsr = document.getElementById("ingredientMeasurementToAdd").value;
-        var remvButt = document.getElementById("removeIngredientButton");
+        return(
+            <thead>
+                <tr>
+                    <th>Ingredient Name</th>
+                    <th>Quantity</th>
+                    <th>Measurement</th>
+                    <th></th>
+                </tr>
+            </thead>
+        );
+    }
 
-        if(ingredName === "" || ingredQty === "" || ingredMsr === "")
+    const IngredientsTableBody = (props) =>
+    {
+        const ingredientsTableRows = ingredientsArray.map((row, index) =>
         {
-            alert("Please enter values for all fields before adding an ingredient.");
-        }else
-        {
-            var newRow = document.createElement('tr');
-            var nameCol = document.createElement('td');
-            var qtyCol = document.createElement('td');
-            var msrCol = document.createElement('td');
-            var buttCol = document.createElement('td');
-            var newName = document.createTextNode(ingredName);
-            var newQty = document.createTextNode(ingredQty);
-            var newMsr = document.createTextNode(ingredMsr);
-            var newButt = remvButt.cloneNode(true);
+            return(
+                <tr key={index}>
+                    <td>{row.name}</td>
+                    <td>{row.quantity}</td>
+                    <td>{row.measurement}</td>
+                    <td>
+                        <button type="button" onClick={removeIngredient}>remove</button>
+                    </td>
+                </tr>
+            );
+        });
 
-            nameCol.appendChild(newName);
-            qtyCol.appendChild(newQty);
-            msrCol.appendChild(newMsr);
-            buttCol.appendChild(newButt);
-            newRow.appendChild(nameCol);
-            newRow.appendChild(qtyCol);
-            newRow.appendChild(msrCol);
-            newRow.appendChild(buttCol);
-    
-            document.getElementById("ingredientTableBody").appendChild(newRow);
+        return(
+            <tbody>
+                {ingredientsTableRows}
+            </tbody>
+        );
+    }
 
-            document.getElementById("ingredientNameToAdd").value="";
-            document.getElementById("ingredientQuantityToAdd").value="";
-            document.getElementById("ingredientMeasurementToAdd").value="";
-        }
+    function IngredientsTableBuild(props)
+    {
+        return(
+            <table>
+                <IngredientsTableHeader />
+                <IngredientsTableBody />
+            </table>
+        );
     }
 
     const InstructionsTableHeader = () =>
@@ -73,13 +84,16 @@ import "./StyleRecipeForm.css";
 
     const InstructionsTableBody = (props) =>
     {
-        const instructionTableRows = props.dataToPass.map((row, index) =>
+        const instructionTableRows = instructionArray.map((row, index) =>
         {
             return(
                 <tr key={index}>
                     <td>{row.phase}</td>
                     <td>{row.step}</td>
                     <td>{row.action}</td>
+                    <td>
+                        <button type="button" onClick={removeInstruction}>remove</button>
+                    </td>
                 </tr>
             );
         });
@@ -93,21 +107,83 @@ import "./StyleRecipeForm.css";
 
     function InstructionsTableBuild(props)
     {
-        let {passedData} = props.passedInstructionData;
-
         return(
             <table>
                 <InstructionsTableHeader />
-                <InstructionsTableBody dataToPass={passedData} />
+                <InstructionsTableBody />
             </table>
         );
     }
 
-    const removeTableRow = (event) =>
+    function addIngredientsRow()
     {
-        var rowID = event.target.parentNode.parentNode.id;
-        document.getElementById(rowID).remove();
+        let tempIngredientsArray = ingredientsArray;
+
+        let nameToAdd = document.getElementById("ingredientNameToAdd").value;
+        let quantityToAdd = document.getElementById("ingredientQuantityToAdd").value;
+        let measurementToAdd = document.getElementById("ingredientMeasurementToAdd").value;
+
+        setIngredientsObject( { name: nameToAdd, quantity: quantityToAdd, measurement: measurementToAdd } );
+        tempIngredientsArray.push(ingredientsObject);
+        setIngredientsArray(tempIngredientsArray);
+
+        document.getElementById("ingredientNameToAdd").value="";
+        document.getElementById("ingredientQuantityToAdd").value="";
+        document.getElementById("ingredientMeasurementToAdd").value="";
+
+        console.log(ingredientsArray);
     }
+
+    function addInstructionRow()
+    {
+        let tempInstructionArray = instructionArray;
+
+        let phaseToAdd = document.getElementById("instructionPhaseToAdd").value;
+        let stepToAdd = document.getElementById("instructionStepToAdd").value;
+        let actionToAdd = document.getElementById("instructionActionToAdd").value;
+
+        setInstructionObject( { phase: phaseToAdd, step: stepToAdd, action: actionToAdd } );
+        tempInstructionArray.push(instructionObject);
+        setInstructionArray(tempInstructionArray);
+
+        document.getElementById("instructionPhaseToAdd").value="";
+        document.getElementById("instructionStepToAdd").value="";
+        document.getElementById("instructionActionToAdd").value="";
+
+        console.log(instructionArray);
+    }
+
+    const removeIngredient = (index) =>
+    {
+        //let {instructions} = instructionData;
+        let newInstructionObjectArray;
+
+        //newInstructionObjectArray = instructions.filter((instruction, i) =>
+        newInstructionObjectArray = instructionArray.filter((instruction, i) =>
+        {
+            return(
+                i !== index
+            );
+        });
+
+        setInstructionArray(newInstructionObjectArray);
+    };
+
+    const removeInstruction = (index) =>
+    {
+        //let {instructions} = instructionData;
+        let newInstructionObjectArray;
+
+        //newInstructionObjectArray = instructions.filter((instruction, i) =>
+        newInstructionObjectArray = instructionArray.filter((instruction, i) =>
+        {
+            return(
+                i !== index
+            );
+        });
+
+        setInstructionArray(newInstructionObjectArray);
+    };
 
     const onSubmit = (event) =>
     {
@@ -169,29 +245,30 @@ import "./StyleRecipeForm.css";
                         <input className="ingredientNameInput" type="text" id="ingredientNameToAdd" placeholder="enter the ingredient name here" />
                         <input className="ingredientQtyInput" type="text" id="ingredientQuantityToAdd" placeholder="enter quantity here" />
                         <input className="ingredientMeasureInput" type="text" id="ingredientMeasurementToAdd" placeholder="enter measurement here" />
-                        <button className="addIngredientButton" onClick={addIngredientRow} type="button">add to recipe</button>
+                        <button className="addIngredientButton" onClick={addIngredientsRow} type="button">add to recipe</button>
                     </div>
                     <br/><br/>
-                    <table className="createRecipeIngredientTable">
-                        <thead>
-                            <tr>
-                                <th id="ingredientNameTableHeader">Ingredient Name</th>
-                                <th id="ingredientQuantityTableHeader">Ingredient Quantity</th>
-                                <th id="ingredientMeasurementTableHeader">Ingredient Measurement</th>
-                                <th id="ingredientRowRemoveButton"></th>
-                            </tr>
-                        </thead>
-                        <tbody id="ingredientTableBody">
-                            <tr>
-                                <td>(example) brown sugar</td>
-                                <td>3/4</td>
-                                <td>cup</td>
-                                <td><button type="button" id="removeIngredientButton" onClick={removeTableRow}>remove</button></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div className="createRecipeIngredientsTable">
+                        <IngredientsTableBuild />
+                    </div>
                     <br/><br/>
-                    <InstructionsTableBuild passedInstructionData={instructionData} />
+                    <div className="instructionInputContainer">
+                        <label className="instructionInputLabel">Add an ingredient:&nbsp;</label>
+                        <select className="instructionPhaseSelection" id="instructionPhaseToAdd" defaultValue="placeholderInstructionPhase">
+                            <option disabled hidden value="placeholderInstructionPhase">Select a phase.</option>
+                            <option value="Preparing">Preparing</option>
+                            <option value="Cooking">Cooking</option>
+                            <option value="Serving">Serving</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <input className="instructionStepInput" type="number" id="instructionStepToAdd" placeholder="enter which step" />
+                        <input className="instructionActionInput" type="text" id="instructionActionToAdd" placeholder="describe the action to be taken" />
+                        <button className="addinstructionButton" onClick={addInstructionRow} type="button">add instruction</button>
+                    </div>
+                    <br/><br/>
+                    <div className="createRecipeInstructionTable">
+                        <InstructionsTableBuild />
+                    </div>
                     <br/><br/>
                     <button type="submit" className="createRecipeButton">Create Recipe</button>
                 </form>
