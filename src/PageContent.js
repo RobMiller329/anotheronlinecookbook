@@ -1,7 +1,7 @@
 import React from "react";
 import FinalTable from "./contentComponents/tableFinal";
-import NewRecipeForm from "./contentComponents/FormNewRecipe";
-import EditRecipesForm from "./contentComponents/FormEditRecipes";
+import NewRecipeForm from "./formComponents/FormNewRecipe";
+import EditRecipesForm from "./formComponents/FormEditRecipes";
 import { Account } from "./loginComponents/Account";
 import Settings from "./contentComponents/Settings";
 import "./StylePageBody.css";

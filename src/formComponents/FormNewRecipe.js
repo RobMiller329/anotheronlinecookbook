@@ -1,6 +1,8 @@
 import React from "react";
 import { useState, useEffect, useContext } from "react";
 import { AccountContext } from "../loginComponents/Account";
+import NRIngredientsTable from "./NewRecipeIngredientsTable";
+import NRInstructionsTable from "./NewRecipeInstructionsTable";
 import "./StyleRecipeForm.css";
 
  function NewRecipeForm(props)
@@ -8,10 +10,10 @@ import "./StyleRecipeForm.css";
     const { getSession } = useContext(AccountContext);
     const [loggedIn, setLoggedIn] = useState(false);
     const [userEmail, setUserEmail] = useState("");
-    const [ingredientsObject, setIngredientsObject] = useState( { phase: "", step: 0, action: "" } );
+    const [ingredientObject, setIngredientObject] = useState( { name: "example", quantity: "2/3", measurement: "cup" } );
     const [ingredientsArray, setIngredientsArray] = useState( [] );
-    const [instructionObject, setInstructionObject] = useState( { phase: "", step: 0, action: "" } );
-    const [instructionArray, setInstructionArray] = useState( [] );
+    const [instructionObject, setInstructionObject] = useState( { phase: "prep", step: 0, action: "example" } );
+    const [instructionsArray, setInstructionsArray] = useState( [] );
 
     useEffect(() =>
     {
@@ -22,174 +24,70 @@ import "./StyleRecipeForm.css";
         });
     });
 
-    const IngredientsTableHeader = () =>
+    useEffect(() =>
     {
-        return(
-            <thead>
-                <tr>
-                    <th>Ingredient Name</th>
-                    <th>Quantity</th>
-                    <th>Measurement</th>
-                    <th></th>
-                </tr>
-            </thead>
-        );
-    }
+        let newIngredientsArray = ingredientsArray;
+        newIngredientsArray.push(ingredientObject);
+        setIngredientsArray(newIngredientsArray);
+    }, [ingredientObject, ingredientsArray]);
 
-    const IngredientsTableBody = (props) =>
+    useEffect(() =>
     {
-        const ingredientsTableRows = ingredientsArray.map((row, index) =>
-        {
-            return(
-                <tr key={index}>
-                    <td>{row.name}</td>
-                    <td>{row.quantity}</td>
-                    <td>{row.measurement}</td>
-                    <td>
-                        <button type="button" onClick={removeIngredient}>remove</button>
-                    </td>
-                </tr>
-            );
-        });
-
-        return(
-            <tbody>
-                {ingredientsTableRows}
-            </tbody>
-        );
-    }
-
-    function IngredientsTableBuild(props)
-    {
-        return(
-            <table>
-                <IngredientsTableHeader />
-                <IngredientsTableBody />
-            </table>
-        );
-    }
-
-    const InstructionsTableHeader = () =>
-    {
-        return(
-            <thead>
-                <tr>
-                    <th>Phase</th>
-                    <th>Step</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-        );
-    }
-
-    const InstructionsTableBody = (props) =>
-    {
-        const instructionTableRows = instructionArray.map((row, index) =>
-        {
-            return(
-                <tr key={index}>
-                    <td>{row.phase}</td>
-                    <td>{row.step}</td>
-                    <td>{row.action}</td>
-                    <td>
-                        <button type="button" onClick={removeInstruction}>remove</button>
-                    </td>
-                </tr>
-            );
-        });
-
-        return(
-            <tbody>
-                {instructionTableRows}
-            </tbody>
-        );
-    }
-
-    function InstructionsTableBuild(props)
-    {
-        return(
-            <table>
-                <InstructionsTableHeader />
-                <InstructionsTableBody />
-            </table>
-        );
-    }
+        let newInstructionsArray = instructionsArray;
+        newInstructionsArray.push(instructionObject);
+        setInstructionsArray(newInstructionsArray);
+    }, [instructionObject, instructionsArray]);
 
     function addIngredientsRow()
     {
-        let tempIngredientsArray = ingredientsArray;
+        let newIngredientName = document.getElementById("ingredientNameToAdd").value;
+        let newIngredientQuantity = document.getElementById("ingredientQuantityToAdd").value;
+        let newIngredientMeasurement = document.getElementById("ingredientMeasurementToAdd").value;
 
-        let nameToAdd = document.getElementById("ingredientNameToAdd").value;
-        let quantityToAdd = document.getElementById("ingredientQuantityToAdd").value;
-        let measurementToAdd = document.getElementById("ingredientMeasurementToAdd").value;
-
-        setIngredientsObject( { name: nameToAdd, quantity: quantityToAdd, measurement: measurementToAdd } );
-        tempIngredientsArray.push(ingredientsObject);
-        setIngredientsArray(tempIngredientsArray);
-
-        document.getElementById("ingredientNameToAdd").value="";
-        document.getElementById("ingredientQuantityToAdd").value="";
-        document.getElementById("ingredientMeasurementToAdd").value="";
-
-        console.log(ingredientsArray);
-    }
-
-    function addInstructionRow()
-    {
-        let tempInstructionArray = instructionArray;
-
-        let phaseToAdd = document.getElementById("instructionPhaseToAdd").value;
-        let stepToAdd = document.getElementById("instructionStepToAdd").value;
-        let actionToAdd = document.getElementById("instructionActionToAdd").value;
-
-        setInstructionObject( { phase: phaseToAdd, step: stepToAdd, action: actionToAdd } );
-        tempInstructionArray.push(instructionObject);
-        setInstructionArray(tempInstructionArray);
-
-        document.getElementById("instructionPhaseToAdd").value="";
-        document.getElementById("instructionStepToAdd").value="";
-        document.getElementById("instructionActionToAdd").value="";
-
-        console.log(instructionArray);
+        setIngredientObject( { name: newIngredientName, quantity: newIngredientQuantity, measurement: newIngredientMeasurement } );
     }
 
     const removeIngredient = (index) =>
     {
-        //let {instructions} = instructionData;
-        let newInstructionObjectArray;
+        const { ingredientsData } = ingredientsArray;
 
-        //newInstructionObjectArray = instructions.filter((instruction, i) =>
-        newInstructionObjectArray = instructionArray.filter((instruction, i) =>
+        let adjustedIngredientsArray = ingredientsData.filter((ingredient, i) =>
         {
             return(
                 i !== index
             );
         });
 
-        setInstructionArray(newInstructionObjectArray);
+        setIngredientsArray(adjustedIngredientsArray);
     };
+
+    function addInstructionsRow()
+    {
+        let newInstructionPhase = document.getElementById("ingredientNameToAdd").value;
+        let newInstructionAction = document.getElementById("ingredientMeasurementToAdd").value;
+
+        setInstructionObject( { phase: newInstructionPhase, action: newInstructionAction } );
+    }
 
     const removeInstruction = (index) =>
     {
-        //let {instructions} = instructionData;
-        let newInstructionObjectArray;
+        const { instructionsData } = instructionsArray;
 
-        //newInstructionObjectArray = instructions.filter((instruction, i) =>
-        newInstructionObjectArray = instructionArray.filter((instruction, i) =>
+        let adjustedInstructionsArray = instructionsData.filter((instruction, i) =>
         {
             return(
                 i !== index
             );
         });
 
-        setInstructionArray(newInstructionObjectArray);
+        setInstructionsArray(adjustedInstructionsArray);
     };
 
     const onSubmit = (event) =>
     {
         event.preventDefault();
 
-        let rawTime = Date.now();
+        /* let rawTime = Date.now();
         let transactionDateTime = new Date();
         let transactionsID = (userEmail+rawTime);
         let userDataID = userEmail;
@@ -198,7 +96,7 @@ import "./StyleRecipeForm.css";
         let recipeDataID = (userEmail+recipeName+rawTime);
         let recipeSource = document.getElementById("recipeSourceInput").value;
         let recipeProtein = document.getElementById("createProteinDropdown").value;
-        let recipeCuisine = document.getElementById("createCuisineDropdown").value;
+        let recipeCuisine = document.getElementById("createCuisineDropdown").value; */
     };
 
     function CreateRecipeForm()
@@ -249,7 +147,7 @@ import "./StyleRecipeForm.css";
                     </div>
                     <br/><br/>
                     <div className="createRecipeIngredientsTable">
-                        <IngredientsTableBuild />
+                        <NRIngredientsTable ingredientsArrayFromForm={ingredientsArray} removeIngredientPassedFunction={removeIngredient} />
                     </div>
                     <br/><br/>
                     <div className="instructionInputContainer">
@@ -261,13 +159,12 @@ import "./StyleRecipeForm.css";
                             <option value="Serving">Serving</option>
                             <option value="Other">Other</option>
                         </select>
-                        <input className="instructionStepInput" type="number" id="instructionStepToAdd" placeholder="enter which step" />
                         <input className="instructionActionInput" type="text" id="instructionActionToAdd" placeholder="describe the action to be taken" />
-                        <button className="addinstructionButton" onClick={addInstructionRow} type="button">add instruction</button>
+                        <button className="addinstructionButton" onClick={addInstructionsRow} type="button">add instruction</button>
                     </div>
                     <br/><br/>
                     <div className="createRecipeInstructionTable">
-                        <InstructionsTableBuild />
+                        <NRInstructionsTable instructionsArrayFromForm={instructionsArray} removeInstructionPassedFunction={removeInstruction} />
                     </div>
                     <br/><br/>
                     <button type="submit" className="createRecipeButton">Create Recipe</button>
