@@ -26,17 +26,13 @@ import "./StyleRecipeForm.css";
 
     useEffect(() =>
     {
-        let newIngredientsArray = ingredientsArray;
-        newIngredientsArray.push(ingredientObject);
-        setIngredientsArray(newIngredientsArray);
-    }, [ingredientObject, ingredientsArray]);
+        updateIngredientsArray();
+    }, [ingredientObject]);
 
     useEffect(() =>
     {
-        let newInstructionsArray = instructionsArray;
-        newInstructionsArray.push(instructionObject);
-        setInstructionsArray(newInstructionsArray);
-    }, [instructionObject, instructionsArray]);
+        updateInstructionsArray();
+    }, [instructionObject]);
 
     function addIngredientsRow()
     {
@@ -47,33 +43,48 @@ import "./StyleRecipeForm.css";
         setIngredientObject( { name: newIngredientName, quantity: newIngredientQuantity, measurement: newIngredientMeasurement } );
     }
 
+    function updateIngredientsArray()
+    {
+        let newIngredientsArray = ingredientsArray;
+        newIngredientsArray.push(ingredientObject);
+        setIngredientsArray(newIngredientsArray);
+    }
+
     const removeIngredient = (index) =>
     {
-        const { ingredientsData } = ingredientsArray;
+        let adjustedIngredientsArray = [];
 
-        let adjustedIngredientsArray = ingredientsData.filter((ingredient, i) =>
+        for(let i = 0; i < ingredientsArray.length; i++)
         {
-            return(
-                i !== index
-            );
-        });
+            if(i !== index)
+            {
+                adjustedIngredientsArray.push(ingredientsArray[i]);
+                console.log("i is equal to:" + i);
+                console.log(adjustedIngredientsArray)
+            }
+        }
 
         setIngredientsArray(adjustedIngredientsArray);
     };
 
     function addInstructionsRow()
     {
-        let newInstructionPhase = document.getElementById("ingredientNameToAdd").value;
-        let newInstructionAction = document.getElementById("ingredientMeasurementToAdd").value;
+        let newInstructionPhase = document.getElementById("instructionPhaseToAdd").value;
+        let newInstructionAction = document.getElementById("instructionActionToAdd").value;
 
         setInstructionObject( { phase: newInstructionPhase, action: newInstructionAction } );
     }
 
+    function updateInstructionsArray()
+    {
+        let newInstructionsArray = instructionsArray;
+        newInstructionsArray.push(instructionObject);
+        setInstructionsArray(newInstructionsArray);
+    }
+
     const removeInstruction = (index) =>
     {
-        const { instructionsData } = instructionsArray;
-
-        let adjustedInstructionsArray = instructionsData.filter((instruction, i) =>
+        let adjustedInstructionsArray = instructionsArray.filter((instruction, i) =>
         {
             return(
                 i !== index
@@ -83,11 +94,53 @@ import "./StyleRecipeForm.css";
         setInstructionsArray(adjustedInstructionsArray);
     };
 
+    const moveInstructionUp = (index) =>
+    {
+        let adjustedInstructionsArray = [];
+
+        for(let i = 0; i < instructionsArray.length; i++)
+        {    
+            if((index - i) === 1)
+            {
+                adjustedInstructionsArray.push(instructionsArray[index]);
+            }else if((index - i) === 0)
+            {
+                adjustedInstructionsArray.push(instructionsArray[index - 1]);
+            }else
+            {
+                adjustedInstructionsArray.push(instructionsArray[i]);
+            }
+        }
+
+        setInstructionsArray(adjustedInstructionsArray);
+    };
+
+    const moveInstructionDown = (index) =>
+    {
+        let adjustedInstructionsArray = [];
+
+        for(let i = 0; i < instructionsArray.length; i++)
+        {    
+            if((index - i) === -1)
+            {
+                adjustedInstructionsArray.push(instructionsArray[index]);
+            }else if((index - i) === 0)
+            {
+                adjustedInstructionsArray.push(instructionsArray[index + 1]);
+            }else
+            {
+                adjustedInstructionsArray.push(instructionsArray[i]);
+            }
+        }
+
+        setInstructionsArray(adjustedInstructionsArray);
+    };
+
     const onSubmit = (event) =>
     {
         event.preventDefault();
 
-        /* let rawTime = Date.now();
+        let rawTime = Date.now(); //long int used in creating a unique id
         let transactionDateTime = new Date();
         let transactionsID = (userEmail+rawTime);
         let userDataID = userEmail;
@@ -96,7 +149,7 @@ import "./StyleRecipeForm.css";
         let recipeDataID = (userEmail+recipeName+rawTime);
         let recipeSource = document.getElementById("recipeSourceInput").value;
         let recipeProtein = document.getElementById("createProteinDropdown").value;
-        let recipeCuisine = document.getElementById("createCuisineDropdown").value; */
+        let recipeCuisine = document.getElementById("createCuisineDropdown").value;
     };
 
     function CreateRecipeForm()
@@ -164,7 +217,8 @@ import "./StyleRecipeForm.css";
                     </div>
                     <br/><br/>
                     <div className="createRecipeInstructionTable">
-                        <NRInstructionsTable instructionsArrayFromForm={instructionsArray} removeInstructionPassedFunction={removeInstruction} />
+                        <NRInstructionsTable instructionsArrayFromForm={instructionsArray} removeInstructionPassedFunction={removeInstruction}
+                                                moveInstructionUpPassedFunction={moveInstructionUp} moveInstructionDownPassedFunction={moveInstructionDown} />
                     </div>
                     <br/><br/>
                     <button type="submit" className="createRecipeButton">Create Recipe</button>

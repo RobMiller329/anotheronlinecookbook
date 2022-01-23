@@ -31,7 +31,7 @@ function FinalTable(props)
             }
         }
         fetchData();
-      });
+    });
 
     return (
         <div className="finalTableContainer">

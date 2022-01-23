@@ -1,25 +1,12 @@
 import React from "react";
+import { useState, useEffect } from "react";
 import "./StyleRecipeForm.css";
-
-function InstructionsTableHeader()
-{
-    return(
-        <thead>
-            <tr>
-                <th>Phase</th>
-                <th>Step</th>
-                <th>Action</th>
-                <th></th>
-            </tr>
-        </thead>
-    );
-}
 
 function InstructionsTableBody(props)
 {
-    const instructionsTableRows = props.instructionsArrayFromRender.map((row, index) =>
+    const instructionsTableRows = props.instructionsArray.map((row, index) =>
     {
-        if(props.instructionsArrayFromRender.length === 1)
+        if(props.instructionsArray.length === 1)
         {
             return(
                 <tr key={index}>
@@ -28,20 +15,104 @@ function InstructionsTableBody(props)
                     <td>{row.action}</td>
                     <td>
                     </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
                 </tr>
             );
+        }else if(props.instructionsArray.length === 2)
+        {
+            switch(index)
+            {
+                case 0:
+                    return(
+                        <tr key={index}>
+                            <td>{row.phase}</td>
+                            <td>{index + 1}</td>
+                            <td>{row.action}</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    );
+                default:
+                    return(
+                        <tr key={index}>
+                            <td>{row.phase}</td>
+                            <td>{index + 1}</td>
+                            <td>{row.action}</td>
+                            <td></td>
+                            <td></td>
+                            <td>
+                                <button type="button" onClick={() => props.removeInstruction(index)}>remove</button>
+                            </td>
+                        </tr>
+                    );
+            }
         }else
         {
-            return(
-                <tr key={index}>
-                    <td>{row.phase}</td>
-                    <td>{index + 1}</td>
-                    <td>{row.action}</td>
-                    <td>
-                        <button type="button" onClick={() => props.removeInstruction(index)}>remove</button>
-                    </td>
-                </tr>
-            );
+            switch(index)
+            {
+                case 0:
+                    return(
+                        <tr key={index}>
+                            <td>{row.phase}</td>
+                            <td>{index + 1}</td>
+                            <td>{row.action}</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    );
+                case 1:
+                    return(
+                        <tr key={index}>
+                            <td>{row.phase}</td>
+                            <td>{index + 1}</td>
+                            <td>{row.action}</td>
+                            <td>
+                                <button type="button" onClick={() => props.moveInstructionDown(index)}>move down</button>
+                            </td>
+                            <td></td>
+                            <td>
+                                <button type="button" onClick={() => props.removeInstruction(index)}>remove</button>
+                            </td>
+                        </tr>
+                    );
+                case (props.instructionsArrayLength - 1):
+                    return(
+                        <tr key={index}>
+                            <td>{row.phase}</td>
+                            <td>{index + 1}</td>
+                            <td>{row.action}</td>
+                            <td></td>
+                            <td>
+                                <button type="button" onClick={() => props.moveInstructionUp(index)}>move up</button>
+                            </td>
+                            <td>
+                                <button type="button" onClick={() => props.removeInstruction(index)}>remove</button>
+                            </td>
+                        </tr>
+                    );
+                default:
+                    return(
+                        <tr key={index}>
+                            <td>{row.phase}</td>
+                            <td>{index + 1}</td>
+                            <td>{row.action}</td>
+                            <td>
+                                <button type="button" onClick={() => props.moveInstructionDown(index)}>move down</button>
+                            </td>
+                            <td>
+                                <button type="button" onClick={() => props.moveInstructionUp(index)}>move up</button>
+                            </td>
+                            <td>
+                                <button type="button" onClick={() => props.removeInstruction(index)}>remove</button>
+                            </td>
+                        </tr>
+                    );
+            }
         }
     });
 
@@ -52,31 +123,31 @@ function InstructionsTableBody(props)
     );
 }
 
-class NRInstructionsTable extends React.Component
+function NRInstructionsTable(props)
 {
-    constructor(props)
-    {
-        super(props);
-        this.state =
-        {
-            newRecipeInstructionsArray: []
-        }
-    }
+    const [arrayOfInstructions, setArrayOfInstructions] = useState([]);
 
-    render()
+    useEffect(() =>
     {
-        if(this.state.newRecipeInstructionsArray !== this.props.instructionsArrayFromForm)
-        {
-            this.setState( { newRecipeInstructionsArray: this.props.instructionsArrayFromForm } );
-        }
+        setArrayOfInstructions(props.instructionsArrayFromForm);
+    }, [props.instructionsArrayFromForm]);
 
-        return(
-            <table>
-                <InstructionsTableHeader />
-                <InstructionsTableBody instructionsArrayFromRender={ this.state.newRecipeInstructionsArray } removeInstructionPassedFromRender={ this.props.removeInstructionPassedFunction } />
-            </table>
-        );
-    }
+    return(
+        <table>
+            <thead>
+                <tr>
+                    <th>Phase</th>
+                    <th>Step</th>
+                    <th>Action</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <InstructionsTableBody instructionsArray={ arrayOfInstructions } instructionsArrayLength={ arrayOfInstructions.length } removeInstruction={ props.removeInstructionPassedFunction }
+                                    moveInstructionUp={ props.moveInstructionUpPassedFunction } moveInstructionDown={ props.moveInstructionDownPassedFunction } />
+        </table>
+    );
 }
 
 export default NRInstructionsTable;

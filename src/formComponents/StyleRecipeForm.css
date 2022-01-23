@@ -1,5 +1,4 @@
-.createRecipeIngredients
-Table, .createRecipeInstructionTable
+.createRecipeIngredientsTable, .createRecipeInstructionTable
 {
     width: 50%;
     font-size: small;
@@ -9,6 +8,39 @@ Table, .createRecipeInstructionTable
 {
     justify-content: space-around;
     align-items: center;
+}
+
+.editSelectedRecipeHeaderContainer
+{
+    display: grid;
+    grid-template-columns: 1.00fr 1.00fr;
+    grid-template-rows: 0.50fr 0.50fr;
+    grid-template-areas: "editName editProtein"
+                         "editCuisine editSource"
+}
+
+.editRecipeHeaderName
+{
+    grid-area: "editName";
+    display: flex;
+}
+
+.editRecipeHeaderSource
+{
+    grid-area: "editSource";
+    display: flex;
+}
+
+.editRecipeHeaderProtien
+{
+    grid-area: "editProtein";
+    display: flex;
+}
+
+.editRecipeHeaderCuisine
+{
+    grid-area: "editCuisine";
+    display: flex;
 }
 
 .ingredientInputContainer
@@ -77,4 +109,57 @@ Table, .createRecipeInstructionTable
 .addinstructionButton
 {
     grid-area: "insButt";
+}
+
+.tableComponent
+{
+    width: 85%;
+}
+
+.trendingComponent
+{
+    width: 15%;
+    padding-left: 0.25%;
+}
+
+.tableArea
+{
+    width: 90%;
+}
+
+table
+{
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+table td, table th
+{
+    border: 1px solid #DDD;
+    padding: 8px;
+}
+
+table tr:nth-child(even)
+{
+    background-color: #DFC8D8;
+}
+
+table tr:nth-child(odd)
+{
+    background-color: #F1F1F1;
+}
+
+table tr:hover
+{
+    background-color: #DDD;
+}
+
+table th
+{
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: center;
+    background-color: #CCA0BF;
+    color: black;
 }
