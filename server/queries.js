@@ -4,32 +4,14 @@ const connection = require('./dbCredentials');
 
 let cookbookDB = {};
 
-cookbookDB.viewRecipes = (id) =>
+cookbookDB.browseRecipes = () =>
 {
     return new Promise((resolve, reject) =>
     {
         connection.query(
-            `SELECT recipeDataID, recipeName, recipeProtein, recipeCuisine, recipeSource, userDataID ` +
-            `FROM recipedata WHERE userDataID = ?;`, id, (err, results) =>
-        {
-            if(err)
-            {
-                return reject(err);
-            }else
-            {
-                return resolve(results);
-            }
-        });
-    });
-};
-
-cookbookDB.viewRecipes = () =>
-{
-    return new Promise((resolve, reject) =>
-    {
-        connection.query(
-            `SELECT recipeDataID, recipeName, recipeProtein, recipeCuisine, recipeSource, userDataID ` +
-            `FROM recipedata;`, (err, results) =>
+            `SELECT a.recipeDataID, a.recipeName, a.recipeProtein, a.recipeCuisine, a.recipeSource, b.userName ` +
+            `FROM recipedata as a ` + 
+            `JOIN userdata as b ON a.userDataID = b.userDataID;`, (err, results) =>
         {
             if(err)
             {
@@ -61,13 +43,14 @@ cookbookDB.listRecipes = (id) =>
     });
 };
 
-cookbookDB.detailIngredientsRecipes = (id) =>
+cookbookDB.fetchRecipeIngredients = (id) =>
 {
     return new Promise((resolve, reject) =>
     {
         connection.query(
-            `SELECT ingredientName, ingredientQuantity, ingredientMeasurement ` +
-            `FROM ingredientsdata WHERE recipeDataID = ?;`, id, (err, results) =>
+            `SELECT ingredientsDataID, ingredientName, ingredientQuantity, ingredientMeasurement ` +
+            `FROM ingredientsdata WHERE recipeDataID = ? ` +
+            `ORDER BY ingredientsDataID;`, id, (err, results) =>
         {
             if(err)
             {
@@ -80,13 +63,14 @@ cookbookDB.detailIngredientsRecipes = (id) =>
     });
 };
 
-cookbookDB.detailInstructionsRecipes = (id) =>
+cookbookDB.fetchRecipeInstructions = (id) =>
 {
     return new Promise((resolve, reject) =>
     {
         connection.query(
-            `SELECT instructionPhase, instructionStep, instructionAction ` +
-            `FROM instructiondata WHERE recipeDataID = ?;`, id, (err, results) =>
+            `SELECT instructionDataID, instructionPhase, instructionStep, instructionAction ` +
+            `FROM instructiondata WHERE recipeDataID = ? ` +
+            `ORDER BY instructionStep;`, id, (err, results) =>
         {
             if(err)
             {
@@ -99,13 +83,61 @@ cookbookDB.detailInstructionsRecipes = (id) =>
     });
 };
 
-cookbookDB.createNewRecipeTransaction = (transactionID, transactionTime, userDataID, recipeDataID) =>
+cookbookDB.updateRecipeData = (source, userID, rName, rCuisine, rProtein, recID) =>
+{
+    return new Promise((resolve, reject) =>
+    {
+        connection.query(
+            `UPDATE recipedata SET recipeSource = ?, userDataID = ?, recipeName = ?, recipeCuisine = ?, recipeProtein = ? ` +
+            `FROM recipedata WHERE recipeDataID = ?;`, (source, userID, rName, rCuisine, rProtein, recID), (err, res) =>
+        {
+            if(err)
+            {
+                return reject(err);
+            }else
+            {
+                return resolve(res);
+            }
+        });
+    });
+};
+
+
+
+
+
+
+
+
+
+
+
+/* cookbookDB.createUsername = (email, username) =>
+{
+    return new Promise((resolve, reject) =>
+    {
+        connection.query(
+            `INSERT INTO userdata (userDataID, userName) ` +
+            `VALUES (?, ?);`, (email, username), (err, results) =>
+        {
+            if(err)
+            {
+                return reject(err);
+            }else
+            {
+                return resolve(results);
+            }
+        });
+    });
+} */
+
+cookbookDB.createNewRecipeTransaction = (transactionString) =>
 {
     return new Promise((resolve, reject) =>
     {
         connection.query(
             `INSERT INTO transactions (transactionsID, transactionTime, userDataID, transactionType, recipeDataID) ` +
-            `VALUES (?, ?, ?, 'create', ?);`, (transactionID, transactionTime, userDataID, recipeDataID), (err, results) =>
+            `VALUES ?;`, (transactionString), (err, results) =>
         {
             if(err)
             {

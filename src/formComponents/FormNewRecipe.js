@@ -1,6 +1,8 @@
 import React from "react";
 import { useState, useEffect, useContext } from "react";
+import Axios from "axios";
 import { AccountContext } from "../loginComponents/Account";
+import NRDetailsIntake from "./NewRecipeDetailsIntake";
 import NRIngredientsTable from "./NewRecipeIngredientsTable";
 import NRInstructionsTable from "./NewRecipeInstructionsTable";
 import "./StyleRecipeForm.css";
@@ -9,18 +11,38 @@ import "./StyleRecipeForm.css";
  {
     const { getSession } = useContext(AccountContext);
     const [loggedIn, setLoggedIn] = useState(false);
-    const [userEmail, setUserEmail] = useState("");
+    const [submittedState, setSubmittedState] = useState(false);
+
     const [ingredientObject, setIngredientObject] = useState( { name: "example", quantity: "2/3", measurement: "cup" } );
     const [ingredientsArray, setIngredientsArray] = useState( [] );
     const [instructionObject, setInstructionObject] = useState( { phase: "prep", step: 0, action: "example" } );
     const [instructionsArray, setInstructionsArray] = useState( [] );
+
+    const [userDataID, setUserDataID] = useState("");
+    const [rawTime, setRawTime] = useState(0);
+    const [transactionDateTime, setTransactionDateTime] = useState(new Date());
+    const [transactionsID, setTransactionsID] = useState("");
+    const [recipeDataID, setRecipeDataID] = useState("");
+    const [recipeName, setRecipeName] = useState("");
+    const [adjustedRecipeName, setAdjustedRecipeName] = useState("");
+    const [recipeSource, setRecipeSource] = useState("");
+    const [recipeProtein, setRecipeProtein] = useState("");
+    const [recipeCuisine, setRecipeCuisine] = useState("");
+    const [ingredientsString, setIngredientsString] = useState("");
+    const [instructionsString, setInstructionsString] = useState("");
+
+    const createRecipeAPI = Axios.create(
+    {
+        //baseURL: `http://anotheronlinecookbook.com/api/createRecipe/`
+        baseURL: `http://localhost:8080/api/createRecipe/`
+    });
 
     useEffect(() =>
     {
         getSession().then(( { email } ) =>
         {
             setLoggedIn(true);
-            setUserEmail(email);
+            setUserDataID(email);
         });
     });
 
@@ -59,8 +81,6 @@ import "./StyleRecipeForm.css";
             if(i !== index)
             {
                 adjustedIngredientsArray.push(ingredientsArray[i]);
-                console.log("i is equal to:" + i);
-                console.log(adjustedIngredientsArray)
             }
         }
 
@@ -136,61 +156,106 @@ import "./StyleRecipeForm.css";
         setInstructionsArray(adjustedInstructionsArray);
     };
 
-    const onSubmit = (event) =>
+    function recipeFormSubmit()
     {
-        event.preventDefault();
+        function doubleDigits(int)
+        {
+            if(int < 10)
+            {
+                int = "0" + int;
+            }
 
-        let rawTime = Date.now(); //long int used in creating a unique id
-        let transactionDateTime = new Date();
-        let transactionsID = (userEmail+rawTime);
-        let userDataID = userEmail;
-        let transactionType = "create";
-        let recipeName = document.getElementById("recipeNameInput").value;
-        let recipeDataID = (userEmail+recipeName+rawTime);
-        let recipeSource = document.getElementById("recipeSourceInput").value;
-        let recipeProtein = document.getElementById("createProteinDropdown").value;
-        let recipeCuisine = document.getElementById("createCuisineDropdown").value;
+            return int;
+        }
+
+        let today = new Date();
+        let year = today.getFullYear();
+        let month = doubleDigits(today.getMonth()+1);
+        let day = doubleDigits(today.getDate());
+        let hours = doubleDigits(today.getHours());
+        let minutes = doubleDigits(today.getMinutes());
+        setRawTime(Date.now());
+        setTransactionDateTime(year.toString()+month.toString()+day.toString()+hours.toString()+minutes.toString());
+
+        setSubmittedState(true);
+        /* 
+        let thisIngredientsString = "";
+        let thisInstructionsString = "";
+
+        for(let i = 1; i < ingredientsArray.length; i++)
+        {
+            let ingredientOrder;
+            if(i < 10)
+            {
+                ingredientOrder = "0" + i.toString();
+            }else
+            {
+                ingredientOrder = i.toString();
+            }
+
+            let ingredientsDataID = recipeDataID + ingredientOrder;
+
+            thisIngredientsString += "(";
+            thisIngredientsString += ingredientsDataID + ", " + ingredientsArray[i].name + ", " + recipeDataID + ", " + 
+                                    ingredientsArray[i].quantity + ", " + ingredientsArray[i].measurement;
+            if(i < (ingredientsArray.length - 1))
+            {
+                thisIngredientsString += "),";
+            }else
+            {
+                thisIngredientsString += ")";
+            }
+        }
+
+        for(let i = 1; i < instructionsArray.length; i++)
+        {
+            let instructionOrder;
+            if(i < 10)
+            {
+                instructionOrder = "0" + i.toString();
+            }else
+            {
+                instructionOrder = i.toString();
+            }
+
+            let instructionDataID = recipeDataID + instructionOrder;
+
+            thisInstructionsString += "(";
+            thisInstructionsString += instructionDataID + ", " + recipeDataID + ", " + instructionsArray[i].phase + ", " + instructionsArray[i].step + 
+                                    ", " + instructionsArray[i].action;
+            if(i < (instructionsArray.length - 1))
+            {
+                thisInstructionsString += "),";
+            }else
+            {
+                thisInstructionsString += ")";
+            }
+        } */
     };
+
+    async function constructAPICall()
+    {
+        let res = await createRecipeAPI.post('/transaction/',
+        {
+            transactionsID: transactionsID,
+            transactionDateTime: transactionDateTime,
+            userDataID: userDataID,
+            transactionType: "'create'",
+            recipeDataID: recipeDataID
+        });
+        console.log(res);
+        console.log("api constructed");
+    }
 
     function CreateRecipeForm()
     {        
         return(
             <div>
-                <form onSubmit={onSubmit}>
-                    <label>Recipe Name:&nbsp;</label>
-                    <input className="recipeNameInput" type="text" id="recipeNameInput" placeholder="enter the recipe name here" />
-                    <br/><br/>
-                    <label>Recipe Source:&nbsp;</label>
-                    <input className="recipeSourceInput" type="text" id="recipeSourceInput" placeholder="enter the recipe source here" />
-                    <label>&nbsp;(can be a URL, "family recipe", etc)</label>
-                    <br/><br/>
-                    <label>Recipe Protein:&nbsp;</label>
-                    <select id="createProteinDropdown" defaultValue="placeholderProtein">
-                        <option disabled hidden value="placeholderProtein">Select a protein.</option>
-                        <option value="Beef">Beef</option>
-                        <option value="Chicken">Chicken</option>
-                        <option value="Fish">Fish</option>
-                        <option value="Turkey">Turkey</option>
-                        <option value="Other">Other</option>
-                        <option value="None">None</option>
-                    </select>
-                    <br/><br/>
-                    <label>Recipe Cuisine:&nbsp;</label>
-                    <select id="createCuisineDropdown" defaultValue="placeholderCuisine">
-                        <option disabled hidden value="placeholderCuisine">Select a cuisine.</option>
-                        <option value="American">American</option>
-                        <option value="Cajun">Cajun</option>
-                        <option value="Chinese">Chinese</option>
-                        <option value="French">French</option>
-                        <option value="Indian">Indian</option>
-                        <option value="Italian">Italian</option>
-                        <option value="Japanese">Japanese</option>
-                        <option value="Mexican">Mexican</option>
-                        <option value="Soul">Soul</option>
-                        <option value="Thai">Thai</option>
-                        <option value="Other">Other</option>
-                    </select>
-                    <br/><br/>
+                <form>
+                    <NRDetailsIntake passedSubmittedState={submittedState} passedTID={transactionsID} passedTDT={transactionDateTime}
+                                        passedUID={userDataID} passedRT={rawTime} />
+                    <br/>
+                    <button type="button" onClick={recipeFormSubmit}>click</button>
                     <div className="ingredientInputContainer">
                         <label className="ingredientInputLabel">Add an ingredient:&nbsp;</label>
                         <input className="ingredientNameInput" type="text" id="ingredientNameToAdd" placeholder="enter the ingredient name here" />
@@ -221,7 +286,7 @@ import "./StyleRecipeForm.css";
                                                 moveInstructionUpPassedFunction={moveInstructionUp} moveInstructionDownPassedFunction={moveInstructionDown} />
                     </div>
                     <br/><br/>
-                    <button type="submit" className="createRecipeButton">Create Recipe</button>
+                    <button type="button" className="createRecipeButton" onClick={recipeFormSubmit}>Create Recipe</button>
                 </form>
             </div>
         );

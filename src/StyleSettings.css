@@ -59,13 +59,22 @@
     height: 85%;
     width: 100%;
     display: grid;
-    grid-template-columns: 1.00fr 1.00fr;
-    grid-template-areas: "email password";
+    grid-template-columns: 1.00fr 1.00fr 1.00fr;
+    grid-template-areas: "email username password";
 }
 
 .settingsChangeEmail
 {
     grid-area: "email";
+    height: 100%;
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-bottom: 1%;
+}
+
+.settingsUsername
+{
+    grid-area: "username";
     height: 100%;
     padding-left: 5%;
     padding-right: 5%;

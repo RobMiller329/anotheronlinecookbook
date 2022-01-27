@@ -5,6 +5,7 @@ import ChangePassword from "../loginComponents/ChangePassword";
 import ChangeEmail from "../loginComponents/ChangeEmail";
 import RegisterUser from "../loginComponents/RegisterUser";
 import UserLogin from "../loginComponents/Login";
+import ChangeUsername from "../loginComponents/ChangeUserName";
 import "../StyleSettings.css"
 
  function Settings(props)
@@ -35,6 +36,9 @@ import "../StyleSettings.css"
                 <div className="settingsChangesContainer">
                     <div className="settingsChangeEmail">
                         <ChangeEmail />
+                    </div>
+                    <div className="settingsUsername">
+                        <ChangeUsername />
                     </div>
                     <div className="settingsChangePassword">
                         <ChangePassword />

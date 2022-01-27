@@ -31,7 +31,7 @@ import "./StyleRecipeForm.css";
     return(
         <div>
             <div className="recipeEditPageHeader">
-                <h1>Create a New Recipe</h1>
+                <h1>Edit My Recipes</h1>
             </div>
             <div className="formRender">
                 {loggedIn && <EditRecipeTable userID={userEmail} />}

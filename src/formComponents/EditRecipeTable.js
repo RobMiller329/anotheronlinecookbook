@@ -11,16 +11,29 @@ function CreateRecipeSelectionList(props)
     if(props.recipesToSelectFrom.length > 0)
     {
         let dropdownMenu = document.getElementById("selectRecipeDropdown");
-        
+
         for(let i = 0; i < props.recipesToSelectFrom.length; i++)
         {
             let currentItemName = props.recipesToSelectFrom[i].recipeName;
             let currentItemValue = props.recipesToSelectFrom[i].recipeDataID;
+            let optionCheck = 0;
 
             let createdOption = document.createElement("option");
             createdOption.textContent = currentItemName;
             createdOption.value = currentItemValue;
-            dropdownMenu.appendChild(createdOption);
+
+            for(var currentOptions of dropdownMenu.options)
+            {
+                if(createdOption.value === currentOptions.value)
+                {
+                    optionCheck += 1;
+                }
+            }
+
+            if(optionCheck === 0)
+            {
+                dropdownMenu.appendChild(createdOption);
+            }
         }
 
         return(
@@ -85,6 +98,7 @@ function EditRecipeTable(props)
 {
     const { getSession } = useContext(AccountContext);
     const [recipeList, setRecipeList] = useState([]);
+    const [dropdownOptionCount, setDropdownOptionCount] = useState(0);
     const [recipeIngredients, setRecipeIngredients] = useState([]);
     const [recipeInstructions, setRecipeInstructions] = useState([]);
     const [highlightedRecipe, setHighlightedRecipe] = ("")
@@ -105,7 +119,6 @@ function EditRecipeTable(props)
                 {
                     let returnedData = await recipeDataAPICall.get(`/recipeList/${email}`).then(( { data } ) => data);
                     setRecipeList(returnedData);
-                    console.log(Date.now());
                 }catch(err)
                 {
                     console.log(err);
