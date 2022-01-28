@@ -59,7 +59,7 @@ function RegisterUser(props)
 
     const createUsername = async () =>
     {
-        let results = await usernameAPICall.post(`/username/`, { email: email, username: username } );
+        let results = await usernameAPICall.post(`/username/insert/`, { email: email, username: username } );
         console.log("username create:"+results);
     }
 

@@ -23,7 +23,7 @@ function FinalTable(props)
         {
             try
             {
-                let returnedData = await viewRecipesAPICall.get(`/${passedID}`).then(( { data } ) => data);
+                let returnedData = await viewRecipesAPICall.get(`/browse/`).then(( { data } ) => data);
                 setData(returnedData);
             }catch(err)
             {

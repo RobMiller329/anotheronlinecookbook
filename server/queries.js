@@ -43,7 +43,7 @@ cookbookDB.listRecipes = (id) =>
     });
 };
 
-cookbookDB.fetchRecipeIngredients = (id) =>
+cookbookDB.retrieveRecipeIngredients = (id) =>
 {
     return new Promise((resolve, reject) =>
     {
@@ -63,7 +63,7 @@ cookbookDB.fetchRecipeIngredients = (id) =>
     });
 };
 
-cookbookDB.fetchRecipeInstructions = (id) =>
+cookbookDB.retrieveRecipeInstructions = (id) =>
 {
     return new Promise((resolve, reject) =>
     {
@@ -83,13 +83,13 @@ cookbookDB.fetchRecipeInstructions = (id) =>
     });
 };
 
-cookbookDB.updateRecipeData = (source, userID, rName, rCuisine, rProtein, recID) =>
+cookbookDB.updateRecipeData = (recipeSource, userDataID, recipeName, recipeCuisine, recipeProtein, recipeDataID) =>
 {
     return new Promise((resolve, reject) =>
     {
         connection.query(
             `UPDATE recipedata SET recipeSource = ?, userDataID = ?, recipeName = ?, recipeCuisine = ?, recipeProtein = ? ` +
-            `FROM recipedata WHERE recipeDataID = ?;`, (source, userID, rName, rCuisine, rProtein, recID), (err, res) =>
+            `FROM recipedata WHERE recipeDataID = ?;`, (recipeSource, userDataID, recipeName, recipeCuisine, recipeProtein, recipeDataID), (err, res) =>
         {
             if(err)
             {
@@ -102,106 +102,186 @@ cookbookDB.updateRecipeData = (source, userID, rName, rCuisine, rProtein, recID)
     });
 };
 
-
-
-
-
-
-
-
-
-
-
-/* cookbookDB.createUsername = (email, username) =>
+cookbookDB.updateRecipeIngredients = (ingredientName, ingredientQuantity, ingredientMeasurement, ingredientsDataID) =>
 {
     return new Promise((resolve, reject) =>
     {
         connection.query(
-            `INSERT INTO userdata (userDataID, userName) ` +
-            `VALUES (?, ?);`, (email, username), (err, results) =>
+            `UPDATE ingredientsdata SET ingredientName = ?, ingredientQuantity = ?, ingredientMeasurement = ? ` +
+            `WHERE ingredientsDataID = ?;`, (ingredientName, ingredientQuantity, ingredientMeasurement, ingredientsDataID), (err, res) =>
         {
             if(err)
             {
                 return reject(err);
             }else
             {
-                return resolve(results);
-            }
-        });
-    });
-} */
-
-cookbookDB.createNewRecipeTransaction = (transactionString) =>
-{
-    return new Promise((resolve, reject) =>
-    {
-        connection.query(
-            `INSERT INTO transactions (transactionsID, transactionTime, userDataID, transactionType, recipeDataID) ` +
-            `VALUES ?;`, (transactionString), (err, results) =>
-        {
-            if(err)
-            {
-                return reject(err);
-            }else
-            {
-                return resolve(results);
+                return resolve(res);
             }
         });
     });
 };
 
-cookbookDB.createNewRecipeRecipeData = (recipeDataID, recipeSource, recipeProtein, recipeCuisine, userDataID, recipeName) =>
+cookbookDB.updateRecipeInstructions = (instructionPhase, instructionStep, instructionAction, instructionDataID) =>
 {
     return new Promise((resolve, reject) =>
     {
         connection.query(
-            `INSERT INTO recipedata (recipeDataID, recipeSource, recipeProtein, recipeCuisine, userDataID, recipeName) ` +
-            `VALUES (?, ?, ?, ?, ?, ?);`, (recipeDataID, recipeSource, recipeProtein, recipeCuisine, userDataID, recipeName), (err, results) =>
+            `UPDATE instructiondata SET instructionPhase = ?, instructionStep = ?, instructionAction = ? ` +
+            `WHERE instructionDataID = ?;`, (instructionPhase, instructionStep, instructionAction, instructionDataID), (err, res) =>
         {
             if(err)
             {
                 return reject(err);
             }else
             {
-                return resolve(results);
+                return resolve(res);
             }
         });
     });
 };
 
-cookbookDB.createNewRecipeIngredients = (ingredientsDataID, ingredientIterator, ingredientName, recipeDataID, ingredientQuantity, ingredientMeasurement) =>
+cookbookDB.updateUserData = (userName, userDataID) =>
 {
     return new Promise((resolve, reject) =>
     {
         connection.query(
-            `INSERT INTO ingredientsdata (ingredientsDataID, ingredientIterator, ingredientName, recipeDataID, ingredientQuantity, ingredientMeasurement) ` +
-            `VALUES (?, ?, ?, ?, ?, ?);`, (ingredientsDataID, ingredientIterator, ingredientName, recipeDataID, ingredientQuantity, ingredientMeasurement), (err, results) =>
+            `UPDATE userdata SET userName = ? WHERE userDataID = ?;`, (userName, userDataID), (err, res) =>
         {
             if(err)
             {
                 return reject(err);
             }else
             {
-                return resolve(results);
+                return resolve(res);
             }
         });
     });
 };
 
-cookbookDB.createNewRecipeInstructions = (instructionDataID, recipeDataID, instructionPhase, instructionStep, instructionAction) =>
+cookbookDB.createUserData = (userDataID, userName) =>
+{
+    return new Promise((resolve, reject) =>
+    {
+        connection.query(
+            `INSERT INTO userdata (userDataID, userName) VALUES (?, ?);`, (userDataID, userName), (err, res) =>
+        {
+            if(err)
+            {
+                return reject(err);
+            }else
+            {
+                return resolve(res);
+            }
+        });
+    });
+};
+
+cookbookDB.createRecipeData = (recipeDataID, recipeSource, userDataID, recipeName, recipeCuisine, recipeProtein) =>
+{
+    return new Promise((resolve, reject) =>
+    {
+        connection.query(
+            `INSERT INTO recipedata (recipeDataID, recipeSource, userDataID, recipeName, recipeCuisine, recipeProtein) ` +
+            `VALUES (?, ?, ?, ?, ?, ?);`, (recipeDataID, recipeSource, userDataID, recipeName, recipeCuisine, recipeProtein), (err, res) =>
+        {
+            if(err)
+            {
+                return reject(err);
+            }else
+            {
+                return resolve(res);
+            }
+        });
+    });
+};
+
+cookbookDB.createRecipeIngredients = (ingredientsDataID, ingredientName, recipeDataID, ingredientQuantity, ingredientMeasurement) =>
+{
+    return new Promise((resolve, reject) =>
+    {
+        connection.query(
+            `INSERT INTO ingredientsdata (ingredientsDataID, ingredientName, recipeDataID, ingredientQuantity, ingredientMeasurement) ` +
+            `VALUES (?, ?, ?, ?, ?);`, (ingredientsDataID, ingredientName, recipeDataID, ingredientQuantity, ingredientMeasurement), (err, res) =>
+        {
+            if(err)
+            {
+                return reject(err);
+            }else
+            {
+                return resolve(res);
+            }
+        });
+    });
+};
+
+cookbookDB.createRecipeInstructions = (instructionDataID, recipeDataID, instructionPhase, instructionStep, instructionAction) =>
 {
     return new Promise((resolve, reject) =>
     {
         connection.query(
             `INSERT INTO instructiondata (instructionDataID, recipeDataID, instructionPhase, instructionStep, instructionAction) ` +
-            `VALUES (?, ?, ?, ?, ?);`, (instructionDataID, recipeDataID, instructionPhase, instructionStep, instructionAction), (err, results) =>
+            `VALUES (?, ?, ?, ?, ?);`, (instructionDataID, recipeDataID, instructionPhase, instructionStep, instructionAction), (err, res) =>
         {
             if(err)
             {
                 return reject(err);
             }else
             {
-                return resolve(results);
+                return resolve(res);
+            }
+        });
+    });
+};
+
+cookbookDB.deleteRecipeData = (id) =>
+{
+    return new Promise((resolve, reject) =>
+    {
+        connection.query(
+            `DELETE FROM recipedata WHERE recipeDataID = ?;`, (id), (err, res) =>
+        {
+            if(err)
+            {
+                return reject(err);
+            }else
+            {
+                return resolve(res);
+            }
+        });
+    });
+};
+
+cookbookDB.deleteRecipeIngredients = (id) =>
+{
+    return new Promise((resolve, reject) =>
+    {
+        connection.query(
+            `DELETE FROM ingredientsdata WHERE recipeDataID = ?;`, (id), (err, res) =>
+        {
+            if(err)
+            {
+                return reject(err);
+            }else
+            {
+                return resolve(res);
+            }
+        });
+    });
+};
+
+cookbookDB.deleteRecipeInstructions = (id) =>
+{
+    return new Promise((resolve, reject) =>
+    {
+        connection.query(
+            `DELETE FROM instructiondata WHERE recipeDataID = ?;`, (id), (err, res) =>
+        {
+            if(err)
+            {
+                return reject(err);
+            }else
+            {
+                return resolve(res);
             }
         });
     });

@@ -134,7 +134,7 @@ function EditRecipeTable(props)
         {
             try
             {
-                let returnedIngredients = await recipeDataAPICall.get(`/recipeIngredients/${recipeID}`).then(( { data } ) => data);
+                let returnedIngredients = await recipeDataAPICall.get(`/recipeIngredients/select/${recipeID}`).then(( { data } ) => data);
                 setRecipeIngredients(returnedIngredients);
             }catch(err)
             {
@@ -147,7 +147,7 @@ function EditRecipeTable(props)
         {
             try
             {
-                let returnedInstructions = await recipeDataAPICall.get(`/recipeInstructions/${recipeID}`).then(( { data } ) => data);
+                let returnedInstructions = await recipeDataAPICall.get(`/recipeInstructions/select/${recipeID}`).then(( { data } ) => data);
                 setRecipeInstructions(returnedInstructions);
             }catch(err)
             {

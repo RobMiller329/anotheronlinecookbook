@@ -45,10 +45,8 @@ function NRDetailsIntake(props)
 
     useEffect(() =>
     {
-        console.log(didSubmit);
         transactionAPICall(createRecipeAPI, props.passedUID, props.passedRT, props.passedTDT, adjustedRecipeName);
         recipeDataAPICall();
-        console.log("didSubmit update");
     }, [didSubmit]);
 
     const handleProteinSelection = (event) =>

@@ -15,7 +15,7 @@ function ChangeUsername(props)
     const [confirmUsername, setConfirmUsername] = useState("");
 
     let usernameElement = document.getElementById("newUsernameID");
-    let confirmElement = document.getElementById("confirmID");
+    let confirmElement = document.getElementById("confirmNewUsername");
     let minUsernameLength = 6;
     let maxUsernameLength = 16;
 
@@ -54,7 +54,7 @@ function ChangeUsername(props)
                 <br/><br/>
                 <label>Confirm New Username</label>
                 <br/>
-                <input id="confirmID" value={confirmUsername} onChange={(event) => setConfirmUsername(event.target.value)} />
+                <input id="confirmNewUsername" value={confirmUsername} onChange={(event) => setConfirmUsername(event.target.value)} />
                 <br/><br/>
                 <button type="submit">Change Username</button>
             </form>
