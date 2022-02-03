@@ -1,85 +1,62 @@
 import React from "react";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useReducer } from "react";
 import Axios from "axios";
 import { AccountContext } from "../loginComponents/Account";
 import NRDetailsIntake from "./NewRecipeDetailsIntake";
 import NRIngredientsTable from "./NewRecipeIngredientsTable";
 import NRInstructionsTable from "./NewRecipeInstructionsTable";
+import NRSubmitButton from "./NewRecipeSubmitButton";
 import "./StyleRecipeForm.css";
 
-async function recipeDataAPICall(api, userID, adjRecName, time, source, recName, cuisine, protein)
+function NewRecipeForm(props)
 {
-    try
-    {
-        await api.post('/recipeData/insert/',
-        {
-            recipeDataID: (userID + adjRecName + time),
-            recipeSource: source,
-            userDataID: userID,
-            recipeName: recName,
-            recipeCuisine: cuisine,
-            recipeProtein: protein
-        });
-    }catch(err)
-    {
-        console.log(err);
-    }
-}
-
-async function ingredientDataAPICall(api, userID, adjRecName, time, count, ingName, ingQty, ingMsr)
-{
-    try
-    {
-        await api.post('/recipeIngredients/insert/',
-        {
-            ingredientsDataID: (userID + adjRecName + time + count),
-            ingredientName: ingName,
-            recipeDataID: (userID + adjRecName + time),
-            ingredientQuantity: ingQty,
-            ingredientMeasurement: ingMsr
-        });
-    }catch(err)
-    {
-        console.log(err);
-    }
-}
-
-async function instructionDataAPICall(api, userID, adjRecName, time, count, phase, step, action)
-{
-    try
-    {
-        await api.post('/recipeInstructions/insert/',
-        {
-            instructionDataID: (userID + adjRecName + time + count),
-            recipeDataID: (userID + adjRecName + time),
-            instructionPhase: phase,
-            instructionStep: step,
-            instructionAction: action
-        });
-    }catch(err)
-    {
-        console.log(err);
-    }
-}
-
- function NewRecipeForm(props)
- {
     const { getSession } = useContext(AccountContext);
     const [loggedIn, setLoggedIn] = useState(false);
     const [userDataID, setUserDataID] = useState("");
 
     const [ingredientObject, setIngredientObject] = useState( { name: "example", quantity: "2/3", measurement: "cup" } );
     const [ingredientsArray, setIngredientsArray] = useState( [] );
-    const [instructionObject, setInstructionObject] = useState( { phase: "prep", step: 0, action: "example" } );
+    const [instructionObject, setInstructionObject] = useState( { phase: "prep", action: "example" } );
     const [instructionsArray, setInstructionsArray] = useState( [] );
-    
-    let dataObjectHolder;
 
-    const createRecipeAPI = Axios.create(
+    const types = 
     {
-        //baseURL: `http://anotheronlinecookbook.com/api/`
-        baseURL: `http://localhost:8080/api/`
-    });
+        RECIPENAME: "RECIPENAME",
+        ADJUSTEDRECIPENAME: "RECIPEADJUSTEDNAME",
+        RECIPESOURCE: "RECIPESOURCE",
+        RECIPEPROTEIN: "RECIPEPROTEIN",
+        RECIPECUISINE: "RECIPECUISINE"
+    }
+
+    const reducer = (state, action) =>
+    {
+        switch(action.type)
+        {
+            case types.RECIPENAME:
+                return { ...state, recipename: action.value}
+            case types.ADJUSTEDRECIPENAME:
+                return { ...state, adjustedrecipename: action.value}
+            case types.RECIPESOURCE:
+                return { ...state, recipesource: action.value}
+            case types.RECIPEPROTEIN:
+                return { ...state, recipeprotein: action.value}
+            case types.RECIPECUISINE:
+                return { ...state, recipecuisine: action.value}
+            default:
+                break;
+        }
+    }
+
+    const initialState = 
+    {
+        recipename: "",
+        adjustedrecipename: "",
+        recipesource: "",
+        recipeprotein: "",
+        recipecuisine: ""
+    }
+
+    const [state, dispatch] = useReducer(reducer, initialState);
 
     useEffect(() =>
     {
@@ -200,55 +177,54 @@ async function instructionDataAPICall(api, userID, adjRecName, time, count, phas
         setInstructionsArray(adjustedInstructionsArray);
     };
 
-    function handleRecipeDataObject(data)
-    {
-        dataObjectHolder = data;
-    }
-
-    function doubleDigits(int)
-    {
-        if(int < 10)
-        {
-            int = "0" + int;
-        }
-
-        return int;
-    }
-
-    function recipeFormSubmit()
-    {
-        let today = new Date();
-        let year = today.getFullYear();
-        let month = doubleDigits(today.getMonth()+1);
-        let day = doubleDigits(today.getDate());
-        let hours = doubleDigits(today.getHours());
-        let minutes = doubleDigits(today.getMinutes());
-
-        let submitTime = year+month+day+hours+minutes;
-
-        recipeDataAPICall(createRecipeAPI, userDataID, dataObjectHolder.adjRecipeName, submitTime, dataObjectHolder.recipeSource,
-                                    dataObjectHolder.recipeName, dataObjectHolder.recipeCuisine, dataObjectHolder.recipeProtein);
-
-        for(let x = 1; x < ingredientsArray.length; x++)
-        {
-            ingredientDataAPICall(createRecipeAPI, userDataID, dataObjectHolder.adjRecipeName, submitTime, doubleDigits(x), ingredientsArray[x].name,
-                                    ingredientsArray[x].quantity, ingredientsArray[x].measurement);
-        }
-
-        for(let y = 1; y < instructionsArray.length; y++)
-        {
-            instructionDataAPICall(createRecipeAPI, userDataID, dataObjectHolder.adjRecipeName, submitTime, doubleDigits(y), instructionsArray[y].phase,
-                                    y, instructionsArray[y].action);
-        }
-    };
-
     function CreateRecipeForm()
     {        
         return(
             <div>
                 <form>
                     <div>
-                        <NRDetailsIntake passAlongObject={handleRecipeDataObject} />
+                        <div>
+                            <label>Recipe Name:&nbsp;</label>
+                            <input className="recipeNameInput" type="text" id="recipeNameInput" value={state.recipename} placeholder="enter the recipe name here"
+                                                    onChange={ (event) => { dispatch( {type: types.RECIPENAME, value: event.target.value} ) } } />
+                        </div>
+                        <div>
+                            <label>Recipe Source:&nbsp;</label>
+                            <input className="recipeSourceInput" type="text" id="recipeSourceInput" value={state.recipesource} placeholder="enter the recipe source here"
+                                                    onChange={ (event) => { dispatch( {type: types.RECIPESOURCE, value: event.target.value} ) } } />
+                            <label>&nbsp;(can be a URL, "family recipe", etc)</label>
+                        </div>
+                        <div>
+                            <label>Recipe Protein:&nbsp;</label>
+                            <select id="createProteinDropdown" defaultValue="placeholderProtein"
+                                                    onChange={ (event) => { dispatch( {type: types.RECIPEPROTEIN, value: event.target.value} ) } } >
+                                <option disabled hidden value="placeholderProtein">Select a protein.</option>
+                                <option value="Beef">Beef</option>
+                                <option value="Chicken">Chicken</option>
+                                <option value="Fish">Fish</option>
+                                <option value="Turkey">Turkey</option>
+                                <option value="Other">Other</option>
+                                <option value="None">None</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label>Recipe Cuisine:&nbsp;</label>
+                            <select id="createCuisineDropdown" defaultValue="placeholderCuisine"
+                                                    onChange={ (event) => { dispatch( {type: types.RECIPECUISINE, value: event.target.value} ) } } >
+                                <option disabled hidden value="placeholderCuisine">Select a cuisine.</option>
+                                <option value="American">American</option>
+                                <option value="Cajun">Cajun</option>
+                                <option value="Chinese">Chinese</option>
+                                <option value="French">French</option>
+                                <option value="Indian">Indian</option>
+                                <option value="Italian">Italian</option>
+                                <option value="Japanese">Japanese</option>
+                                <option value="Mexican">Mexican</option>
+                                <option value="Soul">Soul</option>
+                                <option value="Thai">Thai</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
                     </div>
                     <br/>
                     <div className="ingredientInputContainer">
@@ -281,7 +257,7 @@ async function instructionDataAPICall(api, userID, adjRecName, time, count, phas
                                                 moveInstructionUpPassedFunction={moveInstructionUp} moveInstructionDownPassedFunction={moveInstructionDown} />
                     </div>
                     <br/><br/>
-                    <button type="button" className="createRecipeButton" onClick={recipeFormSubmit}>Create Recipe</button>
+                    <NRSubmitButton ingredientsArray={ingredientsArray} instructionsArray={instructionsArray} />
                 </form>
             </div>
         );

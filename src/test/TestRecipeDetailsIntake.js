@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 
-function NRDetailsIntake(props)
+function DetailsIntake(props)
 {
     const [recipeName, setRecipeName] = useState("");
     const [adjustedRecipeName, setAdjustedRecipeName] = useState("");
@@ -16,6 +16,11 @@ function NRDetailsIntake(props)
         setRecipeDataObject( { recipeName: recipeName, adjustedRecipeName: adjustedRecipeName, recipeSource: recipeSource, recipeProtein: recipeProtein, recipeCuisine: recipeCuisine } );
     }, [recipeName, recipeSource, recipeProtein, recipeCuisine]);
 
+    useEffect(() =>
+    {
+        passingDetailsObjectToParent(recipeDataObject);
+    }, [recipeDataObject]);
+
     const handleProteinSelection = (event) =>
     {
         setRecipeProtein(event.target.value);
@@ -26,17 +31,20 @@ function NRDetailsIntake(props)
         setRecipeCuisine(event.target.value);
     }
 
+    const passingDetailsObjectToParent = (dataObject) =>
+    {
+        props.setDetailsObject(dataObject);
+    }
+
     return(
         <div>
             <div>
                 <label>Recipe Name:&nbsp;</label>
-                <input className="recipeNameInput" type="text" id="recipeNameInput" value={recipeName}
-                                        placeholder="enter the recipe name here" onChange={(e) => setRecipeName(e.target.value)} />
+                <input type="text" value={recipeName} placeholder="enter the recipe name here" onChange={ (event) => setRecipeName(event.target.value) } />
             </div>
             <div>
                 <label>Recipe Source:&nbsp;</label>
-                <input className="recipeSourceInput" type="text" id="recipeSourceInput" value={recipeSource}
-                                        placeholder="enter the recipe source here" onChange={(e) => setRecipeSource(e.target.value)} />
+                <input type="text" value={recipeSource} placeholder="enter the recipe source here" onChange={ (event) => setRecipeSource(event.target.value) } />
                 <label>&nbsp;(can be a URL, "family recipe", etc)</label>
             </div>
             <div>
@@ -72,4 +80,4 @@ function NRDetailsIntake(props)
     );
 }
 
-export default NRDetailsIntake;
+export default DetailsIntake;
