@@ -30,7 +30,7 @@ cookbookDB.listRecipes = (id) =>
     {
         connection.query(
             `SELECT recipeName, recipeProtein, recipeCuisine, recipeSource, recipeDataID ` +
-            `FROM recipedata WHERE userDataID = ?;`, id, (err, results) =>
+            `FROM recipedata WHERE userDataID = ?;`, [id], (err, results) =>
         {
             if(err)
             {
@@ -50,7 +50,7 @@ cookbookDB.retrieveRecipeIngredients = (id) =>
         connection.query(
             `SELECT ingredientsDataID, ingredientName, ingredientQuantity, ingredientMeasurement ` +
             `FROM ingredientsdata WHERE recipeDataID = ? ` +
-            `ORDER BY ingredientsDataID;`, id, (err, results) =>
+            `ORDER BY ingredientsDataID;`, [id], (err, results) =>
         {
             if(err)
             {
@@ -70,7 +70,7 @@ cookbookDB.retrieveRecipeInstructions = (id) =>
         connection.query(
             `SELECT instructionDataID, instructionPhase, instructionStep, instructionAction ` +
             `FROM instructiondata WHERE recipeDataID = ? ` +
-            `ORDER BY instructionStep;`, id, (err, results) =>
+            `ORDER BY instructionStep;`, [id], (err, results) =>
         {
             if(err)
             {
@@ -89,7 +89,7 @@ cookbookDB.updateRecipeData = (recipeSource, userDataID, recipeName, recipeCuisi
     {
         connection.query(
             `UPDATE recipedata SET recipeSource = ?, userDataID = ?, recipeName = ?, recipeCuisine = ?, recipeProtein = ? ` +
-            `FROM recipedata WHERE recipeDataID = ?;`, (recipeSource, userDataID, recipeName, recipeCuisine, recipeProtein, recipeDataID), (err, res) =>
+            `FROM recipedata WHERE recipeDataID = ?;`, [recipeSource, userDataID, recipeName, recipeCuisine, recipeProtein, recipeDataID], (err, res) =>
         {
             if(err)
             {
@@ -108,7 +108,7 @@ cookbookDB.updateRecipeIngredients = (ingredientName, ingredientQuantity, ingred
     {
         connection.query(
             `UPDATE ingredientsdata SET ingredientName = ?, ingredientQuantity = ?, ingredientMeasurement = ? ` +
-            `WHERE ingredientsDataID = ?;`, (ingredientName, ingredientQuantity, ingredientMeasurement, ingredientsDataID), (err, res) =>
+            `WHERE ingredientsDataID = ?;`, [ingredientName, ingredientQuantity, ingredientMeasurement, ingredientsDataID], (err, res) =>
         {
             if(err)
             {
@@ -127,7 +127,7 @@ cookbookDB.updateRecipeInstructions = (instructionPhase, instructionStep, instru
     {
         connection.query(
             `UPDATE instructiondata SET instructionPhase = ?, instructionStep = ?, instructionAction = ? ` +
-            `WHERE instructionDataID = ?;`, (instructionPhase, instructionStep, instructionAction, instructionDataID), (err, res) =>
+            `WHERE instructionDataID = ?;`, [instructionPhase, instructionStep, instructionAction, instructionDataID], (err, res) =>
         {
             if(err)
             {
@@ -145,7 +145,7 @@ cookbookDB.updateUserData = (userName, userDataID) =>
     return new Promise((resolve, reject) =>
     {
         connection.query(
-            `UPDATE userdata SET userName = ? WHERE userDataID = ?;`, (userName, userDataID), (err, res) =>
+            `UPDATE userdata SET userName = ? WHERE userDataID = ?;`, [userName, userDataID], (err, res) =>
         {
             if(err)
             {
@@ -163,7 +163,7 @@ cookbookDB.createUserData = (userDataID, userName) =>
     return new Promise((resolve, reject) =>
     {
         connection.query(
-            `INSERT INTO userdata (userDataID, userName) VALUES (?, ?);`, (userDataID, userName), (err, res) =>
+            `INSERT INTO userdata (userDataID, userName) VALUES (?, ?);`, [userDataID, userName], (err, res) =>
         {
             if(err)
             {
@@ -182,7 +182,7 @@ cookbookDB.createRecipeData = (recipeDataID, recipeSource, userDataID, recipeNam
     {
         connection.query(
             `INSERT INTO recipedata (recipeDataID, recipeSource, userDataID, recipeName, recipeCuisine, recipeProtein) ` +
-            `VALUES (?, ?, ?, ?, ?, ?);`, (recipeDataID, recipeSource, userDataID, recipeName, recipeCuisine, recipeProtein), (err, res) =>
+            `VALUES (?, ?, ?, ?, ?, ?);`, [recipeDataID, recipeSource, userDataID, recipeName, recipeCuisine, recipeProtein], (err, res) =>
         {
             if(err)
             {
@@ -201,7 +201,7 @@ cookbookDB.createRecipeIngredients = (ingredientsDataID, ingredientName, recipeD
     {
         connection.query(
             `INSERT INTO ingredientsdata (ingredientsDataID, ingredientName, recipeDataID, ingredientQuantity, ingredientMeasurement) ` +
-            `VALUES (?, ?, ?, ?, ?);`, (ingredientsDataID, ingredientName, recipeDataID, ingredientQuantity, ingredientMeasurement), (err, res) =>
+            `VALUES (?, ?, ?, ?, ?);`, [ingredientsDataID, ingredientName, recipeDataID, ingredientQuantity, ingredientMeasurement], (err, res) =>
         {
             if(err)
             {
@@ -214,13 +214,32 @@ cookbookDB.createRecipeIngredients = (ingredientsDataID, ingredientName, recipeD
     });
 };
 
+/*
+    createRecipeAPI, userDataID, dataObjectHolder.adjRecipeName, submitTime, doubleDigits(y), instructionsArray[y].phase,
+                                    instructionsArray[y].step, instructionsArray[y].action
+*/
+
+//api call for creating recipe instruction data
+/* router.post('/recipeInstructions/insert/', async (req, res) =>
+{
+    try
+    {
+        let results = await cookbookDB.createRecipeInstructions(req.body.instructionDataID, req.body.recipeDataID, req.body.instructionPhase, req.body.instructionStep, req.body.instructionAction);
+        res.json(results);
+    }catch(err)
+    {
+        console.log(err);
+        res.sendStatus(500);
+    }
+}); */
+
 cookbookDB.createRecipeInstructions = (instructionDataID, recipeDataID, instructionPhase, instructionStep, instructionAction) =>
 {
     return new Promise((resolve, reject) =>
     {
         connection.query(
             `INSERT INTO instructiondata (instructionDataID, recipeDataID, instructionPhase, instructionStep, instructionAction) ` +
-            `VALUES (?, ?, ?, ?, ?);`, (instructionDataID, recipeDataID, instructionPhase, instructionStep, instructionAction), (err, res) =>
+            `VALUES (?, ?, ?, ?, ?);`, [instructionDataID, recipeDataID, instructionPhase, instructionStep, instructionAction], (err, res) =>
         {
             if(err)
             {
@@ -238,7 +257,7 @@ cookbookDB.deleteRecipeData = (id) =>
     return new Promise((resolve, reject) =>
     {
         connection.query(
-            `DELETE FROM recipedata WHERE recipeDataID = ?;`, (id), (err, res) =>
+            `DELETE FROM recipedata WHERE recipeDataID = ?;`, [id], (err, res) =>
         {
             if(err)
             {
@@ -256,7 +275,7 @@ cookbookDB.deleteRecipeIngredients = (id) =>
     return new Promise((resolve, reject) =>
     {
         connection.query(
-            `DELETE FROM ingredientsdata WHERE recipeDataID = ?;`, (id), (err, res) =>
+            `DELETE FROM ingredientsdata WHERE recipeDataID = ?;`, [id], (err, res) =>
         {
             if(err)
             {
@@ -274,7 +293,7 @@ cookbookDB.deleteRecipeInstructions = (id) =>
     return new Promise((resolve, reject) =>
     {
         connection.query(
-            `DELETE FROM instructiondata WHERE recipeDataID = ?;`, (id), (err, res) =>
+            `DELETE FROM instructiondata WHERE recipeDataID = ?;`, [id], (err, res) =>
         {
             if(err)
             {

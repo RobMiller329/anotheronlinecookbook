@@ -1,10 +1,8 @@
 import React from "react";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import Axios from "axios";
-import { recipeTableColumns } from "./tableColumns";
 import ConstructedTable from "./tableConstruction";
-import Trending from "./ContentTrending";
+import { recipeTableColumns } from "./tableColumns";
 import "./StyleTables.css";
 
 function FinalTable(props)
@@ -19,7 +17,7 @@ function FinalTable(props)
 
     useEffect(() =>
     {
-        async function fetchData(passedID)
+        async function fetchData()
         {
             try
             {
@@ -31,16 +29,11 @@ function FinalTable(props)
             }
         }
         fetchData();
-    });
+    }, []);
 
     return (
-        <div className="finalTableContainer">
-            <div className="tableComponent">
-                <ConstructedTable columns={recipeTableColumns} data={data} />
-            </div>
-            <div className="trendingComponent">
-                <Trending />
-            </div>
+        <div className="finalTable">
+            <ConstructedTable columns={recipeTableColumns} data={data} />
         </div>
     );
 }

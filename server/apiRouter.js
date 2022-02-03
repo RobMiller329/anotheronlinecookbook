@@ -163,6 +163,11 @@ router.post('/recipeIngredients/insert/', async (req, res) =>
     }
 });
 
+/*
+    createRecipeAPI, userDataID, dataObjectHolder.adjRecipeName, submitTime, doubleDigits(y), instructionsArray[y].phase,
+                                    instructionsArray[y].step, instructionsArray[y].action
+*/
+
 //api call for creating recipe instruction data
 router.post('/recipeInstructions/insert/', async (req, res) =>
 {

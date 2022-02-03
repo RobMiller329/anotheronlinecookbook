@@ -4,18 +4,30 @@ import Axios from "axios";
 import UserPool from "./UserPool";
 import "../StyleSettings.css"
 
+
+async function createUsername(email, username)
+{
+    const usernameAPICall = Axios.create(
+    {
+        //baseURL: `http://anotheronlinecookbook.com/api/`
+        baseURL: `http://localhost:8080/api/`
+    });
+
+    try
+    {
+        await usernameAPICall.post(`/username/insert/`, { userDataID: email, userName: username } );
+    }catch(err)
+    {
+        console.log(err);
+    }
+}
+
 function RegisterUser(props)
 {
     const [email, setEmail] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-
-    const usernameAPICall = Axios.create(
-    {
-        //baseURL: `http://anotheronlinecookbook.com/api/`
-        baseURL: `http://localhost:8080/api/`
-    });
 
     let emailFormat = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
     let emailInputElement = document.getElementById("emailInputID");
@@ -46,7 +58,7 @@ function RegisterUser(props)
                             "Passwords must contain at least 8 characters, an uppercase letter, a lowercase letter, a special character, and a number.");
                 }else
                 {
-                    createUsername();
+                    createUsername(email, username);
                     alert("Registration succeeded. Please check your email for a confirmation link. After confirming your email, you can log in.");
                     emailInputElement.value = "";
                     usernameInputElement.value = "";
@@ -56,12 +68,6 @@ function RegisterUser(props)
             });
         }
     };
-
-    const createUsername = async () =>
-    {
-        let results = await usernameAPICall.post(`/username/insert/`, { email: email, username: username } );
-        console.log("username create:"+results);
-    }
 
     return(
         <div>

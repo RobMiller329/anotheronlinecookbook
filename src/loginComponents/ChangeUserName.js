@@ -9,8 +9,8 @@ async function changeUsername(username)
 
 function ChangeUsername(props)
 {
-    const { getSession } = useContext(AccountContext);
-    const [userDataID, setUserDataID] = useState("");
+/*     const { getSession } = useContext(AccountContext); */
+    const [userDataID, setUserDataID] = useState(props.userEmail);
     const [newUsername, setNewUsername] = useState("");
     const [confirmUsername, setConfirmUsername] = useState("");
 
@@ -19,13 +19,13 @@ function ChangeUsername(props)
     let minUsernameLength = 6;
     let maxUsernameLength = 16;
 
-    useEffect(() =>
+/*     useEffect(() =>
     {
         getSession().then(( { email } ) =>
         {
             setUserDataID(email);
         });
-    });
+    }, []); */
 
     const onSubmit = (event) =>
     {

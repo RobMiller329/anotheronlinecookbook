@@ -18,6 +18,6 @@ export const recipeTableColumns =
     },
     {
         Header: "Submitted By",
-        accessor: "userDataID"
+        accessor: "userName"
     }
 ]

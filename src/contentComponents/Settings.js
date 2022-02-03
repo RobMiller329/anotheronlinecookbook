@@ -23,6 +23,13 @@ import "../StyleSettings.css"
         });
     });
 
+    function handleLogOut()
+    {
+        alert("You have logged out.");
+        logout();
+        window.location.reload(false);
+    }
+
     function UserIsLoggedIn()
     {
         return(
@@ -31,14 +38,14 @@ import "../StyleSettings.css"
                     <div className="logoutWords1"><p>You are logged in as &nbsp;</p></div>
                     <div className="userEmailAddress">{userEmail}</div>
                     <div className="logoutWords2"><p>. Click this button to log out.</p></div>
-                    <button onClick={logout} className="settingsLogoutButton">Logout</button>
+                    <button onClick={handleLogOut} className="settingsLogoutButton">Logout</button>
                 </div>
                 <div className="settingsChangesContainer">
                     <div className="settingsChangeEmail">
                         <ChangeEmail />
                     </div>
                     <div className="settingsUsername">
-                        <ChangeUsername />
+                        <ChangeUsername userEmail={userEmail} />
                     </div>
                     <div className="settingsChangePassword">
                         <ChangePassword />
