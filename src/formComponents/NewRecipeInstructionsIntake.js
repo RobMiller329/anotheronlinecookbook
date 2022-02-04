@@ -1,8 +1,8 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import NRInstructionsTable from "../formComponents/NewRecipeInstructionsTable";
+import NRInstructionsTable from "./NewRecipeInstructionsTable";
 
-function InstructionsIntake(props)
+function NRInstructionsIntake(props)
 {
     const [instructionObject, setInstructionObject] = useState( { phase: "prep", action: "example" } );
     const [instructionsArray, setInstructionsArray] = useState( [] );
@@ -24,10 +24,14 @@ function InstructionsIntake(props)
 
     function addInstructionsRow()
     {
-        let newInstructionPhase = document.getElementById("instructionPhaseToAdd").value;
-        let newInstructionAction = document.getElementById("instructionActionToAdd").value;
+        let newInstructionPhase = document.getElementById("instructionPhaseToAdd");
+        let newInstructionAction = document.getElementById("instructionActionToAdd");
 
-        setInstructionObject( { phase: newInstructionPhase, action: newInstructionAction } );
+        setInstructionObject( { phase: newInstructionPhase.value, action: newInstructionAction.value } );
+
+        newInstructionPhase.value = "";
+        newInstructionAction.value = "";
+        newInstructionPhase.focus();
     }
 
     function updateInstructionsArray()
@@ -113,4 +117,4 @@ function InstructionsIntake(props)
     )
 }
 
-export default InstructionsIntake;
+export default NRInstructionsIntake;

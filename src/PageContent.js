@@ -5,7 +5,6 @@ import EditRecipesForm from "./formComponents/FormEditRecipes";
 import { Account } from "./loginComponents/Account";
 import Settings from "./contentComponents/Settings";
 import "./StylePageBody.css";
-import RecipeForm from "./test/TestNewRecipeForm";
 
 function SettingsPage(props)
 {
@@ -20,8 +19,7 @@ function NewRecipeFormPage(props)
 {
     return(
         <Account>
-            {/* <NewRecipeForm /> */}
-            <RecipeForm />
+            <NewRecipeForm />
         </Account>
     );
 }

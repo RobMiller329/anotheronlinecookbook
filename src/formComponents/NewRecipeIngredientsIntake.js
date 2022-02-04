@@ -1,8 +1,8 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import NRIngredientsTable from "../formComponents/NewRecipeIngredientsTable";
+import NRIngredientsTable from "./NewRecipeIngredientsTable";
 
-function IngredientsIntake(props)
+function NRIngredientsIntake(props)
 {
     const [ingredientObject, setIngredientObject] = useState( { name: "example", quantity: "2/3", measurement: "cup" } );
     const [ingredientsArray, setIngredientsArray] = useState( [] );
@@ -24,11 +24,17 @@ function IngredientsIntake(props)
 
     function addIngredientsRow()
     {
-        let newIngredientName = document.getElementById("ingredientNameToAdd").value;
-        let newIngredientQuantity = document.getElementById("ingredientQuantityToAdd").value;
-        let newIngredientMeasurement = document.getElementById("ingredientMeasurementToAdd").value;
+        let newIngredientName = document.getElementById("ingredientNameToAdd");
+        let newIngredientQuantity = document.getElementById("ingredientQuantityToAdd");
+        let newIngredientMeasurement = document.getElementById("ingredientMeasurementToAdd");
 
-        setIngredientObject( { name: newIngredientName, quantity: newIngredientQuantity, measurement: newIngredientMeasurement } );
+        setIngredientObject( { name: newIngredientName.value, quantity: newIngredientQuantity.value, measurement: newIngredientMeasurement.value } );
+
+        newIngredientName.value = "";
+        newIngredientQuantity.value = "";
+        newIngredientMeasurement.value = "";
+        newIngredientName.focus();
+
     }
 
     function updateIngredientsArray()
@@ -69,4 +75,4 @@ function IngredientsIntake(props)
     );
 }
 
-export default IngredientsIntake;
+export default NRIngredientsIntake;

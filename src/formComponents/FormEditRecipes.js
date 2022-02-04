@@ -9,8 +9,6 @@ import "./StyleRecipeForm.css";
     const { getSession } = useContext(AccountContext);
     const [loggedIn, setLoggedIn] = useState(false);
     const [userEmail, setUserEmail] = useState("");
-    const [userRecipeList, setUserRecipeList] = useState([]);
-    const [recipeSelected, setRecipeSelected] = useState("");
 
     useEffect(() =>
     {

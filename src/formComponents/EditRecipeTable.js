@@ -98,7 +98,6 @@ function EditRecipeTable(props)
 {
     const { getSession } = useContext(AccountContext);
     const [recipeList, setRecipeList] = useState([]);
-    const [dropdownOptionCount, setDropdownOptionCount] = useState(0);
     const [recipeIngredients, setRecipeIngredients] = useState([]);
     const [recipeInstructions, setRecipeInstructions] = useState([]);
     const [highlightedRecipe, setHighlightedRecipe] = ("")
@@ -161,7 +160,9 @@ function EditRecipeTable(props)
         <div className="editRecipeFormContainer">
             <CreateRecipeSelectionList recipesToSelectFrom={recipeList} fetchDataFunction={fetchRecipeData} highlightCurrentOption={setHighlightedRecipe} />
             <SelectedRecipeHeader currentOption={highlightedRecipe} recipesToSelectFrom={recipeList} />
+            <br/>
             <EditDetailsTable columns={editIngredientsColumns} data={recipeIngredients} />
+            <br/>
             <EditDetailsTable columns={editInstructionsColumns} data={recipeInstructions} />
         </div>
     );

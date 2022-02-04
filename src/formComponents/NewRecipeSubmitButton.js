@@ -1,5 +1,4 @@
 import React from "react";
-import { useState } from "react";
 import Axios from "axios";
 
 async function recipeDataAPICall(api, userID, adjRecName, time, source, recName, cuisine, protein)
@@ -15,6 +14,7 @@ async function recipeDataAPICall(api, userID, adjRecName, time, source, recName,
             recipeCuisine: cuisine,
             recipeProtein: protein
         });
+        alert("Your recipe has been created!");
     }catch(err)
     {
         console.log(err);
@@ -33,6 +33,7 @@ async function ingredientDataAPICall(api, userID, adjRecName, time, count, ingNa
             ingredientQuantity: ingQty,
             ingredientMeasurement: ingMsr
         });
+        console.log("ingredients api posted");
     }catch(err)
     {
         console.log(err);
@@ -51,6 +52,7 @@ async function instructionDataAPICall(api, userID, adjRecName, time, count, phas
             instructionStep: step,
             instructionAction: action
         });
+        console.log("instructions api posted");
     }catch(err)
     {
         console.log(err);
@@ -59,10 +61,6 @@ async function instructionDataAPICall(api, userID, adjRecName, time, count, phas
 
 function NRSubmitButton(props)
 {
-    const [recipeDataObject, setRecipeDataObject] = useState({});
-    const [ingredientsArray, setIngredientsArray] = useState(props.ingredientsArray);
-    const [instructionsArray, setInstructionsArray] = useState(props.instructionsArray);
-
     const createRecipeAPI = Axios.create(
     {
         //baseURL: `http://anotheronlinecookbook.com/api/`
@@ -79,8 +77,10 @@ function NRSubmitButton(props)
         return int;
     }
 
-    function recipeFormSubmit()
+    function submitRecipe()
     {
+        console.log(props);
+
         let today = new Date();
         let year = today.getFullYear();
         let month = doubleDigits(today.getMonth()+1);
@@ -90,26 +90,27 @@ function NRSubmitButton(props)
 
         let submitTime = year+month+day+hours+minutes;
 
-        /* recipeDataAPICall(createRecipeAPI, userDataID, adjustedRecipeName, submitTime, recipeSource,
-            recipeName, recipeCuisine, recipeProtein);
+        recipeDataAPICall(createRecipeAPI, props.userID, props.detailsObject.adjRecipeName, submitTime, props.detailsObject.recipeSource,
+                                    props.detailsObject.recipeName, props.detailsObject.recipeCuisine, props.detailsObject.recipeProtein);
 
-        for(let x = 1; x < ingredientsArray.length; x++)
+        for(let x = 1; x < props.ingredientsArray.length; x++)
         {
-            ingredientDataAPICall(createRecipeAPI, userDataID, adjustedRecipeName, submitTime, doubleDigits(x), ingredientsArray[x].name,
-                                    ingredientsArray[x].quantity, ingredientsArray[x].measurement);
+            console.log("ingredients array [" + x + "]");
+            ingredientDataAPICall(createRecipeAPI, props.userID, props.detailsObject.adjRecipeName, submitTime, doubleDigits(x), props.ingredientsArray[x].name,
+                                    props.ingredientsArray[x].quantity, props.ingredientsArray[x].measurement);
         }
 
-        for(let y = 1; y < instructionsArray.length; y++)
+        for(let y = 1; y < props.instructionsArray.length; y++)
         {
-            instructionDataAPICall(createRecipeAPI, userDataID, adjustedRecipeName, submitTime, doubleDigits(y), instructionsArray[y].phase,
-                                    y, instructionsArray[y].action);
-        } */
-    };
+            instructionDataAPICall(createRecipeAPI, props.userID, props.detailsObject.adjRecipeName, submitTime, doubleDigits(y), props.instructionsArray[y].phase,
+                                    y, props.instructionsArray[y].action);
+        }
+    }
 
     return(
-        <button type="button" onClick={recipeFormSubmit}>
-            press this
-        </button>
+        <div>
+            <button type="button" onClick={submitRecipe}>Submit</button>
+        </div>
     );
 }
 
