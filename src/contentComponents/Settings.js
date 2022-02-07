@@ -1,6 +1,7 @@
 import React from "react";
 import { useState, useEffect, useContext } from "react";
 import { Account, AccountContext } from "../loginComponents/Account";
+import Axios from "axios";
 import ChangePassword from "../loginComponents/ChangePassword";
 import ChangeEmail from "../loginComponents/ChangeEmail";
 import RegisterUser from "../loginComponents/RegisterUser";
@@ -13,6 +14,13 @@ import "../StyleSettings.css"
     const { getSession, logout } = useContext(AccountContext);
     const [loggedIn, setLoggedIn] = useState(false);
     const [userEmail, setUserEmail] = useState("");
+    const [username, setUsername] = useState("");
+
+    const apiCall = Axios.create(
+    {
+        //baseURL: `http://anotheronlinecookbook.com/api/`
+        baseURL: `http://localhost:8080/api/`
+    });
 
     useEffect(() =>
     {
@@ -20,6 +28,19 @@ import "../StyleSettings.css"
         {
             setLoggedIn(true);
             setUserEmail(email);
+
+            async function fetchUsername()
+            {
+                try
+                {
+                    let returnedName = await apiCall.get(`/username/${email}`).then(( { data } ) => data);
+                    setUsername(returnedName[0].userName);
+                }catch(err)
+                {
+                    console.log(err);
+                }
+            }
+            fetchUsername();
         });
     });
 
@@ -35,9 +56,11 @@ import "../StyleSettings.css"
         return(
             <div className="loggedInContainer">
                 <div className="settingsLogoutContainer">
-                    <div className="logoutWords1"><p>You are logged in as &nbsp;</p></div>
+                    <div className="loggedInAs"><p>You are logged in as &nbsp;</p></div>
+                    <div className="username">{username}</div>
+                    <div className="loggedInAs"><p>&nbsp;(</p></div>
                     <div className="userEmailAddress">{userEmail}</div>
-                    <div className="logoutWords2"><p>. Click this button to log out.</p></div>
+                    <div className="loggedInAs"><p>). Click this button to log out.</p></div>
                     <button onClick={handleLogOut} className="settingsLogoutButton">Logout</button>
                 </div>
                 <div className="settingsChangesContainer">

@@ -9,12 +9,40 @@ router.use(bodyParser.json());
 router.use(bodyParser.urlencoded( { extended: false } ));
 
 
+//api call to retrieve username
+router.get('/username/:id', async (req, res) =>
+{
+    try
+    {
+        let results = await cookbookDB.username(req.params.id);
+        res.json(results);
+    }catch(err)
+    {
+        console.log(err);
+        res.sendStatus(500);
+    }
+});
+
 //api call for retrieving all recipes
 router.get('/browse/', async (req, res) =>
 {
     try
     {
         let results = await cookbookDB.browseRecipes();
+        res.json(results);
+    }catch(err)
+    {
+        console.log(err);
+        res.sendStatus(500);
+    }
+});
+
+//api call for retrieving selected recipe
+router.get('/fetch/:id', async (req, res) =>
+{
+    try
+    {
+        let results = await cookbookDB.viewRecipe(req.params.id);
         res.json(results);
     }catch(err)
     {
@@ -163,11 +191,6 @@ router.post('/recipeIngredients/insert/', async (req, res) =>
     }
 });
 
-/*
-    createRecipeAPI, userDataID, dataObjectHolder.adjRecipeName, submitTime, doubleDigits(y), instructionsArray[y].phase,
-                                    instructionsArray[y].step, instructionsArray[y].action
-*/
-
 //api call for creating recipe instruction data
 router.post('/recipeInstructions/insert/', async (req, res) =>
 {
@@ -215,7 +238,35 @@ router.delete('/recipeInstructions/delete/:id', async (req, res) =>
 {
     try
     {
-        let results = await cookbookDB.deleteRecipeInstructions(req.params.recipeDataID);
+        let results = await cookbookDB.deleteRecipeInstructions(req.params.id);
+        res.json(results);
+    }catch(err)
+    {
+        console.log(err);
+        res.sendStatus(500);
+    }
+});
+
+//api call to delete recipe ingredient data
+router.delete('/recipeIngredientsTotal/delete/:id', async (req, res) =>
+{
+    try
+    {
+        let results = await cookbookDB.deleteRecipeIngredientsTotal(req.params.id);
+        res.json(results);
+    }catch(err)
+    {
+        console.log(err);
+        res.sendStatus(500);
+    }
+});
+
+//api call to delete recipe instruction data
+router.delete('/recipeInstructionsTotal/delete/:id', async (req, res) =>
+{
+    try
+    {
+        let results = await cookbookDB.deleteRecipeInstructionsTotal(req.params.id);
         res.json(results);
     }catch(err)
     {

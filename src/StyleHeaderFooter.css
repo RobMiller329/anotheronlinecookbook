@@ -25,7 +25,7 @@
     align-items: center;
 }
 
-.settingsNavButton
+.settingsNavLoggedIn, .settingsNavButton
 {
     height: 60%;
     width: 60%;
@@ -35,8 +35,66 @@
     border: none;
 }
 
+.settingsNavLoggedOut
+{
+    height: 60%;
+    width: 60%;
+    color: red;
+}
+
 .footer
 {
     height: 100%;
     background-color: #C6D4E1;
+    padding: 0.2%;
+    display: grid;
+    grid-template-columns: 1.00fr 1.00fr;
+    grid-template-rows: 1.00 1.00;
+    grid-template-areas: "credits roadmap"
+                         "credits skills"
 }
+
+.footerCredits
+{
+    grid-area: credits;
+}
+
+.footerRoadmap
+{
+    grid-area: roadmap;
+}
+
+.footerSkills
+{
+    grid-area: skills;
+}
+
+.comingSoonOpenButton
+{}
+
+.comingSoonContainer
+{
+    opacity: 0.9;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    padding: 0.5%;
+}
+
+.comingSoonModal
+{
+}
+
+.comingSoonHeader
+{}
+
+.comingSoonContent
+{}
+
+.comingSoonModalClose
+{}
+
+.comingSoonCloseButton
+{}

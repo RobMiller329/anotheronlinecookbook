@@ -4,6 +4,26 @@ const connection = require('./dbCredentials');
 
 let cookbookDB = {};
 
+cookbookDB.username = (id) =>
+{
+    return new Promise((resolve, reject) =>
+    {
+        connection.query(
+            `SELECT userName ` +
+            `FROM userdata ` +
+            `WHERE userDataID = ?;`, [id], (err, results) =>
+        {
+            if(err)
+            {
+                return reject(err);
+            }else
+            {
+                return resolve(results);
+            }
+        });
+    });
+};
+
 cookbookDB.browseRecipes = () =>
 {
     return new Promise((resolve, reject) =>
@@ -12,6 +32,27 @@ cookbookDB.browseRecipes = () =>
             `SELECT a.recipeDataID, a.recipeName, a.recipeProtein, a.recipeCuisine, a.recipeSource, b.userName ` +
             `FROM recipedata as a ` + 
             `JOIN userdata as b ON a.userDataID = b.userDataID;`, (err, results) =>
+        {
+            if(err)
+            {
+                return reject(err);
+            }else
+            {
+                return resolve(results);
+            }
+        });
+    });
+};
+
+cookbookDB.viewRecipe = (id) =>
+{
+    return new Promise((resolve, reject) =>
+    {
+        connection.query(
+            `SELECT a.recipeDataID, a.recipeName, a.recipeSource, b.userName ` +
+            `FROM recipedata AS a ` + 
+            `JOIN userdata AS b ON a.userDataID = b.userDataID ` +
+            `WHERE a.recipeDataID = ?;`, [id], (err, results) =>
         {
             if(err)
             {
@@ -275,7 +316,7 @@ cookbookDB.deleteRecipeIngredients = (id) =>
     return new Promise((resolve, reject) =>
     {
         connection.query(
-            `DELETE FROM ingredientsdata WHERE recipeDataID = ?;`, [id], (err, res) =>
+            `DELETE FROM ingredientsdata WHERE ingredientsDataID = ?;`, [id], (err, res) =>
         {
             if(err)
             {
@@ -289,6 +330,42 @@ cookbookDB.deleteRecipeIngredients = (id) =>
 };
 
 cookbookDB.deleteRecipeInstructions = (id) =>
+{
+    return new Promise((resolve, reject) =>
+    {
+        connection.query(
+            `DELETE FROM instructiondata WHERE instructionDataID = ?;`, [id], (err, res) =>
+        {
+            if(err)
+            {
+                return reject(err);
+            }else
+            {
+                return resolve(res);
+            }
+        });
+    });
+};
+
+cookbookDB.deleteRecipeIngredientsTotal = (id) =>
+{
+    return new Promise((resolve, reject) =>
+    {
+        connection.query(
+            `DELETE FROM ingredientsdata WHERE recipeDataID = ?;`, [id], (err, res) =>
+        {
+            if(err)
+            {
+                return reject(err);
+            }else
+            {
+                return resolve(res);
+            }
+        });
+    });
+};
+
+cookbookDB.deleteRecipeInstructionsTotal = (id) =>
 {
     return new Promise((resolve, reject) =>
     {

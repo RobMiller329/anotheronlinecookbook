@@ -1,10 +1,10 @@
 import React from "react";
-import FinalTable from "./contentComponents/tableFinal";
 import NewRecipeForm from "./formComponents/FormNewRecipe";
 import EditRecipesForm from "./formComponents/FormEditRecipes";
 import { Account } from "./loginComponents/Account";
 import Settings from "./contentComponents/Settings";
 import "./StylePageBody.css";
+import BrowseTableBuild from "./contentComponents/BrowseTableBuild";
 
 function SettingsPage(props)
 {
@@ -50,7 +50,7 @@ class PageContent extends React.Component
         switch(this.props.page)
         {
             case "BrowseAllRecipes":
-                pageToShow = <FinalTable />;
+                pageToShow = <BrowseTableBuild />;
                 break;
             case "CreateNewRecipe":
                 pageToShow = <NewRecipeFormPage />
@@ -62,7 +62,7 @@ class PageContent extends React.Component
                 pageToShow = <SettingsPage />;
                 break;
             default:
-                pageToShow = <FinalTable />;
+                pageToShow = <BrowseTableBuild />;
                 break;
         }
 

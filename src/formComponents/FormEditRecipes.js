@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect, useContext } from "react";
 import { AccountContext } from "../loginComponents/Account";
-import EditRecipeTable from "./EditRecipeTable";
+import EditRecipeUI from "./EditRecipeUI";
 import "./StyleRecipeForm.css";
 
  function EditRecipeForm(props)
@@ -32,7 +32,7 @@ import "./StyleRecipeForm.css";
                 <h1>Edit My Recipes</h1>
             </div>
             <div className="formRender">
-                {loggedIn && <EditRecipeTable userID={userEmail} />}
+                {loggedIn && <EditRecipeUI userID={userEmail} />}
                 {!loggedIn && <UserNotLoggedIn />}
             </div>
         </div>

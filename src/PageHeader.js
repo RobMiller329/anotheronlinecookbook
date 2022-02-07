@@ -8,7 +8,6 @@ class PageHeader extends React.Component
         super(props);
         this.state =
         {
-            userID: this.props.userID
         };
 
         this.handleSettingsClick = this.handleSettingsClick.bind(this);
