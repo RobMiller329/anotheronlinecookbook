@@ -18,7 +18,7 @@ function ChangePassword(props)
     {
         event.preventDefault();
 
-        if(newPassword !== confirmPassword)
+        if(newPassword !== confirmPassword)         //if both password inputs don't match, reject input
         {
             alert("New Password and Confirm New Password must match exactly.");
         }else

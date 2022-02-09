@@ -163,3 +163,64 @@ table th
     background-color: #CCA0BF;
     color: black;
 }
+
+.editIngredientPopup
+{
+    height: 25%;
+    width: 25%;
+}
+
+.editIngredientModal
+{
+    background-color: white;
+    display: grid;
+    grid-template-columns: 1.00fr 1.00fr;
+    grid-template-rows: 1.00fr 1.00fr 1.00fr 1.00fr;
+    grid-template-areas: "nameLabel" "nameInput"
+                         "qtyLabel" "qtyInput"
+                         "msrLabel" "msrInput"
+                         "submit" "submit"
+}
+
+.editIngModalNameLabel
+{
+    grid-area: "nameLabel";
+}
+
+.editIngModalNameInput
+{
+    grid-area: "nameInput";
+}
+
+.editIngModalQuantityLabel
+{
+    grid-area: "qtyLabel";
+}
+
+.editIngModalQuantityInput
+{
+    grid-area: "qtyInput";
+}
+
+.editIngModalMeasurementLabel
+{
+    grid-area: "msrLabel";
+}
+
+.editIngModalMeasurementInput
+{
+    grid-area: "msrInput";
+}
+
+.editIngModalSubmitButton
+{
+    grid-area: "submit";
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.removeIngredientModal, .editInstructionModal, .removeInstructionModal
+{
+    background-color: white;
+}

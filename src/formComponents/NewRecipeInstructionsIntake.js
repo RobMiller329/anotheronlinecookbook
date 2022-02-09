@@ -7,21 +7,25 @@ function NRInstructionsIntake(props)
     const [instructionObject, setInstructionObject] = useState( { phase: "prep", action: "example" } );
     const [instructionsArray, setInstructionsArray] = useState( [] );
 
+    //calls the function to update the array whenever the instructionObject is updated
     useEffect(() =>
     {
         updateInstructionsArray();
     }, [instructionObject]);
 
+    //calls the passing instructions function when the array is updated
     useEffect(() =>
     {
         passingInstructionsArrayToParent(instructionsArray);
     }, [instructionsArray]);
 
+    //used to pass data from child to parent
     const passingInstructionsArrayToParent = (insArray) =>
     {
         props.setInstructionsArray(insArray);
     }
 
+    //adds newly submitted data to the instruction table
     function addInstructionsRow()
     {
         let newInstructionPhase = document.getElementById("instructionPhaseToAdd");
@@ -34,6 +38,7 @@ function NRInstructionsIntake(props)
         newInstructionPhase.focus();
     }
 
+    //updates the instruction array state by pushing the new object
     function updateInstructionsArray()
     {
         const newInstructionsArray = [...instructionsArray];
@@ -53,6 +58,7 @@ function NRInstructionsIntake(props)
         setInstructionsArray(adjustedInstructionsArray);
     };
 
+    //removes an instruction by looping through the array and only re-adding those that don't match the removed instruction
     const moveInstructionUp = (index) =>
     {
         let adjustedInstructionsArray = [];

@@ -18,7 +18,7 @@ function ChangeEmail(props)
     {
         event.preventDefault();
 
-        if(newEmail !== confirmEmail)
+        if(newEmail !== confirmEmail)           //if both email inputs don't match, reject input
         {
             alert("New Email and Confirm New Email must match exactly.");
         }else

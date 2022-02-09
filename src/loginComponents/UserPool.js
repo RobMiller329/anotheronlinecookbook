@@ -1,5 +1,6 @@
 import { CognitoUserPool } from "amazon-cognito-identity-js";
 
+/*  required to connect with AWS Cognito  */
 const poolData = 
 {
     UserPoolId: "us-east-1_wiFU2Kjvp",

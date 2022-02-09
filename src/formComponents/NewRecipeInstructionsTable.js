@@ -4,28 +4,26 @@ import "./StyleRecipeForm.css";
 
 function InstructionsTableBody(props)
 {
+    /*  builds the table based on the instructions array length; NEEDS REFACTORING  */
     const instructionsTableRows = props.instructionsArray.map((row, index) =>
     {
-        if(props.instructionsArray.length === 1)
+        if(props.instructionsArray.length === 1)            //if the example is the only element in the array
         {
             return(
                 <tr key={index}>
                     <td>{row.phase}</td>
                     <td>{index + 1}</td>
                     <td>{row.action}</td>
-                    <td>
-                    </td>
-                    <td>
-                    </td>
-                    <td>
-                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                 </tr>
             );
-        }else if(props.instructionsArray.length === 2)
+        }else if(props.instructionsArray.length === 2)      //only one additional element in the array
         {
             switch(index)
             {
-                case 0:
+                case 0:                                     //for index 0 (the example), don't append any buttons
                     return(
                         <tr key={index}>
                             <td>{row.phase}</td>
@@ -36,7 +34,7 @@ function InstructionsTableBody(props)
                             <td></td>
                         </tr>
                     );
-                default:
+                default:                                    //otherwise, add a button that triggers the removeInstruction function from props 
                     return(
                         <tr key={index}>
                             <td>{row.phase}</td>
@@ -52,9 +50,10 @@ function InstructionsTableBody(props)
             }
         }else
         {
+            /*  with more than one added instruction, we need to append both a remove button and a button to move the instruction up or down on the list  */
             switch(index)
             {
-                case 0:
+                case 0:                                                     //no buttons needed for the example
                     return(
                         <tr key={index}>
                             <td>{row.phase}</td>
@@ -65,7 +64,7 @@ function InstructionsTableBody(props)
                             <td></td>
                         </tr>
                     );
-                case 1:
+                case 1:                                                     //the top non-example instruction doesn't need a move up button
                     return(
                         <tr key={index}>
                             <td>{row.phase}</td>
@@ -80,7 +79,7 @@ function InstructionsTableBody(props)
                             </td>
                         </tr>
                     );
-                case (props.instructionsArrayLength - 1):
+                case (props.instructionsArrayLength - 1):                   //the bottom insutrction doesn't need a move down button
                     return(
                         <tr key={index}>
                             <td>{row.phase}</td>
@@ -95,7 +94,7 @@ function InstructionsTableBody(props)
                             </td>
                         </tr>
                     );
-                default:
+                default:                        //every added instruction that isn't first or last needs both a move up and move down button
                     return(
                         <tr key={index}>
                             <td>{row.phase}</td>
@@ -127,6 +126,7 @@ function NRInstructionsTable(props)
 {
     const [arrayOfInstructions, setArrayOfInstructions] = useState([]);
 
+    //pulls the array from props and sets the state with it
     useEffect(() =>
     {
         setArrayOfInstructions(props.instructionsArrayFromForm);

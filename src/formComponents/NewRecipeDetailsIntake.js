@@ -10,12 +10,14 @@ function NRDetailsIntake(props)
     const [recipeCuisine, setRecipeCuisine] = useState("");
     const [recipeDataObject, setRecipeDataObject] = useState( { recipeName: "", adjustedRecipeName: "", recipeSource: "", recipeProtein: "", recipeCuisine: "" } );
 
+    //when any of the states are updated, the recipeDataObject is updated to reflect those changes (including an updated adjusted recipe name)
     useEffect(() =>
     {
         setAdjustedRecipeName(recipeName.replaceAll(' ', "_"));
         setRecipeDataObject( { recipeName: recipeName, adjustedRecipeName: adjustedRecipeName, recipeSource: recipeSource, recipeProtein: recipeProtein, recipeCuisine: recipeCuisine } );
     }, [recipeName, adjustedRecipeName, recipeSource, recipeProtein, recipeCuisine]);
 
+    //each time the recipeDataObject is updated, calls the passingDetails function
     useEffect(() =>
     {
         passingDetailsObjectToParent(recipeDataObject);
@@ -31,6 +33,7 @@ function NRDetailsIntake(props)
         setRecipeCuisine(event.target.value);
     }
 
+    //a function passed down from the new recipe form and used to pass data from child to parent
     const passingDetailsObjectToParent = (dataObject) =>
     {
         props.setDetailsObject(dataObject);

@@ -7,6 +7,7 @@ const AccountContext = createContext();
 
 function Account(props)
 {
+    /*  pulls and stores credentials/account details associated with Cognito account  */
     const getSession = async () =>
     {
         return await new Promise((resolve, reject) =>
@@ -53,6 +54,7 @@ function Account(props)
         });
     };
 
+    //username here is in the context of Cognito (email); it is not the same as the site's username
     const authenticate = async (Username, Password) =>
     {
         return await new Promise((resolve, reject) =>

@@ -6,6 +6,9 @@ import Settings from "./contentComponents/Settings";
 import "./StylePageBody.css";
 import BrowseTableBuild from "./contentComponents/BrowseTableBuild";
 
+/*  The <Account> wrapper in these three functions provides the context of the user credentials so that each
+    of these components can access it.  */
+
 function SettingsPage(props)
 {
     return(
@@ -40,6 +43,7 @@ class PageContent extends React.Component
         super(props);
         this.state =
         {
+            //page state removed; passed directly from props to switch
         }
     }
 
@@ -47,6 +51,8 @@ class PageContent extends React.Component
     {
         let pageToShow;
 
+        /*  navigation handled by a string passed to this switch; the page title dictates which page's
+            component is displayed  */
         switch(this.props.page)
         {
             case "BrowseAllRecipes":

@@ -7,11 +7,13 @@ function NRIngredientsIntake(props)
     const [ingredientObject, setIngredientObject] = useState( { name: "example", quantity: "2/3", measurement: "cup" } );
     const [ingredientsArray, setIngredientsArray] = useState( [] );
 
+    //updates the array when the ingredient object is updated
     useEffect(() =>
     {
         updateIngredientsArray();
     }, [ingredientObject]);
 
+    //when the ingredients array is updated, resent the array up to the parent
     useEffect(() =>
     {
         passingIngredientsArrayToParent(ingredientsArray);
@@ -22,6 +24,7 @@ function NRIngredientsIntake(props)
         props.setIngredientsArray(ingArray);
     }
 
+    //creates the ingredient object; by updating the ingredient object state, it calls the array update function (via useEffect)
     function addIngredientsRow()
     {
         let newIngredientName = document.getElementById("ingredientNameToAdd");
@@ -34,9 +37,9 @@ function NRIngredientsIntake(props)
         newIngredientQuantity.value = "";
         newIngredientMeasurement.value = "";
         newIngredientName.focus();
-
     }
 
+    //pushes the new ingredient object onto the array
     function updateIngredientsArray()
     {
         const newIngredientsArray = [...ingredientsArray];
@@ -44,6 +47,7 @@ function NRIngredientsIntake(props)
         setIngredientsArray(newIngredientsArray);
     }
 
+    //removes an ingredient by looping through the array and only re-adding ingredients that don't match the selected ingredient
     const removeIngredient = (index) =>
     {
         let adjustedIngredientsArray = [];

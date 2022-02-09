@@ -17,6 +17,8 @@ class Navigation extends React.Component
         this.handleEditMyRecipesClick = this.handleEditMyRecipesClick.bind(this);
     }
 
+    /*  these are functions passed from App.js; could use REFACTORING  */
+
     handleBrowseAllRecipesClick()
     {
         this.props.onPageChange("BrowseAllRecipes");

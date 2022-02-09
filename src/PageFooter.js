@@ -19,6 +19,7 @@ function Credits(props)
 
 function Roadmap(props)
 {
+    /*  Builds a modal - displays the roadmap without disrupting the current page's state  */
     return(
         <Popup
         trigger={<button className="comingSoonOpenButton"> Coming Soon </button>}
@@ -38,11 +39,13 @@ function Roadmap(props)
                         <br/>
                         * [Create New Recipe] input validation
                         <br/>
-                        * [Edit My Recipes] edit element in overlay
+                        * [Edit My Recipes] button to delete recipe as a whole
                         <br/>
                         * [Edit My Recipes] submit edit feedback
                         <br/>
                         * [Edit My Recipes] input validation
+                        <br/>
+                        * [Edit My Recipes] add a new ingredient or instruction to recipe
                         <br/>
                         * [Settings (logged in)] heading shows username in addition to email
                         <br/>
@@ -67,6 +70,7 @@ function Roadmap(props)
 
 function SkillsAndGithub(props)
 {
+    /*  Builds a modal - displays the skills/Github without disrupting the current page's state  */
     return(
         <Popup
         trigger={<button className="comingSoonOpenButton"> test </button>}

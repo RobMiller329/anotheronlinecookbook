@@ -1,25 +1,31 @@
 import React from "react";
 import { useState, useEffect, useContext } from "react";
 import Axios from "axios";
-import ERIngredientsTable from "./EditRecipeIngredientsTable";
-//import EditDetailsTable from "./TableEditDetails";
+import ERIngredientsTable from "./EditIngredientsTable";
+import ERInstructionsTable from "./EditInstructionsTable";
 import { AccountContext } from "../loginComponents/Account";
-//import { editIngredientsColumns, editInstructionsColumns } from "./EditRecipeColumns";
 import "./StyleRecipeForm.css";
 
+/*
+    this component feeds into the primary edit ui component
+    CreateRecipeSelectionList is used to build out the drop down and handle
+    selections made on it
+*/
 function CreateRecipeSelectionList(props)
 {
+    //when a selection is made, pass the values upward
     function handleSelection()
     {
         props.fetchDataFunction(document.getElementById("selectRecipeDropdown").value);
         props.highlightCurrentOption(document.getElementById("selectRecipeDropdown").value);
-        console.log(document.getElementById("selectRecipeDropdown").value);
     }
 
+    //as long as the user has recipes to choose from, build the list
     if(props.recipesToSelectFrom.length > 0)
     {
         let dropdownMenu = document.getElementById("selectRecipeDropdown");
 
+        //add each of the user's recipes as an option in the dropdown
         for(let i = 0; i < props.recipesToSelectFrom.length; i++)
         {
             let currentItemName = props.recipesToSelectFrom[i].recipeName;
@@ -30,6 +36,8 @@ function CreateRecipeSelectionList(props)
             createdOption.textContent = currentItemName;
             createdOption.value = currentItemValue;
 
+            /*  in order to make sure duplicate options aren't inserted on state changes, values are checked against
+                existing options and only added if no matches are found  */
             for(var currentOptions of dropdownMenu.options)
             {
                 if(createdOption.value === currentOptions.value)
@@ -49,7 +57,6 @@ function CreateRecipeSelectionList(props)
                 <select id="selectRecipeDropdown" defaultValue="placeholderRecipeSelection" onChange={handleSelection}>
                     <option disabled hidden value="placeholderRecipeSelection">Select a recipe to edit.</option>
                 </select>
-                {/* <button type="button" onClick={() => props.fetchDataFunction(document.getElementById("selectRecipeDropdown").value)}>edit recipe</button> */}
             </div>
         );
     }else
@@ -65,6 +72,10 @@ function CreateRecipeSelectionList(props)
     }
 }
 
+/*
+    this component feeds into the primary edit ui component
+    SelectedRecipeHeader populates the header values after a selection is made
+*/
 function SelectedRecipeHeader(props)
 {
     let selectedRecipeName, selectedRecipeSource, selectedRecipeProtein, selectedRecipeCuisine;
@@ -116,6 +127,7 @@ function EditRecipeUI(props)
         baseURL: `http://localhost:8080/api`
     });
 
+    //on component mount, calls for the data to populate the list of recipes
     useEffect(() =>
     {
         getSession().then(( { email } ) =>
@@ -135,6 +147,7 @@ function EditRecipeUI(props)
         });
     }, []);
 
+    //after a recipe is selected, the data for the ingredients and instructions tables are called
     function fetchRecipeData(recipeID)
     {
         async function recipeIngredientsCall()
@@ -164,44 +177,13 @@ function EditRecipeUI(props)
         recipeInstructionsCall()
     }
 
-    async function editIngredientCall(ingName, ingQty, ingMsrment, ingredientID)
-    {
-        try
-        {
-            await recipeDataAPICall.post('/recipeIngredients/update/',
-            {
-                ingredientName: ingName,
-                ingredientQuantity: ingQty,
-                ingredientMeasurement: ingMsrment,
-                ingredientsDataID: ingredientID
-            });
-        }catch(err)
-        {
-            console.log(err);
-        }
-    };
-
-    async function removeIngredientCall(ingredientToDelete)
-    {
-        try
-        {
-            await recipeDataAPICall.delete(`/recipeIngredients/delete/${ingredientToDelete}`);
-            //may need to call retrieve again after deleting?
-        }catch(err)
-        {
-            console.log(err);
-        }
-    };
-
     return (
         <div className="editRecipeFormContainer">
             <CreateRecipeSelectionList recipesToSelectFrom={recipeList} fetchDataFunction={fetchRecipeData} highlightCurrentOption={setHighlightedRecipe} />
             <SelectedRecipeHeader currentOption={highlightedRecipe} recipesToSelectFrom={recipeList} />
             <br/>
-            <ERIngredientsTable ingredientsArrayFromUI={recipeIngredients} editIngredientPassedFunction={editIngredientCall} removeIngredientPassedFunction={removeIngredientCall} />
-            {/* <EditDetailsTable columns={editIngredientsColumns} data={recipeIngredients} />
-            <br/>
-            <EditDetailsTable columns={editInstructionsColumns} data={recipeInstructions} /> */}
+            <ERIngredientsTable ingredientsArrayFromUI={recipeIngredients} recipeID={highlightedRecipe} />
+            <ERInstructionsTable instructionsArrayFromUI={recipeInstructions} recipeID={highlightedRecipe} />
         </div>
     );
 }

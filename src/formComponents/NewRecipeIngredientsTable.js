@@ -4,6 +4,7 @@ import "./StyleRecipeForm.css";
 
 function IngredientsTableBody(props)
 {
+    //index zero is the example (needs to be fixed); all other table rows need a remove button appended
     const ingredientsTableRows = props.ingredientsArray.map((row, index) =>
     {
         switch(index)
@@ -42,6 +43,7 @@ function NRIngredientsTable(props)
 {
     const [arrayOfIngredients, setArrayOfIngredients] = useState([]);
 
+    //sets the ingredients array from props
     useEffect(() =>
     {
         setArrayOfIngredients(props.ingredientsArrayFromForm);

@@ -255,25 +255,6 @@ cookbookDB.createRecipeIngredients = (ingredientsDataID, ingredientName, recipeD
     });
 };
 
-/*
-    createRecipeAPI, userDataID, dataObjectHolder.adjRecipeName, submitTime, doubleDigits(y), instructionsArray[y].phase,
-                                    instructionsArray[y].step, instructionsArray[y].action
-*/
-
-//api call for creating recipe instruction data
-/* router.post('/recipeInstructions/insert/', async (req, res) =>
-{
-    try
-    {
-        let results = await cookbookDB.createRecipeInstructions(req.body.instructionDataID, req.body.recipeDataID, req.body.instructionPhase, req.body.instructionStep, req.body.instructionAction);
-        res.json(results);
-    }catch(err)
-    {
-        console.log(err);
-        res.sendStatus(500);
-    }
-}); */
-
 cookbookDB.createRecipeInstructions = (instructionDataID, recipeDataID, instructionPhase, instructionStep, instructionAction) =>
 {
     return new Promise((resolve, reject) =>

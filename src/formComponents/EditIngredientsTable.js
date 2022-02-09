@@ -1,7 +1,9 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import { EditIngredientsModal, RemoveIngredientsModal } from "./EditIngredientsModal";
 import "./StyleRecipeForm.css";
 
+/*  builds the ingredients table with modals for both ingredient editing and removal  */
 function IngredientsTableBody(props)
 {
     const ingredientsTableRows = props.ingredientsArray.map((row, index) =>
@@ -12,10 +14,12 @@ function IngredientsTableBody(props)
                 <td>{row.ingredientQuantity}</td>
                 <td>{row.ingredientMeasurement}</td>
                 <td>
-                    <button type="button" onClick={() => props.editIngredient(row.ingredientName, row.ingredientQuantity, row.ingredientMeasurement, row.ingredientsDataID)}>edit</button>
+                    <EditIngredientsModal ingID={row.ingredientsDataID} ingName={row.ingredientName} ingQty={row.ingredientQuantity}
+                                                ingMsr={row.ingredientMeasurement} />
                 </td>
                 <td>
-                    <button type="button" onClick={() => props.removeIngredient(row.ingredientsDataID)}>remove</button>
+                    <RemoveIngredientsModal ingID={row.ingredientsDataID} ingName={row.ingredientName} ingQty={row.ingredientQuantity}
+                                                ingMsr={row.ingredientMeasurement} />
                 </td>
             </tr>
         );
@@ -32,6 +36,7 @@ function ERIngredientsTable(props)
 {
     const [arrayOfIngredients, setArrayOfIngredients] = useState([]);
 
+    //sets the array of ingredients when the component mounts
     useEffect(() =>
     {
         setArrayOfIngredients(props.ingredientsArrayFromUI);
@@ -48,8 +53,7 @@ function ERIngredientsTable(props)
                     <th></th>
                 </tr>
             </thead>
-            <IngredientsTableBody ingredientsArray={ arrayOfIngredients } editIngredient={ props.editIngredientPassedFunction }
-                                            removeIngredient={ props.removeIngredientPassedFunction } />
+            <IngredientsTableBody ingredientsArray={ arrayOfIngredients } />
         </table>
     );
 }

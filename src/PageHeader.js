@@ -13,6 +13,7 @@ class PageHeader extends React.Component
         this.handleSettingsClick = this.handleSettingsClick.bind(this);
     }
 
+    /*  setPage is passed as a prop from App.js to PageHeader.js; parameters are passed back up to App.js  */
     handleSettingsClick()
     {
         this.props.onPageChange("Settings");

@@ -5,6 +5,7 @@ import UserPool from "./UserPool";
 import "../StyleSettings.css"
 
 
+/*  when called, creates a new user record in the database  */
 async function createUsername(email, username)
 {
     const usernameAPICall = Axios.create(
@@ -39,17 +40,19 @@ function RegisterUser(props)
     {
         event.preventDefault();
 
+        //if any of these fields are empty, ask for them to be completed
         if(emailInputElement.value === "" || usernameInputElement.value === "" || passwordInputElement.value === "" || confirmPasswordElement.value === "")
         {
             alert("All fields are required to complete registration.");
-        }else if(!email.match(emailFormat))
+        }else if(!email.match(emailFormat))         //if the email input isn't formatted like an email, reject
         {
             emailInputElement.setCustomValidity("Not a valid email format.");
-        }else if(password !== confirmPassword)
+        }else if(password !== confirmPassword)      //if the password and confirm password don't match, reject
         {
             alert("Password and Confirm Password must match exactly.");
         }else
         {
+            /*  If the input is all valid, attempts a user registration with Cognito and (separately) creates the username in the database  */
             UserPool.signUp(email, password, [], null, (err, data) =>
             {
                 if(err)
@@ -60,6 +63,8 @@ function RegisterUser(props)
                 {
                     createUsername(email, username);
                     alert("Registration succeeded. Please check your email for a confirmation link. After confirming your email, you can log in.");
+
+                    //resets the inputs
                     emailInputElement.value = "";
                     usernameInputElement.value = "";
                     passwordInputElement.value = "";

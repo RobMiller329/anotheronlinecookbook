@@ -70,6 +70,7 @@ export const BrowseTableModal = (props) =>
         baseURL: `http://localhost:8080/api/`
     });
 
+    //returns all parts of the recipe from separate API calls
     function fetchRecipeData()
     {
         setOpen(o => !o);

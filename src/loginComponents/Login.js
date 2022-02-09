@@ -8,7 +8,7 @@ function UserLogin(props)
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    //refers to this as "destructuring" - what does that mean?
+    //allows use of the authenticate function from Cognito
     const { authenticate } = useContext(AccountContext);
 
     let emailFormat = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
@@ -18,7 +18,7 @@ function UserLogin(props)
     {
         event.preventDefault();
 
-        if(!email.match(emailFormat))
+        if(!email.match(emailFormat))       //email must be in the proper format or it is rejected
         {
             emailInputElement.setCustomValidity("Not a valid email format.");
         }else

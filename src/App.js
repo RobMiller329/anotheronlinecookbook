@@ -10,6 +10,7 @@ function App()
 {
   const [page, setPage] = useState("");
 
+  /*  function passed to PageHeader and Navigation to handle page values being passed back to App and then forwarded to PageContent  */
   function handlePageChange(newPage)
   {
     setPage(newPage);

@@ -7,6 +7,7 @@ import NRInstructionsIntake from "./NewRecipeInstructionsIntake";
 import NRSubmitButton from "./NewRecipeSubmitButton";
 import "./StyleRecipeForm.css";
 
+//the logged-in component
 function CreateRecipeForm(props)
 {
     return(
@@ -22,6 +23,7 @@ function CreateRecipeForm(props)
     );
 }
 
+//the not-logged-in component
 function UserNotLoggedIn()
 {
     return(
@@ -39,6 +41,7 @@ function NewRecipeForm(props)
     const [nrIngredients, setNRIngredients] = useState([]);
     const [nrInstructions, setNRInstructions] = useState([]);
 
+    //sets user data on component mount
     useEffect(() =>
     {
         getSession().then(( { email } ) =>

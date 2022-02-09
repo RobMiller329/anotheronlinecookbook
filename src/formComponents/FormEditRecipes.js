@@ -10,6 +10,7 @@ import "./StyleRecipeForm.css";
     const [loggedIn, setLoggedIn] = useState(false);
     const [userEmail, setUserEmail] = useState("");
 
+    //sets user details on component mount
     useEffect(() =>
     {
         getSession().then(( { email } ) =>

@@ -22,6 +22,7 @@ import "../StyleSettings.css"
         baseURL: `http://localhost:8080/api/`
     });
 
+    //pulls user data on component mount
     useEffect(() =>
     {
         getSession().then(( { email } ) =>

@@ -38,6 +38,7 @@ function BrowseTableBuild(props)
         baseURL: `http://localhost:8080/api/`
     });
 
+    //pulls all recipe data on component mount
     useEffect(() =>
     {
         async function fetchData()
