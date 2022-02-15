@@ -3,6 +3,7 @@ const router = express.Router();
 const cors = require("cors");
 const bodyParser = require("body-parser")
 const cookbookDB = require('./queries');
+const processFilter = require('./filterFetch');
 
 router.use(cors());
 router.use(bodyParser.json());
@@ -29,6 +30,22 @@ router.get('/browse/', async (req, res) =>
     try
     {
         let results = await cookbookDB.browseRecipes();
+        res.json(results);
+    }catch(err)
+    {
+        console.log(err);
+        res.sendStatus(500);
+    }
+});
+
+//api call for retrieving filtered recipes
+router.get('/filter/:id', async (req, res, next) =>
+{
+    let parsedParameters = processFilter(req.params.id);
+
+    try
+    {
+        let results = await cookbookDB.filteredBrowse(parsedParameters[0], parsedParameters[1], parsedParameters[2], parsedParameters[3], parsedParameters[4]);
         res.json(results);
     }catch(err)
     {

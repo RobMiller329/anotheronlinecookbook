@@ -24,7 +24,7 @@ class PageHeader extends React.Component
         return(
             <div className="pageHeaderContainer">
                 <div className="pageHeaderTitle">
-                    <h1>Another Online Recipe Book</h1>
+                    <h1>Another Online Cookbook</h1>
                 </div>
                 <div className="pageHeaderSettings">
                     <button onClick={this.handleSettingsClick} value="Settings" className="settingsNavButton" />

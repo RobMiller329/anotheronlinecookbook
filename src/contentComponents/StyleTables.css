@@ -83,3 +83,8 @@ table th
     background-color: #CCA0BF;
     color: black;
 }
+
+.browseRowName
+{
+    width: 10px;
+}

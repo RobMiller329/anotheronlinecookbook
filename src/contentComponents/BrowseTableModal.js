@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import Popup from "reactjs-popup";
 import Axios from "axios";
+import './StyleBrowseModal.css';
 
 function RecipeHeaderBody(props)
 {
@@ -30,7 +31,7 @@ function RecipeIngredientsBody(props)
     });
 
     return(
-        <tbody>
+        <tbody className="browseModalIngredientsBody">
             { recipeIngredientRows }
         </tbody>
     );
@@ -61,6 +62,7 @@ export const BrowseTableModal = (props) =>
     const [recipeHeader, setRecipeHeader] = useState( { id: "", name: "", source: "", user: "" } );
     const [recipeIngredients, setRecipeIngredients] = useState([]);
     const [recipeInstructions, setRecipeInstructions] = useState([]);
+    const [myNotes, setMyNotes] = useState("");
     const [open, setOpen] = useState(false);
     const closeModal = () => setOpen(false);
 
@@ -116,47 +118,56 @@ export const BrowseTableModal = (props) =>
     }
 
     return(
-        <div>
+        <div className="browseModalContainer">
             <button type="button" className="viewRecipeOpenButton" onClick={ () => fetchRecipeData() }>view recipe</button>
             <Popup open={open} closeOnDocumentClick onClose={closeModal}>
                 <div className="viewRecipeContainer">
-                    <div className="comingSoonModal">
-                        <div className="viewRecipeHeader">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Recipe Name</th>
-                                        <th>Source</th>
-                                        <th>Submitted By</th>
-                                    </tr>
-                                </thead>
-                                <RecipeHeaderBody headerObject={ recipeHeader } />
-                            </table>
+                    <div className="viewRecipeModalButtons">
+                        <div className="goToRecipeButtContainer">
+                            <button className="goToRecipeButton">go to this recipe's page</button>
                         </div>
-                        <div className="viewRecipeIngredients">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Ingredient Name</th>
-                                        <th>Quantity</th>
-                                        <th>Measurement</th>
-                                    </tr>
-                                </thead>
-                                <RecipeIngredientsBody ingredientsArray={ recipeIngredients } />
-                            </table>
+                        <div className="favRecipeButtContainer">
+                            <button className="favoriteRecipeButton">favorite this recipe</button>
                         </div>
-                        <div className="viewRecipeInstructions">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Instruction Phase</th>
-                                        <th>Step</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <RecipeInstructionsBody instructionsArray={ recipeInstructions } />
-                            </table>
+                        <div className="followAuthButtContainer">
+                            <button className="followAuthorButton">follow this recipe author</button>
                         </div>
+                    </div>
+                    <div className="viewRecipeHeader">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Recipe Name</th>
+                                    <th>Source</th>
+                                    <th>Submitted By</th>
+                                </tr>
+                            </thead>
+                            <RecipeHeaderBody headerObject={ recipeHeader } />
+                        </table>
+                    </div>
+                    <div className="viewRecipeIngredients">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Ingredient Name</th>
+                                    <th>Quantity</th>
+                                    <th>Measurement</th>
+                                </tr>
+                            </thead>
+                            <RecipeIngredientsBody ingredientsArray={ recipeIngredients } />
+                        </table>
+                    </div>
+                    <div className="viewRecipeInstructions">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Instruction Phase</th>
+                                    <th>Step</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <RecipeInstructionsBody instructionsArray={ recipeInstructions } />
+                        </table>
                     </div>
                 </div>
             </Popup>

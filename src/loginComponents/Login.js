@@ -36,11 +36,25 @@ function UserLogin(props)
         }
     };
 
+    function guestLogin()
+    {
+        setEmail("guest@anotheronlinecookbook.com");
+        setPassword("P@ssw0rd!");
+        console.log(email);
+        console.log(password);
+    }
+
     return(
         <div className="loginContainer">
             <div>
                 <p>Already have an account? Login here!</p>
             </div>
+            <br/>
+            <div className="guestLoginContainer">
+                <p>Click here to fill in the Guest credentials.</p>
+                <button type="button" onClick={() => guestLogin()}>Guest Login</button>
+            </div>
+            <br/><br/>
             <div className="loginForm">
                 <form onSubmit={onSubmit}>
                     <label htmlFor="email">Email</label>

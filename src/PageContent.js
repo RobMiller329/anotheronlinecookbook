@@ -3,8 +3,8 @@ import NewRecipeForm from "./formComponents/FormNewRecipe";
 import EditRecipesForm from "./formComponents/FormEditRecipes";
 import { Account } from "./loginComponents/Account";
 import Settings from "./contentComponents/Settings";
-import "./StylePageBody.css";
 import BrowseTableBuild from "./contentComponents/BrowseTableBuild";
+import "./StylePageBody.css";
 
 /*  The <Account> wrapper in these three functions provides the context of the user credentials so that each
     of these components can access it.  */
@@ -43,7 +43,7 @@ class PageContent extends React.Component
         super(props);
         this.state =
         {
-            //page state removed; passed directly from props to switch
+            recipePage: "none"
         }
     }
 

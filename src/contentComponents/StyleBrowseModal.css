@@ -1,0 +1,127 @@
+.popup-content
+{
+    margin: auto;
+    background: rgb(255, 255, 255);
+    height: 80%;
+    width: 80%;
+    padding: 0.1%;
+}
+
+.popup-arrow
+{
+    color: rgb(255, 255, 255);
+}
+
+[role='tooltip'].popup-content
+{
+    width: 20%;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 0px 3px;
+}
+
+.popup-overlay
+{
+    background: rgba(0, 0, 0, 0.5);
+}
+
+[data-popup='tooltip'].popup-overlay
+{
+    background: transparent;
+}
+
+.browseModalContainer
+{}
+
+.viewRecipeModalButtons
+{
+    display: flex;
+    justify-content: right;
+}
+
+.favRecipeButtContainer, .goToRecipeButtContainer, .followAuthButtContainer
+{
+    padding-right: 0.5%;
+}
+
+.favoriteRecipeButton, .goToRecipeButton, .followAuthorButton
+{}
+
+.viewRecipeContainer
+{
+    overflow: scroll;
+}
+
+.viewRecipeHeader
+{
+    padding-bottom: 0.25%;
+}
+
+.viewRecipeIngredients
+{
+    padding-bottom: 0.25%;
+}
+
+.viewRecipeInstructions
+{
+}
+
+.testIngredients
+{
+    height: 20%;
+    overflow: scroll;
+}
+
+.testIngHead
+{
+    display: flex;
+    justify-content: space-between;
+    background-color: #CCA0BF;
+    font-size: 55%;
+}
+
+.testIngHeadName
+{
+    grid-area: "nHead";
+    width: 33%;
+}
+
+.testIngHeadQty
+{
+    grid-area: "qHead";
+    width: 33%;
+}
+
+.testIngHeadMsr
+{
+    grid-area: "mHead";
+    width: 33%;
+}
+
+.testIngredientsBodyReturned
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: #CCA0BF;
+    font-size: 120%;
+}
+
+.newDivIngredientsRowEven
+{
+    display: flex;
+    flex-direction: row;
+    background-color: #DFC8D8;
+    justify-content: space-between;
+}
+
+.newDivIngredientsRowOdd
+{
+    display: flex;
+    flex-direction: row;
+    background-color: #F1F1F1;
+    justify-content: space-between;
+}
+
+.testIngredientNameDiv, .testIngredientQtyDiv, .testIngredientMsrDiv
+{
+    width: 33%;
+}

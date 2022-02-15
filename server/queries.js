@@ -44,6 +44,28 @@ cookbookDB.browseRecipes = () =>
     });
 };
 
+cookbookDB.filteredBrowse = (name, protein, cuisine, source, user) =>
+{
+    return new Promise((resolve, reject) =>
+    {
+        connection.query(
+            `SELECT a.recipeDataID, a.recipeName, a.recipeProtein, a.recipeCuisine, a.recipeSource, b.userName ` +
+            `FROM recipedata as a ` + 
+            `JOIN userdata as b ON a.userDataID = b.userDataID ` +
+            `WHERE a.recipeName LIKE ? AND a.recipeProtein LIKE ? AND a.recipeCuisine LIKE ? ` +
+            `AND a.recipeSource LIKE ? AND b.userName LIKE ?;`, [name, protein, cuisine, source, user], (err, res) =>
+        {
+            if(err)
+            {
+                return reject(err);
+            }else
+            {
+                return resolve(res);
+            }
+        });
+    });
+};
+
 cookbookDB.viewRecipe = (id) =>
 {
     return new Promise((resolve, reject) =>

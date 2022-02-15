@@ -49,7 +49,7 @@
     padding: 0.2%;
     display: grid;
     grid-template-columns: 1.00fr 1.00fr;
-    grid-template-rows: 1.00 1.00;
+    grid-template-rows: 1.00fr 1.00fr;
     grid-template-areas: "credits roadmap"
                          "credits skills"
 }
