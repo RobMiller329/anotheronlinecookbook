@@ -1,5 +1,6 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { AccountContext } from "../loginComponents/Account";
 import Axios from "axios";
 import { BrowseTableModal } from "./BrowseTableModal";
 import "./StyleTables.css";
@@ -16,7 +17,7 @@ function BrowseTableBody(props)
                 <td>{row.recipeSource}</td>
                 <td>{row.userName}</td>
                 <td>
-                    <BrowseTableModal recipeID={row.recipeDataID} />
+                    <BrowseTableModal recipeID={row.recipeDataID} userEmail={props.userEmail} creatorID={row.userDataID} />
                 </td>
             </tr>
         );
@@ -31,22 +32,29 @@ function BrowseTableBody(props)
 
 function BrowseTableBuild(props)
 {
+    const { getSession } = useContext(AccountContext);
     const [data, setData] = useState([]);
+    const [userEmail, setUserEmail] = useState("");
 
-    const viewRecipesAPICall = Axios.create(
+    const apiCall = Axios.create(
     {
         //baseURL: `http://anotheronlinecookbook.com/api/`
         baseURL: `http://localhost:8080/api/`
     });
 
-    //pulls all recipe data on component mount
+    //pulls all recipe and user data on component mount
     useEffect(() =>
     {
+        getSession().then(( { email } ) =>
+        {
+            setUserEmail(email);
+        });
+
         async function fetchData()
         {
             try
             {
-                let returnedData = await viewRecipesAPICall.get('/browse/').then(( { data } ) => data);
+                let returnedData = await apiCall.get('/browse/').then(( { data } ) => data);
                 setData(returnedData);
             }catch(err)
             {
@@ -95,7 +103,7 @@ function BrowseTableBuild(props)
         {
             try
             {
-                let returnedData = await viewRecipesAPICall.get(`/filter/${filter}`,
+                let returnedData = await apiCall.get(`/filter/${filter}`,
                 {
                     recipeNameFilter: filter
                 }).then(( { data } ) => data);
@@ -151,7 +159,7 @@ function BrowseTableBuild(props)
                         <th></th>
                     </tr>
                 </thead>
-                <BrowseTableBody recipesArray={ data } />
+                <BrowseTableBody recipesArray={ data } userEmail={ userEmail } />
             </table>
         </div>
     );

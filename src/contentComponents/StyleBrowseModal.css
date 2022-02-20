@@ -2,8 +2,8 @@
 {
     margin: auto;
     background: rgb(255, 255, 255);
-    height: 80%;
-    width: 80%;
+    height: 90%;
+    width: 90%;
     padding: 0.1%;
 }
 
@@ -28,100 +28,132 @@
     background: transparent;
 }
 
-.browseModalContainer
-{}
+.viewRecipeContainer
+{
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1.00fr 0.25fr;
+    grid-template-rows: 1.00fr 0.10fr 1.00fr 1.00fr;
+}
 
 .viewRecipeModalButtons
 {
-    display: flex;
-    justify-content: right;
+    /* display: flex; */
+    grid-column: 1 / 3;
+    grid-row: 1;
+    /* border: 1px yellow solid; */
+    display: grid;
+    grid-template-columns: 1.00fr 0.50fr 0.20fr 0.50fr 0.20fr;
 }
 
-.favRecipeButtContainer, .goToRecipeButtContainer, .followAuthButtContainer
+.favoriteRecipeButtonLabel
 {
+    grid-column: 2;
+    border: 1px green solid;
+}
+
+.favRecipeButtContainer
+{
+    height: 100%;
+    width: 100%;
     padding-right: 0.5%;
+    grid-column: 3;
+    display: flex;
+    justify-content: center;
+    border: 1px purple solid;
 }
 
-.favoriteRecipeButton, .goToRecipeButton, .followAuthorButton
-{}
-
-.viewRecipeContainer
+.emptyFavoriteRecipeButton:hover
 {
-    overflow: scroll;
+    background-color: black;
+}
+
+.followCreatorButtonLabel
+{
+    grid-column: 4;
+    border: 1px blue solid;
+}
+
+.followCreatorButtContainer
+{
+    height: 100%;
+    width: 100%;
+    padding-right: 0.5%;
+    grid-column: 5;
+    display: flex;
+    justify-content: center;
+    border: 1px red solid;
+}
+
+.emptyFavoriteRecipeButton
+{
+    height: 100%;
+    width: 100%;
+    background-image: url("../assets/redEmptyHeart.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    border: 1px yellow dotted;
+}
+
+.filledFavoriteRecipeButton
+{
+    height: 100%;
+    width: 100%;
+    background-image: url("../assets/redFilledHeart.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    border: none;
+}
+
+.emptyFollowCreatorButton
+{
+    height: 100%;
+    width: 100%;
+    background-image: url("../assets/blueEmptyHeart.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    border: none;
+    border: 1px yellow dotted;
+}
+
+.filledFollowCreatorButton
+{
+    height: 100%;
+    width: 100%;
+    background-image: url("../assets/blueFilledHeart.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    border: none;
 }
 
 .viewRecipeHeader
 {
+    grid-column: 1 / 3;
+    grid-row: 2;
     padding-bottom: 0.25%;
+    /* border: 1px purple solid; */
 }
 
 .viewRecipeIngredients
 {
+    grid-column: 1;
+    grid-row: 3;
     padding-bottom: 0.25%;
+    padding-right: 0.25%;
+    /* border: 1px green solid; */
 }
 
 .viewRecipeInstructions
 {
+    grid-column: 1;
+    grid-row: 4;
+    padding-right: 0.25%;
+    /* border: 1px red solid; */
 }
 
-.testIngredients
+.viewRecipeNotes
 {
-    height: 20%;
-    overflow: scroll;
-}
-
-.testIngHead
-{
-    display: flex;
-    justify-content: space-between;
-    background-color: #CCA0BF;
-    font-size: 55%;
-}
-
-.testIngHeadName
-{
-    grid-area: "nHead";
-    width: 33%;
-}
-
-.testIngHeadQty
-{
-    grid-area: "qHead";
-    width: 33%;
-}
-
-.testIngHeadMsr
-{
-    grid-area: "mHead";
-    width: 33%;
-}
-
-.testIngredientsBodyReturned
-{
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    background-color: #CCA0BF;
-    font-size: 120%;
-}
-
-.newDivIngredientsRowEven
-{
-    display: flex;
-    flex-direction: row;
-    background-color: #DFC8D8;
-    justify-content: space-between;
-}
-
-.newDivIngredientsRowOdd
-{
-    display: flex;
-    flex-direction: row;
-    background-color: #F1F1F1;
-    justify-content: space-between;
-}
-
-.testIngredientNameDiv, .testIngredientQtyDiv, .testIngredientMsrDiv
-{
-    width: 33%;
+    grid-column: 2;
+    grid-row: 3 / 5;
+    border: 1px black solid;
 }

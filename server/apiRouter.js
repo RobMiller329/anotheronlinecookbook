@@ -110,6 +110,34 @@ router.get('/recipeInstructions/select/:id', async (req, res, next) =>
     }
 });
 
+//api call for retrieving a favorite recipe or follow creator record
+router.get('/favorite/select/:id', async (req, res, next) =>
+{
+    try
+    {
+        let results = await cookbookDB.retrieveFavoriteRecipe(req.params.id);
+        res.json(results);
+    }catch(err)
+    {
+        console.log(err);
+        res.sendStatus(500);
+    }
+});
+
+//api call for retrieving recipe notes
+router.get('/notes/select/:id', async (req, res, next) =>
+{
+    try
+    {
+        let results = await cookbookDB.retrieveRecipeNotes(req.params.id);
+        res.json(results);
+    }catch(err)
+    {
+        console.log(err);
+        res.sendStatus(500);
+    }
+});
+
 //api call for updating selected recipe data
 router.post('/recipeData/update/', async (req, res, next) =>
 {
@@ -222,6 +250,20 @@ router.post('/recipeInstructions/insert/', async (req, res) =>
     }
 });
 
+//api call for creating a favorite recipe record
+router.post('/favorite/insert/', async (req, res) =>
+{
+    try
+    {
+        let results = await cookbookDB.createFavoriteRecipe(req.body.favoritesDataID, req.body.favoritesDataType, req.body.userDataID, req.body.favoritesDataItemID);
+        res.json(results);
+    }catch(err)
+    {
+        console.log(err);
+        res.sendStatus(500);
+    }
+});
+
 //api call to delete a recipe data record
 router.delete('/recipeData/delete/:id', async (req, res, next) =>
 {
@@ -284,6 +326,20 @@ router.delete('/recipeInstructionsTotal/delete/:id', async (req, res) =>
     try
     {
         let results = await cookbookDB.deleteRecipeInstructionsTotal(req.params.id);
+        res.json(results);
+    }catch(err)
+    {
+        console.log(err);
+        res.sendStatus(500);
+    }
+});
+
+//api call to delete favorite recipe or follow creator record
+router.delete('/favorite/delete/:id', async (req, res) =>
+{
+    try
+    {
+        let results = await cookbookDB.deleteFavoriteRecipe(req.params.id);
         res.json(results);
     }catch(err)
     {

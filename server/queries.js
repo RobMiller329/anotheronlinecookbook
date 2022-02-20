@@ -29,7 +29,7 @@ cookbookDB.browseRecipes = () =>
     return new Promise((resolve, reject) =>
     {
         connection.query(
-            `SELECT a.recipeDataID, a.recipeName, a.recipeProtein, a.recipeCuisine, a.recipeSource, b.userName ` +
+            `SELECT a.recipeDataID, a.recipeName, a.recipeProtein, a.recipeCuisine, a.recipeSource, b.userName, a.userDataID ` +
             `FROM recipedata as a ` + 
             `JOIN userdata as b ON a.userDataID = b.userDataID;`, (err, results) =>
         {
@@ -71,7 +71,7 @@ cookbookDB.viewRecipe = (id) =>
     return new Promise((resolve, reject) =>
     {
         connection.query(
-            `SELECT a.recipeDataID, a.recipeName, a.recipeSource, b.userName ` +
+            `SELECT a.recipeDataID, a.recipeName, a.recipeSource, b.userName, a.userDataID ` +
             `FROM recipedata AS a ` + 
             `JOIN userdata AS b ON a.userDataID = b.userDataID ` +
             `WHERE a.recipeDataID = ?;`, [id], (err, results) =>
@@ -381,6 +381,81 @@ cookbookDB.deleteRecipeInstructionsTotal = (id) =>
             }else
             {
                 return resolve(res);
+            }
+        });
+    });
+};
+
+cookbookDB.createFavoriteRecipe = (favoritesDataID, favoritesDataType, userDataID, favoritesDataItemID) =>
+{
+    return new Promise((resolve, reject) =>
+    {
+        connection.query(
+            `INSERT INTO favoritesdata (favoritesDataID, favoritesDataType, userDataID, favoritesDataItemID) ` +
+            `VALUES (?, ?, ?, ?);`, [favoritesDataID, favoritesDataType, userDataID, favoritesDataItemID], (err, res) =>
+        {
+            if(err)
+            {
+                return reject(err);
+            }else
+            {
+                return resolve(res);
+            }
+        });
+    });
+};
+
+cookbookDB.deleteFavoriteRecipe = (id) =>
+{
+    return new Promise((resolve, reject) =>
+    {
+        connection.query(
+            `DELETE FROM favoritesdata WHERE favoritesDataID = ?;`, [id], (err, res) =>
+        {
+            if(err)
+            {
+                return reject(err);
+            }else
+            {
+                return resolve(res);
+            }
+        });
+    });
+};
+
+cookbookDB.retrieveFavoriteRecipe = (id) =>
+{
+    return new Promise((resolve, reject) =>
+    {
+        connection.query(
+            `SELECT favoritesDataID, favoritesDataType, userDataID, favoritesDataItemID ` +
+            `FROM favoritesdata WHERE favoritesDataID = ? `, [id], (err, results) =>
+        {
+            if(err)
+            {
+                return reject(err);
+            }else
+            {
+                return resolve(results);
+            }
+        });
+    });
+};
+
+cookbookDB.retrieveRecipeNotes = (id) =>
+{
+    return new Promise((resolve, reject) =>
+    {
+        connection.query(
+            `SELECT recipeCommentaryID, userDataID, recipeDataID, commentaryMessage ` +
+            `FROM recipecommentary WHERE recipeCommentaryID = ? `, [id], (err, results) =>
+        {
+            if(err)
+            {
+                return reject(err);
+            }else
+            {
+                return resolve(results);
             }
         });
     });

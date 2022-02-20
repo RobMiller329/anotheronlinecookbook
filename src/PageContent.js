@@ -1,9 +1,9 @@
 import React from "react";
 import NewRecipeForm from "./formComponents/FormNewRecipe";
 import EditRecipesForm from "./formComponents/FormEditRecipes";
-import { Account } from "./loginComponents/Account";
 import Settings from "./contentComponents/Settings";
 import BrowseTableBuild from "./contentComponents/BrowseTableBuild";
+import { Account } from "./loginComponents/Account";
 import "./StylePageBody.css";
 
 /*  The <Account> wrapper in these three functions provides the context of the user credentials so that each
@@ -36,48 +36,45 @@ function EditRecipesFormPage(props)
     );
 }
 
-class PageContent extends React.Component
+function BrowsingRecipesTable(props)
 {
-    constructor(props)
+    return(
+        <Account>
+            <BrowseTableBuild />
+        </Account>
+    );
+}
+
+function PageContent(props)
+{
+    let pageToShow;
+
+    /*  navigation handled by a string passed to this switch; the page title dictates which page's
+        component is displayed  */
+    switch(props.page)
     {
-        super(props);
-        this.state =
-        {
-            recipePage: "none"
-        }
+        case "BrowseAllRecipes":
+            pageToShow = <BrowsingRecipesTable />;
+            break;
+        case "CreateNewRecipe":
+            pageToShow = <NewRecipeFormPage />;
+            break;
+        case "EditMyRecipes":
+            pageToShow = <EditRecipesFormPage />;
+            break;
+        case "Settings":
+            pageToShow = <SettingsPage />;
+            break;
+        default:
+            pageToShow = <BrowsingRecipesTable />;
+            break;
     }
 
-    render()
-    {
-        let pageToShow;
-
-        /*  navigation handled by a string passed to this switch; the page title dictates which page's
-            component is displayed  */
-        switch(this.props.page)
-        {
-            case "BrowseAllRecipes":
-                pageToShow = <BrowseTableBuild />;
-                break;
-            case "CreateNewRecipe":
-                pageToShow = <NewRecipeFormPage />
-                break;
-            case "EditMyRecipes":
-                pageToShow = <EditRecipesFormPage />;
-                break;
-            case "Settings":
-                pageToShow = <SettingsPage />;
-                break;
-            default:
-                pageToShow = <BrowseTableBuild />;
-                break;
-        }
-
-        return(
-            <div className="pageContent">
-                { pageToShow }
-            </div>
-        );
-    }
+    return(
+        <div className="pageContent">
+            { pageToShow }
+        </div>
+    );
 }
 
 export default PageContent;
