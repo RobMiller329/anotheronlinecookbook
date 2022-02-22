@@ -119,7 +119,7 @@ export const BrowseTableModal = (props) =>
     //returns all parts of the recipe from separate API calls
     function fetchRecipeData()
     {
-        setOpen(o => !o);
+        setOpen(status => !status);
 
         setUserID(props.userEmail);
 
@@ -203,20 +203,21 @@ export const BrowseTableModal = (props) =>
         }
         followCreatorCall();
 
-        async function recipeNotesCall()
-        {
-            let recordID = props.userEmail + props.recipeID;
-
-            try
-            {
-                let returnedNotes = await recipeDataAPICall.get(`/notes/select/${recordID}`).then(( { data } ) => data);
-                setNotesData( { ...notesData, text: returnedNotes } );
-            }catch(err)
-            {
-                console.log(err);
-            }
-        }
         recipeNotesCall();
+    }
+
+    async function recipeNotesCall()
+    {
+        let recordID = props.userEmail + props.recipeID;
+
+        try
+        {
+            let returnedNotes = await recipeDataAPICall.get(`/notes/select/${recordID}`).then(( { data } ) => data);
+            setNotesData( { ...notesData, text: returnedNotes[0].commentaryMessage } );
+        }catch(err)
+        {
+            console.log(err);
+        }
     }
 
     function favoritingRecipe()
@@ -313,7 +314,7 @@ export const BrowseTableModal = (props) =>
     return(
         <div className="browseModalContainer">
             <button type="button" className="viewRecipeOpenButton" onClick={ () => fetchRecipeData() }>view recipe</button>
-            <Popup open={open} closeOnDocumentClick onClose={closeModal}>
+            <Popup modal open={open} closeOnDocumentClick onClose={closeModal} nested className="browseRecipesPopup">
                 <div className="viewRecipeContainer">
                     <div className="viewRecipeModalButtons">
                         <div className="favoriteRecipeButtonLabel">
@@ -362,11 +363,16 @@ export const BrowseTableModal = (props) =>
                         </table>
                     </div>
                     <div className="viewRecipeNotes">
-                        <span>Recipe Notes:</span>
-                        <br/>
-                        <span>these notes are only visible to you</span>
+                        <div className="notesSectionHeader">
+                            <div className="notesSectionTitle">
+                                <span>Recipe Notes</span>
+                            </div>
+                            <div className="notesSectionSubtitle">
+                                <span>these notes are only visible to you</span>
+                            </div>
+                        </div>
                         <br/><br/>
-                        <BTMNotes notes={notesData} recipeID={recipeHeader.id} />
+                        <BTMNotes notes={notesData} recipeID={recipeHeader.id} refreshNotes={recipeNotesCall} />
                     </div>
                 </div>
             </Popup>

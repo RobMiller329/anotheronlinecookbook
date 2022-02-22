@@ -1,15 +1,38 @@
 import React from "react";
+import { useState } from "react";
 import Axios from "axios";
+import Popup from "reactjs-popup";
+import { CreateNoteModal, UpdateNoteModal, DeleteNoteModal } from "./NotesModals";
 
 function BTMNotes(props)
 {
+    const [noteText, setNoteText] = useState("");
+    const [createModalOpen, setCreateModalOpen] = useState(false);
+    const [updateModalOpen, setUpdateModalOpen] = useState(false);
+    const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+    
     const api = Axios.create(
     {
         //baseURL: `http://anotheronlinecookbook.com/api/`
         baseURL: `http://localhost:8080/api/`
     });
 
-    function createRecipeNote()
+    function closeCreateModal()
+    {
+        setCreateModalOpen(false);
+    }
+
+    function closeUpdateModal()
+    {
+        setUpdateModalOpen(false);
+    }
+
+    function closeDeleteModal()
+    {
+        setDeleteModalOpen(false);
+    }
+
+    function handleNoteCreation(text)
     {
         async function createNote()
         {
@@ -20,7 +43,7 @@ function BTMNotes(props)
                     recipeCommentaryID: (props.notes.email + props.notes.recipe),
                     userDataID: props.notes.email,
                     recipeDataID: props.notes.recipe,
-                    commentaryMessage: props.notes.text
+                    commentaryMessage: text
                 });
                 alert("Your note has been posted!");
             }catch(err)
@@ -29,9 +52,11 @@ function BTMNotes(props)
             }
         }
         createNote();
+
+        props.refreshNotes();
     }
 
-    function updateRecipeNote()
+    function handleNoteUpdate(text)
     {
         async function updateNote()
         {
@@ -40,7 +65,7 @@ function BTMNotes(props)
                 await api.post('/note/update/',
                 {
                     recipeCommentaryID: (props.notes.email + props.notes.recipe),
-                    commentaryMessage: props.notes.text
+                    commentaryMessage: text
                 });
                 alert("Your note has been edited!");
             }catch(err)
@@ -49,9 +74,11 @@ function BTMNotes(props)
             }
         }
         updateNote();
+
+        props.refreshNotes();
     }
 
-    function deleteRecipeNote()
+    function handleNoteDeletion()
     {
         let recordID = props.notes.email + props.notes.recipe
 
@@ -67,15 +94,9 @@ function BTMNotes(props)
             }
         }
         deleteNote();
+
+        props.refreshNotes();
     }
-
-
-/*     notes
-    const [notesData, setNotesData] = useState( { text: "", email: "", recipe: "" } ); */
-
-    /*
-        NEED TO ADD MODALS FOR CREATING AND EDITING A NOTE
-    */
 
     let finishedNotesBuild;
     let textToDisplay;
@@ -87,9 +108,32 @@ function BTMNotes(props)
                                 <br/>
                                 <span className="filledNotesText">{textToDisplay}</span>
                                 <br/>
-                                <button className="editNotesButton" onClick={ () => updateRecipeNote() }>Edit Your Note</button>
+                                <div className="updateNoteModal">
+                                    <button type="button" className="updateNoteButton" onClick={ () => setUpdateModalOpen(status => !status) }>Edit Note</button>
+                                    <Popup open={ updateModalOpen } closeOnDocumentClick onClose={ closeUpdateModal } className="notePopup">
+                                    {
+                                        close =>
+                                        (
+                                            <div className="updateNoteInputContainer">
+                                                <input type="text" value={noteText} onChange={ (event) => setNoteText(event.target.value) }/>
+                                                <button type="button" onClick={ () => { handleNoteUpdate(noteText); closeUpdateModal(); } }>Submit</button>
+                                                <button type="button" onClick={ closeUpdateModal }>Cancel</button>
+                                            </div>
+                                        )
+                                    }
+                                    </Popup>
+                                </div>
                                 <br/>
-                                <button className="deleteNotesButton" onClick={ () => deleteRecipeNote() }>Delete Your Note</button>
+                                <div className="deleteNoteModal">
+                                    <button type="button" className="deleteNoteButton" onClick={ () => setDeleteModalOpen(status => !status) }>Delete Note</button>
+                                    <Popup open={ deleteModalOpen } closeOnDocumentClick onClose={ closeDeleteModal } className="notePopup">
+                                        <div className="deleteNoteInputContainer">
+                                            <span>Clicking confirm will delete your note from this recipe. This process can not be undone. Do you wish to continue?</span>
+                                            <button type="button" onClick={ () => { handleNoteDeletion(); closeDeleteModal(); } }>Confirm</button>
+                                            <button type="button" onClick={ closeDeleteModal }>Cancel</button>
+                                        </div>
+                                    </Popup>
+                                </div>
                             </div>
     }else
     {
@@ -98,7 +142,16 @@ function BTMNotes(props)
                                 <br/>
                                 <span className="emptyNotesText">{textToDisplay}</span>
                                 <br/>
-                                <button className="createNotesButton" onClick={ () => createRecipeNote() }>Create a Note</button>
+                                <div className="createNoteModal">
+                                    <button type="button" className="createNoteButton" onClick={ () => setCreateModalOpen(status => !status) }>Create a Note</button>
+                                    <Popup open={ createModalOpen } closeOnDocumentClick onClose={ closeCreateModal } className="notePopup">
+                                        <div className="createNoteInputContainer">
+                                            <input type="text" placeholder="Enter your note here." value={noteText} onChange={ (event) => setNoteText(event.target.value) }/>
+                                            <button type="button" onClick={ () => { handleNoteCreation(noteText); closeCreateModal(); } }>Submit</button>
+                                            <button type="button" onClick={ closeCreateModal }>Cancel</button>
+                                        </div>
+                                    </Popup>
+                                </div>
                             </div>
     }
 
