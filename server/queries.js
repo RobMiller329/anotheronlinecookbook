@@ -152,7 +152,7 @@ cookbookDB.updateRecipeData = (recipeSource, userDataID, recipeName, recipeCuisi
     {
         connection.query(
             `UPDATE recipedata SET recipeSource = ?, userDataID = ?, recipeName = ?, recipeCuisine = ?, recipeProtein = ? ` +
-            `FROM recipedata WHERE recipeDataID = ?;`, [recipeSource, userDataID, recipeName, recipeCuisine, recipeProtein, recipeDataID], (err, res) =>
+            `WHERE recipeDataID = ?;`, [recipeSource, userDataID, recipeName, recipeCuisine, recipeProtein, recipeDataID], (err, res) =>
         {
             if(err)
             {
@@ -442,7 +442,7 @@ cookbookDB.retrieveFavoriteRecipe = (id) =>
     });
 };
 
-cookbookDB.retrieveRecipeNotes = (id) =>
+/* cookbookDB.retrieveRecipeNotes = (id) =>
 {
     return new Promise((resolve, reject) =>
     {
@@ -456,6 +456,83 @@ cookbookDB.retrieveRecipeNotes = (id) =>
             }else
             {
                 return resolve(results);
+            }
+        });
+    });
+}; */
+
+cookbookDB.retrieveRecipeNotes = (id) =>
+{
+    return new Promise((resolve, reject) =>
+    {
+        connection.query(
+            `SELECT commentaryMessage ` +
+            `FROM recipecommentary WHERE recipeCommentaryID = ? `, [id], (err, results) =>
+        {
+            if(err)
+            {
+                return reject(err);
+            }else
+            {
+                return resolve(results);
+            }
+        });
+    });
+};
+
+cookbookDB.updateRecipeNote = (commentaryMessage, recipeCommentaryID) =>
+{
+    return new Promise((resolve, reject) =>
+    {
+        connection.query(
+            `UPDATE recipecommentary SET commentaryMessage = ? ` +
+            `WHERE recipeCommentaryID = ?;`, [commentaryMessage, recipeCommentaryID], (err, res) =>
+        {
+            if(err)
+            {
+                return reject(err);
+            }else
+            {
+                return resolve(res);
+            }
+        });
+    });
+};
+
+cookbookDB.createRecipeNote = (recipeCommentaryID, userDataID, recipeDataID, commentaryMessage) =>
+{
+    return new Promise((resolve, reject) =>
+    {
+        connection.query(
+            `INSERT INTO recipecommentary (recipeCommentaryID, userDataID, recipeDataID, commentaryMessage) ` +
+            `VALUES (?, ?, ?, ?);`, [recipeCommentaryID, userDataID, recipeDataID, commentaryMessage], (err, res) =>
+        {
+            if(err)
+            {
+                return reject(err);
+            }else
+            {
+                return resolve(res);
+            }
+        });
+    });
+};
+
+
+//let results = await cookbookDB.(req.params.id);
+cookbookDB.deleteRecipeNote = (id) =>
+{
+    return new Promise((resolve, reject) =>
+    {
+        connection.query(
+            `DELETE FROM recipecommentary WHERE recipeCommentaryID = ?;`, [id], (err, res) =>
+        {
+            if(err)
+            {
+                return reject(err);
+            }else
+            {
+                return resolve(res);
             }
         });
     });

@@ -1,15 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import Axios from "axios";
 import Popup from "reactjs-popup";
-import { CreateNoteModal, UpdateNoteModal, DeleteNoteModal } from "./NotesModals";
+import { NotesPanelFalse, NotesPanelTrue } from "./NotesModals";
 
 function BTMNotes(props)
 {
     const [noteText, setNoteText] = useState("");
-    const [createModalOpen, setCreateModalOpen] = useState(false);
+    const [postedNote, setPostedNote] = useState("");
+    const [hasNotes, setHasNotes] = useState(false);
+/*     const [createModalOpen, setCreateModalOpen] = useState(false);
     const [updateModalOpen, setUpdateModalOpen] = useState(false);
-    const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+    const [deleteModalOpen, setDeleteModalOpen] = useState(false); */
     
     const api = Axios.create(
     {
@@ -17,7 +19,13 @@ function BTMNotes(props)
         baseURL: `http://localhost:8080/api/`
     });
 
-    function closeCreateModal()
+    useEffect(() =>
+    {
+        setPostedNote(props.text);
+        noteMessageSelector();
+    }, [props])
+
+/*     function closeCreateModal()
     {
         setCreateModalOpen(false);
     }
@@ -30,7 +38,13 @@ function BTMNotes(props)
     function closeDeleteModal()
     {
         setDeleteModalOpen(false);
-    }
+    } */
+
+    /* function setupNoteUpdate()
+    {
+        setNoteText(postedNote);
+        setUpdateModalOpen(status => !status);
+    } */
 
     function handleNoteCreation(text)
     {
@@ -40,11 +54,12 @@ function BTMNotes(props)
             {
                 await api.post('/note/insert/',
                 {
-                    recipeCommentaryID: (props.notes.email + props.notes.recipe),
-                    userDataID: props.notes.email,
-                    recipeDataID: props.notes.recipe,
+                    recipeCommentaryID: (props.userID + props.recipeID),
+                    userDataID: props.userID,
+                    recipeDataID: props.recipeID,
                     commentaryMessage: text
                 });
+                setPostedNote(noteText);
                 alert("Your note has been posted!");
             }catch(err)
             {
@@ -53,7 +68,7 @@ function BTMNotes(props)
         }
         createNote();
 
-        props.refreshNotes();
+        setHasNotes(true);
     }
 
     function handleNoteUpdate(text)
@@ -64,23 +79,23 @@ function BTMNotes(props)
             {
                 await api.post('/note/update/',
                 {
-                    recipeCommentaryID: (props.notes.email + props.notes.recipe),
+                    recipeCommentaryID: (props.userID + props.recipeID),
                     commentaryMessage: text
                 });
+                setPostedNote(noteText);
                 alert("Your note has been edited!");
+                setNoteText("");
             }catch(err)
             {
                 console.log(err);
             }
         }
         updateNote();
-
-        props.refreshNotes();
     }
 
     function handleNoteDeletion()
     {
-        let recordID = props.notes.email + props.notes.recipe
+        let recordID = props.userID + props.recipeID
 
         async function deleteNote()
         {
@@ -95,21 +110,38 @@ function BTMNotes(props)
         }
         deleteNote();
 
-        props.refreshNotes();
+        setPostedNote("");
+        setHasNotes(false);
+    }
+
+    function noteMessageSelector()
+    {
+        if(typeof props.text !== undefined && props.text !== "")
+        {
+            setHasNotes(true);
+        }
     }
 
     let finishedNotesBuild;
-    let textToDisplay;
 
-    if(props.notes.recipe === props.recipeID)
+    if(hasNotes)
     {
-        textToDisplay = props.notes.text;
+        finishedNotesBuild = <NotesPanelTrue passedText={ postedNote } deleting={ handleNoteDeletion } updating={ handleNoteUpdate } />
+    }else
+    {
+        finishedNotesBuild = <NotesPanelFalse creating={ handleNoteCreation } />
+    }
+
+    /* let finishedNotesBuild;
+
+    if(typeof props.text !== undefined && props.text !== "")
+    {
         finishedNotesBuild = <div className="filledNotesContainer">
                                 <br/>
-                                <span className="filledNotesText">{textToDisplay}</span>
+                                <span className="filledNotesText">{ postedNote }</span>
                                 <br/>
                                 <div className="updateNoteModal">
-                                    <button type="button" className="updateNoteButton" onClick={ () => setUpdateModalOpen(status => !status) }>Edit Note</button>
+                                    <button type="button" className="updateNoteButton" onClick={ () => setupNoteUpdate() }>Edit Note</button>
                                     <Popup open={ updateModalOpen } closeOnDocumentClick onClose={ closeUpdateModal } className="notePopup">
                                     {
                                         close =>
@@ -137,10 +169,10 @@ function BTMNotes(props)
                             </div>
     }else
     {
-        textToDisplay = "You currently do not have any notes for this recipe. To enter a note, please press the Create a Note button."
+        let textToDisplay = "You currently do not have any notes for this recipe. To enter a note, please press the Create a Note button."
         finishedNotesBuild = <div className="emptyNotesContainer">
                                 <br/>
-                                <span className="emptyNotesText">{textToDisplay}</span>
+                                <span className="emptyNotesText">{ textToDisplay }</span>
                                 <br/>
                                 <div className="createNoteModal">
                                     <button type="button" className="createNoteButton" onClick={ () => setCreateModalOpen(status => !status) }>Create a Note</button>
@@ -154,6 +186,12 @@ function BTMNotes(props)
                                 </div>
                             </div>
     }
+
+    return(
+        <div className="btmNotesCompContainer">
+            { finishedNotesBuild }
+        </div>
+    ); */
 
     return(
         <div className="btmNotesCompContainer">

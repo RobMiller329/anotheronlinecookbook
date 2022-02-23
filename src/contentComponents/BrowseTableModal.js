@@ -9,10 +9,10 @@ function RecipeHeaderBody(props)
 {
     return(
         <tbody>
-            <tr>
-                <td>{props.headerObject.name}</td>
-                <td>{props.headerObject.source}</td>
-                <td>{props.headerObject.user}</td>
+            <tr> 
+                <td>{props.headerObject.recipeName}</td>
+                <td>{props.headerObject.recipeSource}</td>
+                <td>{props.headerObject.creatorUsername}</td>
             </tr>
         </tbody>
     );
@@ -100,13 +100,13 @@ function FollowCreatorButton(props)
 
 export const BrowseTableModal = (props) =>
 {
-    const [userID, setUserID] = useState("");
-    const [recipeHeader, setRecipeHeader] = useState( { id: "", name: "", source: "", user: "", email: "" } );
+    const [browsingUserID, setBrowsingUserID] = useState("");
+    const [recipeHeader, setRecipeHeader] = useState( { recipeDataID: "", recipeName: "", recipeSource: "", creatorUsername: "", creatorEmail: "" } );
     const [recipeIngredients, setRecipeIngredients] = useState([]);
     const [recipeInstructions, setRecipeInstructions] = useState([]);
     const [favoriteRecipe, setFavoriteRecipe] = useState(false);
     const [followCreator, setFollowCreator] = useState(false);
-    const [notesData, setNotesData] = useState( { text: "", email: "", recipe: "" } );
+    const [notesData, setNotesData] = useState("");
     const [open, setOpen] = useState(false);
     const closeModal = () => setOpen(false);
 
@@ -121,16 +121,15 @@ export const BrowseTableModal = (props) =>
     {
         setOpen(status => !status);
 
-        setUserID(props.userEmail);
+        setBrowsingUserID(props.userEmail);
 
         async function recipeHeaderCall()
         {
             try
             {
                 let returnedData = await recipeDataAPICall.get(`/fetch/${props.recipeID}`).then(( { data } ) => data);
-                setRecipeHeader( { id: returnedData[0].recipeDataID, name: returnedData[0].recipeName, source: returnedData[0].recipeSource, 
-                                    user: returnedData[0].userName, email: returnedData[0].userDataID } );
-                setNotesData( { ...notesData, email: returnedData[0].userDataID, recipe: returnedData[0].recipeDataID } );
+                setRecipeHeader( { recipeDataID: returnedData[0].recipeDataID, recipeName: returnedData[0].recipeName, recipeSource: returnedData[0].recipeSource, 
+                                        creatorUsername: returnedData[0].userName, creatorEmail: returnedData[0].userDataID } );
             }catch(err)
             {
                 console.log(err);
@@ -213,7 +212,7 @@ export const BrowseTableModal = (props) =>
         try
         {
             let returnedNotes = await recipeDataAPICall.get(`/notes/select/${recordID}`).then(( { data } ) => data);
-            setNotesData( { ...notesData, text: returnedNotes[0].commentaryMessage } );
+            setNotesData(returnedNotes[0].commentaryMessage);
         }catch(err)
         {
             console.log(err);
@@ -228,10 +227,10 @@ export const BrowseTableModal = (props) =>
             {
                 await recipeDataAPICall.post('/favorite/insert/',
                 {
-                    favoritesDataID: (userID + recipeHeader.id),
+                    favoritesDataID: (browsingUserID + recipeHeader.recipeDataID),
                     favoritesDataType: "recipe",
-                    userDataID: userID,
-                    favoritesDataItemID: recipeHeader.id
+                    userDataID: browsingUserID,
+                    favoritesDataItemID: recipeHeader.recipeDataID
                 });
                 alert("Recipe added to favorites!");
             }catch(err)
@@ -246,7 +245,7 @@ export const BrowseTableModal = (props) =>
 
     function unfavoritingRecipe()
     {
-        let recordID = userID + recipeHeader.id;
+        let recordID = browsingUserID + recipeHeader.recipeDataID;
         
         async function deleteFavoriteRecipeRecord()
         {
@@ -273,10 +272,10 @@ export const BrowseTableModal = (props) =>
                 //favorite recipe and follow creator apis are the same because of a shared db table
                 await recipeDataAPICall.post('/favorite/insert/',
                 {
-                    favoritesDataID: (userID + recipeHeader.email),
+                    favoritesDataID: (browsingUserID + recipeHeader.creatorEmail),
                     favoritesDataType: "creator",
-                    userDataID: userID,
-                    favoritesDataItemID: recipeHeader.email
+                    userDataID: browsingUserID,
+                    favoritesDataItemID: recipeHeader.creatorEmail
                 });
                 alert("You are now following this creator!");
             }catch(err)
@@ -291,7 +290,7 @@ export const BrowseTableModal = (props) =>
 
     function unfollowingCreator()
     {
-        let recordID = userID + recipeHeader.email;
+        let recordID = browsingUserID + recipeHeader.creatorEmail;
         
         async function deleteFollowCreatorRecord()
         {
@@ -372,7 +371,7 @@ export const BrowseTableModal = (props) =>
                             </div>
                         </div>
                         <br/><br/>
-                        <BTMNotes notes={notesData} recipeID={recipeHeader.id} refreshNotes={recipeNotesCall} />
+                        <BTMNotes text={notesData} userID={browsingUserID} recipeID={recipeHeader.recipeDataID} refreshNotes={recipeNotesCall} />
                     </div>
                 </div>
             </Popup>

@@ -180,6 +180,20 @@ router.post('/recipeInstructions/update/', async (req, res) =>
     }
 });
 
+//api call for updating selected recipe note
+router.post('/note/update/', async (req, res) =>
+{
+    try
+    {
+        let results = await cookbookDB.updateRecipeNote(req.body.commentaryMessage, req.body.recipeCommentaryID);
+        res.json(results);
+    }catch(err)
+    {
+        console.log(err);
+        res.sendStatus(500);
+    }
+});
+
 //api call for updating username
 router.post('/username/update/', async (req, res) =>
 {
@@ -200,6 +214,20 @@ router.post('/username/insert/', async (req, res) =>
     try
     {
         let results = await cookbookDB.createUserData(req.body.userDataID, req.body.userName);
+        res.json(results);
+    }catch(err)
+    {
+        console.log(err);
+        res.sendStatus(500);
+    }
+});
+
+//api call for creating a new note
+router.post('/note/insert/', async (req, res) =>
+{
+    try
+    {
+        let results = await cookbookDB.createRecipeNote(req.body.recipeCommentaryID, req.body.userDataID, req.body.recipeDataID, req.body.commentaryMessage);
         res.json(results);
     }catch(err)
     {
@@ -340,6 +368,20 @@ router.delete('/favorite/delete/:id', async (req, res) =>
     try
     {
         let results = await cookbookDB.deleteFavoriteRecipe(req.params.id);
+        res.json(results);
+    }catch(err)
+    {
+        console.log(err);
+        res.sendStatus(500);
+    }
+});
+
+//api call to delete a recipe note
+router.delete('/note/delete/:id', async (req, res) =>
+{
+    try
+    {
+        let results = await cookbookDB.deleteRecipeNote(req.params.id);
         res.json(results);
     }catch(err)
     {
