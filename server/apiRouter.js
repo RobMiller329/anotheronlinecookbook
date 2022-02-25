@@ -38,6 +38,48 @@ router.get('/browse/', async (req, res) =>
     }
 });
 
+//api call for retrieving "my" recipes
+router.get('/myRecipes/:id', async (req, res) =>
+{
+    try
+    {
+        let results = await cookbookDB.myRecipes(req.params.id);
+        res.json(results);
+    }catch(err)
+    {
+        console.log(err);
+        res.sendStatus(500);
+    }
+});
+
+//api call for retrieving all favorited recipes
+router.get('/favoriteRecipes/:id', async (req, res) =>
+{
+    try
+    {
+        let results = await cookbookDB.favoriteRecipes(req.params.id);
+        res.json(results);
+    }catch(err)
+    {
+        console.log(err);
+        res.sendStatus(500);
+    }
+});
+
+//api call for retrieving all recipes of followed creators
+router.get('/followedCreators/:id', async (req, res) =>
+{
+    try
+    {
+        let results = await cookbookDB.followedCreators(req.params.id);
+        res.json(results);
+    }catch(err)
+    {
+        console.log(err);
+        res.sendStatus(500);
+    }
+});
+
 //api call for retrieving filtered recipes
 router.get('/filter/:id', async (req, res, next) =>
 {

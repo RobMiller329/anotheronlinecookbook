@@ -538,4 +538,69 @@ cookbookDB.deleteRecipeNote = (id) =>
     });
 };
 
+cookbookDB.myRecipes = (id) =>
+{
+    return new Promise((resolve, reject) =>
+    {
+        connection.query(
+            `SELECT a.recipeDataID, a.recipeName, a.recipeProtein, a.recipeCuisine, a.recipeSource, b.userName, a.userDataID ` +
+            `FROM recipedata as a ` + 
+            `JOIN userdata as b ON a.userDataID = b.userDataID ` +
+            `WHERE a.userDataID = ?`, [id], (err, results) =>
+        {
+            if(err)
+            {
+                return reject(err);
+            }else
+            {
+                return resolve(results);
+            }
+        });
+    });
+};
+
+//let results = await cookbookDB.favoriteRecipes(req.params.id);
+cookbookDB.favoriteRecipes = (id) =>
+{
+    return new Promise((resolve, reject) =>
+    {
+        connection.query(
+            `SELECT a.recipeDataID, a.recipeName, a.recipeProtein, a.recipeCuisine, a.recipeSource, b.userName, a.userDataID ` +
+            `FROM recipedata as a ` + 
+            `JOIN userdata as b ON a.userDataID = b.userDataID ` +
+            `WHERE a.recipeDataID IN (SELECT favoritesDataItemID FROM favoritesdata WHERE favoritesDataType = 'recipe' AND userDataID = ?)`, [id], (err, results) =>
+        {
+            if(err)
+            {
+                return reject(err);
+            }else
+            {
+                return resolve(results);
+            }
+        });
+    });
+};
+
+//let results = await cookbookDB.followedCreators(req.params.id);
+cookbookDB.followedCreators = (id) =>
+{
+    return new Promise((resolve, reject) =>
+    {
+        connection.query(
+            `SELECT a.recipeDataID, a.recipeName, a.recipeProtein, a.recipeCuisine, a.recipeSource, b.userName, a.userDataID ` +
+            `FROM recipedata as a ` + 
+            `JOIN userdata as b ON a.userDataID = b.userDataID ` +
+            `WHERE a.userDataID IN (SELECT favoritesDataItemID FROM favoritesdata WHERE favoritesDataType = 'creator' AND userDataID = ?)`, [id], (err, results) =>
+        {
+            if(err)
+            {
+                return reject(err);
+            }else
+            {
+                return resolve(results);
+            }
+        });
+    });
+};
+
 module.exports = cookbookDB;

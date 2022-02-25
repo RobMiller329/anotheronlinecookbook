@@ -108,7 +108,6 @@ function BrowseTableBuild(props)
                     recipeNameFilter: filter
                 }).then(( { data } ) => data);
                 setData(returnedData);
-                console.log(returnedData);
             }catch(err)
             {
                 console.log(err);
@@ -117,9 +116,56 @@ function BrowseTableBuild(props)
         fetchFilteredData(urlString);
     }
 
+    async function myRecipesQuickFilter()
+    {
+        try
+        {
+            let returnedData = await apiCall.get(`/myRecipes/${userEmail}`).then(( { data } ) => data);
+            setData(returnedData);
+        }catch(err)
+        {
+            console.log(err);
+        }
+    }
+
+    async function favoritedRecipesQuickFilter()
+    {
+        try
+        {
+            let returnedData = await apiCall.get(`/favoriteRecipes/${userEmail}`).then(( { data } ) => data);
+            setData(returnedData);
+        }catch(err)
+        {
+            console.log(err);
+        }
+    }
+
+    async function followedCreatorsQuickFilter()
+    {
+        try
+        {
+            let returnedData = await apiCall.get(`/followedCreators/${userEmail}`).then(( { data } ) => data);
+            setData(returnedData);
+        }catch(err)
+        {
+            console.log(err);
+        }
+    }
+
+    function browseTableReset()
+    {
+        window.location.reload(false);
+    }
+
     return(
         <div>
-            <div>
+            <div className="quickFilterButtonsContainer">
+                <button type="button" onClick={ myRecipesQuickFilter }>My Recipes</button>
+                <button type="button" onClick={ favoritedRecipesQuickFilter }>Favorited Recipes</button>
+                <button type="button" onClick={ followedCreatorsQuickFilter }>Followed Creators</button>
+                <button type="button" onClick={ browseTableReset }>Reset Table</button>
+            </div>
+            <div className="browseTableFilterContainer">
                 <input type="text" id="recipeNameFilterInput" placeholder="recipe name filter" />
                 <select id="recipeProteinFilterInput" defaultValue="defaultProteinFilter">
                     <option value="defaultProteinFilter">protein filter</option>

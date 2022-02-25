@@ -49,7 +49,7 @@ function NewRecipeForm(props)
             setLoggedIn(true);
             setUserDataID(email);
         });
-    });
+    }, []);
 
     return(
         <div>
