@@ -72,15 +72,14 @@
 .comingSoonOpenButton
 {}
 
-.comingSoonContainer
+.comingSoonContainer, .skillsGithubContainer
 {
-    opacity: 0.9;
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: white;
-    padding: 0.5%;
+    padding: 1%;
 }
 
 .comingSoonModal
