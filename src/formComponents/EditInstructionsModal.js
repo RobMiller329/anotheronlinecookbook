@@ -16,8 +16,7 @@ export const EditInstructionsModal = (props) =>
     const api = Axios.create(
     {
         //baseURL: `http://anotheronlinecookbook.com/api/`
-        //baseURL: `http://localhost:8080/api/`
-        baseURL: `https://anotheronlinecookbook.herokuapp.com/api/`
+        baseURL: `http://localhost:8080/api/`
     });
 
     async function updateInstructionAPI()
@@ -88,8 +87,7 @@ export const RemoveInstructionsModal = (props) =>
     const api = Axios.create(
     {
         //baseURL: `http://anotheronlinecookbook.com/api/`
-        //baseURL: `http://localhost:8080/api/`
-        baseURL: `https://anotheronlinecookbook.herokuapp.com/api/`
+        baseURL: `http://localhost:8080/api/`
     });
 
     async function removeInstructionAPI()

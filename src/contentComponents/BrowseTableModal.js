@@ -113,8 +113,7 @@ export const BrowseTableModal = (props) =>
     const recipeDataAPICall = Axios.create(
     {
         //baseURL: `http://anotheronlinecookbook.com/api/`
-        //baseURL: `http://localhost:8080/api/`
-        baseURL: `https://anotheronlinecookbook.herokuapp.com/api/`
+        baseURL: `http://localhost:8080/api/`
     });
 
     //returns all parts of the recipe from separate API calls

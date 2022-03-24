@@ -67,8 +67,7 @@ function NRSubmitButton(props)
     const createRecipeAPI = Axios.create(
     {
         //baseURL: `http://anotheronlinecookbook.com/api/`
-        //baseURL: `http://localhost:8080/api/`
-        baseURL: `https://anotheronlinecookbook.herokuapp.com/api/`
+        baseURL: `http://localhost:8080/api/`
     });
 
     /*  takes single-digit numbers and adds a leading zero to keep naming standard  */
